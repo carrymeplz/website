@@ -1,0 +1,107 @@
+<!--<?php header('Access-Control-Allow-Origin: *'); ?>-->
+<httpProtocol>  
+    <customHeaders>  
+     <add name="Access-Control-Allow-Origin" value="*" />  
+     <add name="Access-Control-Allow-Headers" value="Content-Type" />  
+     <add name="Access-Control-Allow-Methods" value="GET, POST, PUT, DELETE, OPTIONS" />  
+    </customHeaders>  
+</httpProtocol>  
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <script src="https://www.gstatic.com/firebasejs/5.4.0/firebase.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="js/myfunction.js"></script>
+
+    <title>Ryan Cha</title>
+  </head>
+  <body>
+    <pre id="object"></pre>
+    <form>
+        <div id="servers">
+            Server:
+            <input type="radio" id="na" name="server" value="na1."> NA
+            <input type="radio" id="eu" name="server" value="euw1."> EU
+            <input type="radio" id="kr" name="server" value="kr."> KR
+        </div>
+
+        <br>
+        
+        <div>
+            IGN: <input type="text" name="ign" id="ign" placeholder="IGN"><br>
+        </div>
+
+        <br>
+
+        <div>
+            Preferred Roles:<br>
+            Top: <input type="checkbox" name="roles" id="top" value="top">
+            Jungle: <input type="checkbox" name="roles" id="jg" value="jg">
+            Mid: <input type="checkbox" name="roles" id="mid" value="mid">
+            Adc: <input type="checkbox" name="roles" id="adc" value="adc">
+            Support: <input type="checkbox" name="roles" id="supp" value="supp">
+            Fill: <input type="checkbox" name="roles" id="fill" value="fill">
+        </div>
+
+        <br>
+
+        <div>
+            Game Type:<br>
+            Solo/Duo: <input type="checkbox" name="gametype" id="soloduo" value="soloduo">
+            Flex: <input type="checkbox" name="gametype" id="flex" value="flex">
+            Normal: <input type="checkbox" name="gametype" id="norm" value="norm">
+            ARAM: <input type="checkbox" name="gametype" id="aram" value="aram">
+        </div>
+
+        <br>
+
+        <div>
+            Grind or Fun
+            Grind: <input type="checkbox" name="gof" id="grind" value="grind">
+            Fun: <input type="checkbox" name="gof" id="fun" value="fun">
+        </div>
+
+        <br>
+
+        <div>
+            Mic availability
+            <select>
+                <option value=""></option>
+                <option id="yes" value="yes">Yes</option>
+                <option id="no" value="no">No</option>
+            </select>
+        </div>
+
+        <br>
+
+        <div>
+            Notes:<br>
+            <textarea id="notes" rows="4" cols="40"></textarea>
+        </div>
+
+        <br>
+
+        <div>
+            <button type="button" onclick="submitted()">Submit</button>
+        </div>
+
+        <div>
+            <button type="submit" disabled={pristine || submitting}>
+                Submit
+            </button>
+            <button type="button" disabled={pristine || submitting} onClick={reset}>
+                Clear Values
+            </button>
+        </div>
+    </form>
+    <footer>
+    </footer>
+  </body>
+</html>
