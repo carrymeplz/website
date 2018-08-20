@@ -151,6 +151,16 @@ function checkMic() {
     return false;
 }
 
+function readData() {
+    //var userId = firebase.auth().currentUser.uid;
+    return firebase.database().ref('summoners').once('value').then(function(snapshot) {
+        var summoners = snapshot.val();
+        for (var key in summoners) {
+            console.log(key, summoners[key].userIgn);
+        }
+    });
+}
+
 function calcTier(tier) {
     switch(tier) {
         case 'BRONZE':
