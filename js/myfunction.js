@@ -17,7 +17,7 @@ var summonerRef = firebase.database().ref('summoners');
 var https = 'https://'
 var summonerLink = 'api.riotgames.com/lol/summoner/v3/summoners/by-name/'
 var rankLink = 'api.riotgames.com/lol/league/v3/positions/by-summoner/';
-var API_KEY = '?api_key=RGAPI-541dc2d7-60b4-41d9-9338-c74729079155';
+var API_KEY = '?api_key=RGAPI-c7d52263-4ca5-4c03-95a3-460a77f9e657';
 var region;
 var fullSummonerLink;
 var fullRankLink;
@@ -40,27 +40,26 @@ function submitted() {
     var flexTier;
     var flexRank;
     var soloTier;
-    var soloRank;
+    var soloRank;   
+    var flexRankNumber;
+    var soloRankNumber;
+    var grindorfun = grindFun();
     var userIgn = document.getElementById("ign").value;
     var roles = {
-        top: checkBox('top'), 
-        jg: checkBox('jg'), 
-        mid: checkBox('mid'), 
-        adc: checkBox('adc'), 
-        supp: checkBox('supp'), 
-        fill: checkBox('fill')
+        top: document.getElementById('top').checked, 
+        jg: document.getElementById('jg').checked, 
+        mid: document.getElementById('mid').checked, 
+        adc: document.getElementById('adc').checked, 
+        supp: document.getElementById('supp').checked, 
+        fill: document.getElementById('fill').checked
     };
     var gameType = {
-        soloduo: checkBox('soloduo'),
-        flex: checkBox('flex'),
-        norm: checkBox('norm'),
-        aram: checkBox('aram')
+        soloduo: document.getElementById('soloduo').checked,
+        flex: document.getElementById('flex').checked,
+        norm: document.getElementById('norm').checked,
+        aram: document.getElementById('aram').checked
     };
-    var gof = {
-        grind: checkBox('grind'),
-        fun: checkBox('fun')
-    };
-    var micAvail = checkBox('yes');
+    var micAvail = checkMic();
     var notes = document.getElementById('notes').value;
 
     fullSummonerLink = https + region + summonerLink + userIgn + API_KEY;
@@ -75,8 +74,16 @@ function submitted() {
             flexRank = data[0]['rank'];
             soloTier = data[1]['tier'];
             soloRank = data[1]['rank'];
+
+            flexRankNumber = calcTier(flexTier);
+            soloRankNumber = calcTier(soloTier);
             
-            saveSummoner(region, userId, userIgn, roles, gameType, gof, micAvail, flexTier, flexRank, soloTier, soloRank, notes);
+            if (flexRankNumber < 25 && flexRankNumber >= 0)
+                flexRankNumber += calcRank(flexRank);
+            if (soloRankNumber < 25 && soloRankNumber >= 0)
+                soloRankNumber += calcRank(soloRank);
+            
+            saveSummoner(region, userId, userIgn, roles, gameType, grindorfun, micAvail, flexRankNumber, soloRankNumber, notes);
         });
     });
 
@@ -110,7 +117,7 @@ function submitted() {
 }
 
 //pushes the information to the firebase database
-function saveSummoner(region, userId, ign, roles, gameType, gof, micAvail, flexTier, flexRank, soloTier, soloRank, notes) {
+function saveSummoner(region, userId, ign, roles, gameType, grindorfun, micAvail, flexRankNumber, soloRankNumber,notes) {
     var newSummonerRef = summonerRef.push();
     newSummonerRef.set({
         region: region,
@@ -118,21 +125,65 @@ function saveSummoner(region, userId, ign, roles, gameType, gof, micAvail, flexT
         userIgn: ign,
         roles: roles,
         gameType: gameType,
-        gof: gof,
+        grindorfun: grindorfun,
         micAvail: micAvail,
-        flexTier: flexTier,
-        flexRank: flexRank,
-        soloTier: soloTier,
-        soloRank: soloRank,
+        flexRank: flexRankNumber,
+        soloRank: soloRankNumber,
         notes: notes
     });
 }
 
 //checks for user's inputs of the checkboxes
-function checkBox(choice) {
-    console.log(choice);
-    if (document.getElementById(choice).checked)
+function grindFun() {
+    if (document.getElementById('grind').checked && document.getElementById('fun').checked)
+        return 2;
+    else if (document.getElementById('grind').checked && !document.getElementById('fun').checked)
+        return 1;
+    return 0;
+}
+
+function checkMic() {
+    var e = document.getElementById('micAvailability');
+    var userInput = e.options[e.selectedIndex].value;
+
+    if (userInput == 'yes')
         return true;
-    else
-        return false;
+    return false;
+}
+
+function calcTier(tier) {
+    switch(tier) {
+        case 'BRONZE':
+            return 0;
+        case 'SILVER':
+            return 5;
+        case 'GOLD':
+            return 10;
+        case 'PLATINUM':
+            return 15;
+        case 'DIAMOND':
+            return 20;
+        case 'MASTER':
+            return 25;
+        case 'CHALLENGER':
+            return 26;
+        default:
+            return -1;
+    }
+}
+
+function calcRank(rank) {
+    switch(rank) {
+        case 'V':
+            return 0;
+        case 'IV':
+            return 1;
+        case 'III':
+            return 2;
+        case 'II':
+            return 3;
+        case 'I':
+            return 4;
+        default: 
+    }
 }
