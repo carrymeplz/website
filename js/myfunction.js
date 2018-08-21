@@ -17,7 +17,7 @@ var summonerRef = firebase.database().ref('summoners');
 var https = 'https://'
 var summonerLink = 'api.riotgames.com/lol/summoner/v3/summoners/by-name/'
 var rankLink = 'api.riotgames.com/lol/league/v3/positions/by-summoner/';
-var API_KEY = '?api_key=RGAPI-c7d52263-4ca5-4c03-95a3-460a77f9e657';
+var API_KEY = '?api_key='; //copy and paste your API KEY
 var region;
 var fullSummonerLink;
 var fullRankLink;
@@ -47,7 +47,6 @@ function submitted() {
     var soloRankNumber;
     var grindorfun = grindFun();
     var userIgn = document.getElementById("ign").value;
-    var count = 0;
     var roles = {
         top: document.getElementById('top').checked, 
         jg: document.getElementById('jg').checked, 
@@ -163,7 +162,7 @@ function validateInput(userIgn, region, roles, gameType, grindorfun, micAvail) {
         }
     }
 
-    if(!validate(checked == 0, '#rolesWarning')) {
+    if (!validate(checked == 0, '#rolesWarning')) {
         success = false;
     }
 
@@ -174,7 +173,7 @@ function validateInput(userIgn, region, roles, gameType, grindorfun, micAvail) {
         }
     }
 
-    if(!validate(checked == 0, '#gameTypeWarning')) {
+    if (!validate(checked == 0, '#gameTypeWarning')) {
         success = false;
     }
 
@@ -283,5 +282,6 @@ function calcRank(rank) {
         case 'I':
             return 4;
         default: 
+            return -1;
     }
 }
