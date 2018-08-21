@@ -30,6 +30,8 @@ function getRegion() {
         region = document.getElementById('eu').value;
     } else if (document.getElementById('kr').checked) {
         region = document.getElementById('kr').value;
+    } else {
+        region = "";
     }
 }
 
@@ -45,6 +47,7 @@ function submitted() {
     var soloRankNumber;
     var grindorfun = grindFun();
     var userIgn = document.getElementById("ign").value;
+    var count = 0;
     var roles = {
         top: document.getElementById('top').checked, 
         jg: document.getElementById('jg').checked, 
@@ -63,29 +66,55 @@ function submitted() {
     var notes = document.getElementById('notes').value;
 
     fullSummonerLink = https + region + summonerLink + userIgn + API_KEY;
-
-    $.getJSON('https://json2jsonp.com/?url=' + fullSummonerLink +'&callback=?', function(data) {
-        userId = data['id'];
-    }).then(function() {
-        fullRankLink = https + region + rankLink + userId + API_KEY;
-
-        $.getJSON('https://json2jsonp.com/?url=' + fullRankLink +'&callback=?', function(data) {
-            flexTier = data[0]['tier'];
-            flexRank = data[0]['rank'];
-            soloTier = data[1]['tier'];
-            soloRank = data[1]['rank'];
-
-            flexRankNumber = calcTier(flexTier);
-            soloRankNumber = calcTier(soloTier);
-            
-            if (flexRankNumber < 25 && flexRankNumber >= 0)
-                flexRankNumber += calcRank(flexRank);
-            if (soloRankNumber < 25 && soloRankNumber >= 0)
-                soloRankNumber += calcRank(soloRank);
-            
-            saveSummoner(region, userId, userIgn, roles, gameType, grindorfun, micAvail, flexRankNumber, soloRankNumber, notes);
-        });
-    });
+    var validIgn = false;
+    if (validateInput(userIgn, region, roles, gameType, grindorfun, micAvail)) {
+        $.getJSON('https://json2jsonp.com/?url=' + fullSummonerLink +'&callback=?', function(data) {
+            if (Object.keys(data).length == 1 && data['status']['status_code'] == 404) {
+                console.log('Data not found');
+            } else {
+                userId = data['id'];     
+                validIgn = true;
+            }
+        }).then(function() {
+            if (validIgn) {
+                fullRankLink = https + region + rankLink + userId + API_KEY;
+                flexRankNumber = -1;
+                soloRankNumber = -1;
+                $.getJSON('https://json2jsonp.com/?url=' + fullRankLink +'&callback=?', function(data) {
+                    var objectSize = Object.keys(data).length;
+                    if (objectSize == 1) {
+                        console.log('One ranked game played');
+                        if (data[0]['queueType'].localeCompare('RANKED_SOLO_5X5')) {
+                            soloTier = data[0]['tier'];
+                            soloRank = data[0]['rank'];
+                            flexRankNumber = -1;
+                            soloRankNumber = calcTier(soloTier);         
+                        } else if (data[0]['queueType'].localeCompare('RANKED_FLEX_SR')) {
+                            flexTier = data[0]['tier'];
+                            flexRank = data[0]['rank'];
+                            flexRankNumber = calcTier(flexTier);
+                            soloRankNumber = -1;
+                        }
+                    } else if (objectSize == 2) {
+                        flexTier = data[0]['tier'];
+                        flexRank = data[0]['rank'];
+                        soloTier = data[1]['tier'];
+                        soloRank = data[1]['rank'];                        
+                        flexRankNumber = calcTier(flexTier);
+                        soloRankNumber = calcTier(soloTier);
+                    }                    
+                    if (flexRankNumber < 25 && flexRankNumber >= 0)
+                        flexRankNumber += calcRank(flexRank);
+                    if (soloRankNumber < 25 && soloRankNumber >= 0)
+                        soloRankNumber += calcRank(soloRank);
+                    saveSummoner(region, userId, userIgn, roles, gameType, grindorfun, micAvail, flexRankNumber, soloRankNumber, notes);
+                }).fail(function(data) {
+                    console.log('Failed');
+                    saveSummoner(region, userId, userIgn, roles, gameType, grindorfun, micAvail, flexRankNumber, soloRankNumber, notes);
+                });            
+            }
+        })
+    }
 
     // $.ajax({
     //     url: 'https://json2jsonp.com/?url=' + fullSummonerLink +'&callback=?',
@@ -116,6 +145,62 @@ function submitted() {
     // })
 }
 
+function validateInput(userIgn, region, roles, gameType, grindorfun, micAvail) {
+    var success = true;
+    
+    if (!validate(region.length == 0, '#serverWarning')) {
+        success = false;
+    }
+
+    if (!validate(userIgn.length == 0, '#ignWarning')) {
+        success = false;
+    }
+
+    var checked = 0;
+    for (var role in roles) {
+        if (roles[role]) {
+            checked++;
+        }
+    }
+
+    if(!validate(checked == 0, '#rolesWarning')) {
+        success = false;
+    }
+
+    checked = 0;
+    for (var type in gameType) {
+        if (gameType[type]) {
+            checked++;
+        }
+    }
+
+    if(!validate(checked == 0, '#gameTypeWarning')) {
+        success = false;
+    }
+
+    if (!validate(grindorfun == -1, '#grindOrFunWarning')) {
+        success = false;
+    }
+
+    if (!validate(micAvail == -1, '#micAvailWarning')) {
+        success = false;
+    }
+
+    return success;
+}
+
+function validate(condition, id) {
+    if (condition) {
+        // fail case
+        $(id).css('display', 'block');
+        return false;
+    } else {
+        // success case
+        $(id).css('display', 'none');
+    }
+    return true;
+}
+
 //pushes the information to the firebase database
 function saveSummoner(region, userId, ign, roles, gameType, grindorfun, micAvail, flexRankNumber, soloRankNumber,notes) {
     var newSummonerRef = summonerRef.push();
@@ -137,18 +222,21 @@ function saveSummoner(region, userId, ign, roles, gameType, grindorfun, micAvail
 function grindFun() {
     if (document.getElementById('grind').checked && document.getElementById('fun').checked)
         return 2;
-    else if (document.getElementById('grind').checked && !document.getElementById('fun').checked)
+    else if (document.getElementById('grind').checked)
         return 1;
-    return 0;
+    else if (document.getElementById('fun').checked)
+        return 0;
+    return -1;
 }
 
 function checkMic() {
     var e = document.getElementById('micAvailability');
     var userInput = e.options[e.selectedIndex].value;
-
     if (userInput == 'yes')
-        return true;
-    return false;
+        return 1;
+    else if (userInput == 'no')
+        return 0;
+    return -1;
 }
 
 function readData() {

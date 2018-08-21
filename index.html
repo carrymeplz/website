@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <!--<?php header('Access-Control-Allow-Origin: *'); ?>-->
 <httpProtocol>  
     <customHeaders>  
@@ -26,16 +27,22 @@
     <pre id="object"></pre>
     <form>
         <div id="servers">
-            Server:
+            Region:
             <input type="radio" id="na" name="server" value="na1."> NA
             <input type="radio" id="eu" name="server" value="euw1."> EU
             <input type="radio" id="kr" name="server" value="kr."> KR
+        </div>
+        <div class="warning" id="serverWarning">
+            <p>You must choose your region</p>
         </div>
 
         <br>
         
         <div>
             IGN: <input type="text" name="ign" id="ign" placeholder="IGN"><br>
+        </div>
+        <div class="warning" id="ignWarning">
+            <p>You must enter a valid in game name</p>
         </div>
 
         <br>
@@ -49,6 +56,9 @@
             Support: <input type="checkbox" name="roles" id="supp" value="supp">
             Fill: <input type="checkbox" name="roles" id="fill" value="fill">
         </div>
+        <div class="warning" id="rolesWarning">
+            <p>Must select at least one role</p>
+        </div>
 
         <br>
 
@@ -59,6 +69,9 @@
             Normal: <input type="checkbox" name="gametype" id="norm" value="norm">
             ARAM: <input type="checkbox" name="gametype" id="aram" value="aram">
         </div>
+        <div class="warning" id="gameTypeWarning">
+            <p>Must select at least one game type</p>
+        </div>
 
         <br>
 
@@ -67,15 +80,22 @@
             Grind: <input type="checkbox" name="gof" id="grind" value="grind">
             Fun: <input type="checkbox" name="gof" id="fun" value="fun">
         </div>
+        <div class="warning" id="grindOrFunWarning">
+            <p>Must select at least one option</p>
+        </div>
 
         <br>
 
         <div>
             Mic availability
             <select id="micAvailability">
+                <option></option>
                 <option id="yes" value="yes">Yes</option>
                 <option id="no" value="no">No</option>
             </select>
+        </div>
+        <div class="warning" id="micAvailWarning">
+            <p>Must select a mic availability</p>
         </div>
 
         <br>
