@@ -1,0 +1,27 @@
+.warning {
+	color: red;
+}
+
+#serverWarning {
+	display: none;
+}
+
+#ignWarning {
+	display: none;
+}
+
+#rolesWarning {
+	display: none;
+}
+
+#gameTypeWarning {
+	display: none;
+}
+
+#grindOrFunWarning {
+	display: none;
+}
+
+#micAvailWarning {
+	display: none;
+}
