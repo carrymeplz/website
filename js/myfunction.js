@@ -10,14 +10,16 @@ var config = {
 firebase.initializeApp(config);
 
 //Reference messages collection
-var summonerRef = firebase.database().ref('summoners');
+var naSummonerRef = firebase.database().ref('NA/summoners');
+var euwSummonerRef = firebase.database().ref('EUW/summoners');
+var krSummonerRef = firebase.database().ref('KR/summoners');
 
 //////////////////////////////////////////////////////////////////////////
 
 var https = 'https://'
 var summonerLink = 'api.riotgames.com/lol/summoner/v3/summoners/by-name/'
 var rankLink = 'api.riotgames.com/lol/league/v3/positions/by-summoner/';
-var API_KEY = '?api_key='; //copy and paste your API KEY
+var API_KEY = '?api_key=RGAPI-e4f9f48d-e358-433b-a3bc-1bff37ab7052'; //copy and paste your API KEY\
 var region;
 var fullSummonerLink;
 var fullRankLink;
@@ -26,14 +28,21 @@ var fullRankLink;
 function getRegion() {
     if (document.getElementById('na').checked) {
         region = document.getElementById('na').value;
-    } else if (document.getElementById('eu').checked) {
-        region = document.getElementById('eu').value;
+    } else if (document.getElementById('euw').checked) {
+        region = document.getElementById('euw').value;
     } else if (document.getElementById('kr').checked) {
         region = document.getElementById('kr').value;
     } else {
         region = "";
     }
 }
+
+// var string = document.getElementById('txt').value;
+// chars = string.split(' ');
+// if (chars.length > 1)
+// alert('Space(s) found in the string.');
+// else
+// alert('No space in the string.');
 
 //Submitted button was clicked
 function submitted() {
@@ -65,24 +74,29 @@ function submitted() {
     var notes = document.getElementById('notes').value;
 
     fullSummonerLink = https + region + summonerLink + userIgn + API_KEY;
+    console.log(fullSummonerLink);
     var validIgn = false;
     if (validateInput(userIgn, region, roles, gameType, grindorfun, micAvail)) {
-        $.getJSON('https://json2jsonp.com/?url=' + fullSummonerLink +'&callback=?', function(data) {
+        console.log(encodeURIComponent(fullSummonerLink));
+        //$.getJSON('https://json2jsonp.com/?url=' + encodeURIComponent(fullSummonerLink) +'&callback=?', function(data) {
+        $.getJSON(encodeURIComponent(fullSummonerLink) + '?jsoncallback=?' ,{format: "json"}, function(data) {
+            console.log('1');
             if (Object.keys(data).length == 1 && data['status']['status_code'] == 404) {
                 console.log('Data not found');
             } else {
-                userId = data['id'];     
+                userId = data['id'];
+                userIgn = data['name'];
                 validIgn = true;
             }
         }).then(function() {
             if (validIgn) {
+                console.log('2');
                 fullRankLink = https + region + rankLink + userId + API_KEY;
                 flexRankNumber = -1;
                 soloRankNumber = -1;
                 $.getJSON('https://json2jsonp.com/?url=' + fullRankLink +'&callback=?', function(data) {
                     var objectSize = Object.keys(data).length;
                     if (objectSize == 1) {
-                        console.log('One ranked game played');
                         if (data[0]['queueType'].localeCompare('RANKED_SOLO_5X5')) {
                             soloTier = data[0]['tier'];
                             soloRank = data[0]['rank'];
@@ -144,13 +158,43 @@ function submitted() {
     // })
 }
 
+//pushes the information to the firebase database
+function saveSummoner(region, userId, ign, roles, gameType, grindorfun, micAvail, flexRankNumber, soloRankNumber, notes) {
+    var summonerRef = checkRegion(region);
+    var newSummonerRef = summonerRef.push();
+    newSummonerRef.set({
+        region: region,
+        userId: userId,
+        userIgn: ign,
+        roles: roles,
+        gameType: gameType,
+        grindorfun: grindorfun,
+        micAvail: micAvail,
+        flexRank: flexRankNumber,
+        soloRank: soloRankNumber,
+        notes: notes
+    });
+}
+
+function checkRegion(region) {
+    switch(region) {
+        case 'na1.':
+            return naSummonerRef;
+        case 'euw1.':
+            return euwSummonerRef;
+        case 'kr.':
+            return krSummonerRef;
+        default:
+            return '';
+    }
+}
+
 function validateInput(userIgn, region, roles, gameType, grindorfun, micAvail) {
     var success = true;
     
     if (!validate(region.length == 0, '#serverWarning')) {
         success = false;
     }
-
     if (!validate(userIgn.length == 0, '#ignWarning')) {
         success = false;
     }
@@ -176,11 +220,9 @@ function validateInput(userIgn, region, roles, gameType, grindorfun, micAvail) {
     if (!validate(checked == 0, '#gameTypeWarning')) {
         success = false;
     }
-
     if (!validate(grindorfun == -1, '#grindOrFunWarning')) {
         success = false;
     }
-
     if (!validate(micAvail == -1, '#micAvailWarning')) {
         success = false;
     }
@@ -198,23 +240,6 @@ function validate(condition, id) {
         $(id).css('display', 'none');
     }
     return true;
-}
-
-//pushes the information to the firebase database
-function saveSummoner(region, userId, ign, roles, gameType, grindorfun, micAvail, flexRankNumber, soloRankNumber,notes) {
-    var newSummonerRef = summonerRef.push();
-    newSummonerRef.set({
-        region: region,
-        userId: userId,
-        userIgn: ign,
-        roles: roles,
-        gameType: gameType,
-        grindorfun: grindorfun,
-        micAvail: micAvail,
-        flexRank: flexRankNumber,
-        soloRank: soloRankNumber,
-        notes: notes
-    });
 }
 
 //checks for user's inputs of the checkboxes
