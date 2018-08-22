@@ -73,13 +73,14 @@ function submitted() {
     var micAvail = checkMic();
     var notes = document.getElementById('notes').value;
 
-    fullSummonerLink = https + region + summonerLink + userIgn + API_KEY;
+    fullSummonerLink = https + region + summonerLink + userIgn.replace(/ /g, '') + API_KEY;
     console.log(fullSummonerLink);
     var validIgn = false;
     if (validateInput(userIgn, region, roles, gameType, grindorfun, micAvail)) {
         console.log(encodeURIComponent(fullSummonerLink));
-        //$.getJSON('https://json2jsonp.com/?url=' + encodeURIComponent(fullSummonerLink) +'&callback=?', function(data) {
-        $.getJSON(encodeURIComponent(fullSummonerLink) + '?jsoncallback=?' ,{format: "json"}, function(data) {
+        $.getJSON('https://json2jsonp.com/?url=' + encodeURIComponent(fullSummonerLink) + '&callback=?', function(data) {
+        //$.getJSON('http://cors.io/?' + encodeURIComponent(fullSummonerLink) + '&callback=?', function(data) {
+        //$.getJSON(encodeURIComponent(fullSummonerLink) + '?jsoncallback=?', {format: "json"}, function(data) {
             console.log('1');
             if (Object.keys(data).length == 1 && data['status']['status_code'] == 404) {
                 console.log('Data not found');
