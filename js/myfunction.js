@@ -302,7 +302,7 @@ function checkMic() {
 
 function readData(userRegion) {
     //var userId = firebase.auth().currentUser.uid;
-    window.location.href = "./test.html?region=" + userRegion;
+    window.location.href = "./list.html?region=" + userRegion;
 
     return firebase.database().ref(userRegion).once('value').then(function(snapshot) {
         var summoners = snapshot.val();
