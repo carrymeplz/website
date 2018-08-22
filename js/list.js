@@ -28,7 +28,8 @@ $(document).ready(function() {
 		            console.log(key, summoners[key].soloRankLosses);
 		            console.log(key, summoners[key].soloRankWins / (summoners[key].soloRankWins + summoners[key].soloRankLosses) * 100);
 		            row = row.concat("</tr>");
-				    $('#myTable').find('tbody').append(row);
+		            console.log(row);
+				    $('#summonersList').find('tbody').append(row);
 		        }
 		    });
 		}
