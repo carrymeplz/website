@@ -315,10 +315,23 @@ function readData(userRegion) {
             console.log(key, decodeRank(summoners[key].flexRank));
             console.log(key, summoners[key].flexRankWins);
             console.log(key, summoners[key].flexRankLosses);
-            console.log(key, summoners[key].flexRankWins / (summoners[key].flexRankWins + summoners[key].flexRankLosses) * 100);
+            console.log(key, Math.round(summoners[key].flexRankWins / (summoners[key].flexRankWins + summoners[key].flexRankLosses) * 100));
             console.log(key, summoners[key].soloRankWins);
             console.log(key, summoners[key].soloRankLosses);
-            console.log(key, summoners[key].soloRankWins / (summoners[key].soloRankWins + summoners[key].soloRankLosses) * 100);
+            console.log(key, Math.round(summoners[key].soloRankWins / (summoners[key].soloRankWins + summoners[key].soloRankLosses) * 100));
+            appendChecked(summoners[key].roles);
+            appendChecked(summoners[key].gameType);
+            if (summoners[key].grindorfun == 2)
+                console.log('grind/fun');
+            else if (summoners[key].grindorfun == 1)
+                console.log('grind');
+            else
+                console.log('fun');
+            if (summoners[key].micAvail == 1)
+                console.log('yes');
+            else
+                console.log('no');
+            console.log(key, summoners[key].notes);
         }
     });
 }
@@ -382,5 +395,12 @@ function calcRank(rank) {
             return 4;
         default: 
             return -1;
+    }
+}
+
+function appendChecked(datas) {
+    for (var data in datas) {
+        if (datas[data])
+            console.log(data);
     }
 }
