@@ -10,11 +10,22 @@ var config = {
 firebase.initializeApp(config);
 
 //Reference messages collection
-var naSummonerRef = firebase.database().ref('NA/summoners');
-var euwSummonerRef = firebase.database().ref('EUW/summoners');
-var krSummonerRef = firebase.database().ref('KR/summoners');
+var naSummonerRef = firebase.database().ref('na');
+var euwSummonerRef = firebase.database().ref('euw');
+var krSummonerRef = firebase.database().ref('kr');
 
 //////////////////////////////////////////////////////////////////////////
+
+var tierDict = {
+    0: "Bronze",
+    1: "Silver",
+    2: "Gold",
+    3: "Platinum",
+    4: "Diamond",
+    5: "Master",
+    6: "Challenger",
+    7: "Unranked"
+};
 
 var https = 'https://'
 var summonerLink = 'api.riotgames.com/lol/summoner/v3/summoners/by-name/'
@@ -54,6 +65,8 @@ function submitted() {
     var soloRank;   
     var flexRankNumber;
     var soloRankNumber;
+    var summonerLevel;
+    var profileIconId;
     var grindorfun = grindFun();
     var userIgn = document.getElementById("ign").value;
     var roles = {
@@ -77,35 +90,42 @@ function submitted() {
     console.log(fullSummonerLink);
     var validIgn = false;
     if (validateInput(userIgn, region, roles, gameType, grindorfun, micAvail)) {
-        console.log(encodeURIComponent(fullSummonerLink));
         $.getJSON('https://json2jsonp.com/?url=' + encodeURIComponent(fullSummonerLink) + '&callback=?', function(data) {
         //$.getJSON('http://cors.io/?' + encodeURIComponent(fullSummonerLink) + '&callback=?', function(data) {
         //$.getJSON(encodeURIComponent(fullSummonerLink) + '?jsoncallback=?', {format: "json"}, function(data) {
-            console.log('1');
             if (Object.keys(data).length == 1 && data['status']['status_code'] == 404) {
                 console.log('Data not found');
             } else {
                 userId = data['id'];
                 userIgn = data['name'];
+                summonerLevel = data['summonerLevel'];
+                profileIconId = data['profileIconId'];
                 validIgn = true;
             }
         }).then(function() {
             if (validIgn) {
-                console.log('2');
                 fullRankLink = https + region + rankLink + userId + API_KEY;
                 flexRankNumber = -1;
                 soloRankNumber = -1;
+                var soloRankWins = -1;
+                var soloRankLosses = -1;
+                var flexRankWins = -1;
+                var flexRankLosses = -1;
                 $.getJSON('https://json2jsonp.com/?url=' + fullRankLink +'&callback=?', function(data) {
                     var objectSize = Object.keys(data).length;
                     if (objectSize == 1) {
                         if (data[0]['queueType'].localeCompare('RANKED_SOLO_5X5')) {
                             soloTier = data[0]['tier'];
                             soloRank = data[0]['rank'];
+                            soloRankWins = data[0]['wins'];
+                            soloRankLosses = data[0]['losses'];
                             flexRankNumber = -1;
                             soloRankNumber = calcTier(soloTier);         
                         } else if (data[0]['queueType'].localeCompare('RANKED_FLEX_SR')) {
                             flexTier = data[0]['tier'];
                             flexRank = data[0]['rank'];
+                            flexRankWins = data[0]['wins'];
+                            flexRankLosses = data[0]['losses'];
                             flexRankNumber = calcTier(flexTier);
                             soloRankNumber = -1;
                         }
@@ -113,7 +133,11 @@ function submitted() {
                         flexTier = data[0]['tier'];
                         flexRank = data[0]['rank'];
                         soloTier = data[1]['tier'];
-                        soloRank = data[1]['rank'];                        
+                        soloRank = data[1]['rank'];
+                        flexRankWins = data[0]['wins'];
+                        flexRankLosses = data[0]['losses'];
+                        soloRankWins = data[1]['wins'];
+                        soloRankLosses = data[1]['losses'];                   
                         flexRankNumber = calcTier(flexTier);
                         soloRankNumber = calcTier(soloTier);
                     }                    
@@ -121,10 +145,14 @@ function submitted() {
                         flexRankNumber += calcRank(flexRank);
                     if (soloRankNumber < 25 && soloRankNumber >= 0)
                         soloRankNumber += calcRank(soloRank);
-                    saveSummoner(region, userId, userIgn, roles, gameType, grindorfun, micAvail, flexRankNumber, soloRankNumber, notes);
+                    saveSummoner(region, userId, userIgn, roles, gameType, grindorfun, micAvail, 
+                        flexRankNumber, soloRankNumber, summonerLevel, profileIconId, notes, 
+                        flexRankWins, flexRankLosses, soloRankWins, soloRankLosses);
                 }).fail(function(data) {
                     console.log('Failed');
-                    saveSummoner(region, userId, userIgn, roles, gameType, grindorfun, micAvail, flexRankNumber, soloRankNumber, notes);
+                    saveSummoner(region, userId, userIgn, roles, gameType, grindorfun, micAvail, 
+                        flexRankNumber, soloRankNumber, summonerLevel, profileIconId, notes, 
+                        flexRankWins, flexRankLosses, soloRankWins, soloRankLosses);
                 });            
             }
         })
@@ -160,7 +188,9 @@ function submitted() {
 }
 
 //pushes the information to the firebase database
-function saveSummoner(region, userId, ign, roles, gameType, grindorfun, micAvail, flexRankNumber, soloRankNumber, notes) {
+function saveSummoner(region, userId, ign, roles, gameType, grindorfun, micAvail, 
+    flexRankNumber, soloRankNumber, summonerLevel, profileIconId, notes, 
+    flexRankWins, flexRankLosses, soloRankWins, soloRankLosses) {
     var summonerRef = checkRegion(region);
     var newSummonerRef = summonerRef.push();
     newSummonerRef.set({
@@ -173,7 +203,13 @@ function saveSummoner(region, userId, ign, roles, gameType, grindorfun, micAvail
         micAvail: micAvail,
         flexRank: flexRankNumber,
         soloRank: soloRankNumber,
-        notes: notes
+        summonerLevel: summonerLevel,
+        profileIconId: profileIconId,
+        notes: notes,
+        flexRankWins: flexRankWins,
+        flexRankLosses: flexRankLosses,
+        soloRankWins: soloRankWins,
+        soloRankLosses: soloRankLosses
     });
 }
 
@@ -264,14 +300,50 @@ function checkMic() {
     return -1;
 }
 
-function readData() {
+function readData(userRegion) {
     //var userId = firebase.auth().currentUser.uid;
-    return firebase.database().ref('summoners').once('value').then(function(snapshot) {
+    return firebase.database().ref(userRegion).once('value').then(function(snapshot) {
         var summoners = snapshot.val();
         for (var key in summoners) {
             console.log(key, summoners[key].userIgn);
+            console.log(key, summoners[key].profileIconId);
+            console.log(key, tierDict[decodeTier(summoners[key].soloRank)]);
+            console.log(key, decodeRank(summoners[key].soloRank));
+            console.log(key, tierDict[decodeTier(summoners[key].flexRank)]);
+            console.log(key, decodeRank(summoners[key].flexRank));
+            console.log(key, summoners[key].flexRankWins);
+            console.log(key, summoners[key].flexRankLosses);
+            console.log(key, summoners[key].flexRankWins / (summoners[key].flexRankWins + summoners[key].flexRankLosses) * 100);
+            console.log(key, summoners[key].soloRankWins);
+            console.log(key, summoners[key].soloRankLosses);
+            console.log(key, summoners[key].soloRankWins / (summoners[key].soloRankWins + summoners[key].soloRankLosses) * 100);
+            console.log(key, summoers[key].);
         }
     });
+}
+
+//decodes the tier when grabbing from the database
+function decodeTier(tier) {
+    if (tier == -1)
+        return 7;
+    else if (tier == 26)
+        return 6;
+    else if (tier == 25)
+        return 5;
+    else
+        return Math.floor(tier / 5);
+}
+
+//decodes the rank when grabbing from the database
+function decodeRank(rank) {
+    if (rank == -1)
+        return ;
+    else if (rank == 26)
+        return 1;
+    else if (rank == 25)
+        return 1;
+    else
+        return 5 - rank % 5;
 }
 
 function calcTier(tier) {
