@@ -30,7 +30,7 @@ var tierDict = {
 var https = 'https://'
 var summonerLink = 'api.riotgames.com/lol/summoner/v3/summoners/by-name/'
 var rankLink = 'api.riotgames.com/lol/league/v3/positions/by-summoner/';
-var API_KEY = '?api_key=RGAPI-e4f9f48d-e358-433b-a3bc-1bff37ab7052'; //copy and paste your API KEY\
+var API_KEY = '?api_key='; //copy and paste your API KEY\
 var region;
 var fullSummonerLink;
 var fullRankLink;
@@ -88,23 +88,26 @@ function submitted() {
 
     fullSummonerLink = https + region + summonerLink + userIgn.replace(/ /g, '') + API_KEY;
     console.log(fullSummonerLink);
-    var validIgn = false;
+    var isValidIgn = false;
     if (validateInput(userIgn, region, roles, gameType, grindorfun, micAvail)) {
         $.getJSON('https://json2jsonp.com/?url=' + encodeURIComponent(fullSummonerLink) + '&callback=?', function(data) {
         //$.getJSON('http://cors.io/?' + encodeURIComponent(fullSummonerLink) + '&callback=?', function(data) {
         //$.getJSON(encodeURIComponent(fullSummonerLink) + '?jsoncallback=?', {format: "json"}, function(data) {
             if (Object.keys(data).length == 1 && data['status']['status_code'] == 404) {
                 console.log('Data not found');
+                validate(true, '#ignWarning');
             } else {
                 userId = data['id'];
                 userIgn = data['name'];
                 summonerLevel = data['summonerLevel'];
                 profileIconId = data['profileIconId'];
-                validIgn = true;
+                isValidIgn = true;
             }
         }).then(function() {
-            if (validIgn) {
+            if (isValidIgn) {
                 fullRankLink = https + region + rankLink + userId + API_KEY;
+                region = region.replace(/[1.]/g, '');
+                console.log(region);
                 flexRankNumber = -1;
                 soloRankNumber = -1;
                 var soloRankWins = -1;
@@ -148,12 +151,14 @@ function submitted() {
                     saveSummoner(region, userId, userIgn, roles, gameType, grindorfun, micAvail, 
                         flexRankNumber, soloRankNumber, summonerLevel, profileIconId, notes, 
                         flexRankWins, flexRankLosses, soloRankWins, soloRankLosses);
+                    window.location.href = "./list.html?region=" + region;
                 }).fail(function(data) {
                     console.log('Failed');
                     saveSummoner(region, userId, userIgn, roles, gameType, grindorfun, micAvail, 
                         flexRankNumber, soloRankNumber, summonerLevel, profileIconId, notes, 
                         flexRankWins, flexRankLosses, soloRankWins, soloRankLosses);
-                });            
+                    window.location.href = "./list.html?region=" + region;
+                });
             }
         })
     }
@@ -215,11 +220,11 @@ function saveSummoner(region, userId, ign, roles, gameType, grindorfun, micAvail
 
 function checkRegion(region) {
     switch(region) {
-        case 'na1.':
+        case 'na':
             return naSummonerRef;
-        case 'euw1.':
+        case 'euw':
             return euwSummonerRef;
-        case 'kr.':
+        case 'kr':
             return krSummonerRef;
         default:
             return '';

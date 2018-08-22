@@ -5,11 +5,11 @@ $(document).ready(function() {
 	var queries = queryString.split("&");
 	for (var i = 0; i < queries.length; i++)
 	{
-		var row = "<tr>";
 		if (i == 0) {
 			firebase.database().ref(queries[i].split('=')[1]).once('value').then(function(snapshot) {
 		        var summoners = snapshot.val();
 		        for (var key in summoners) {
+					var row = "<tr>";
 		        	row = row.concat("<td>" + summoners[key].userIgn + "</td>");
 		        	row = row.concat("<td><img src='./pictures/profileicon/" + summoners[key].profileIconId + ".png'/></td>");
 		        	row = row.concat("<td><img src='./pictures/tier/" + tierDict[decodeTier(summoners[key].soloRank)] + ".png'/></td>");
@@ -27,7 +27,7 @@ $(document).ready(function() {
 		        	row = row.concat(appendChecked(summoners[key].roles));
 		        	row = row.concat(appendChecked(summoners[key].gameType));
 					if (summoners[key].grindorfun == 2)
-			        	row = row.concat("<td>grind//fun</td>");
+			        	row = row.concat("<td>grind/fun</td>");
 		            else if (summoners[key].grindorfun == 1)
 			        	row = row.concat("<td>grind</td>");
 		            else
