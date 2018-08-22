@@ -302,6 +302,8 @@ function checkMic() {
 
 function readData(userRegion) {
     //var userId = firebase.auth().currentUser.uid;
+    window.location.href = "./test.html?region=" + userRegion;
+
     return firebase.database().ref(userRegion).once('value').then(function(snapshot) {
         var summoners = snapshot.val();
         for (var key in summoners) {
@@ -317,7 +319,6 @@ function readData(userRegion) {
             console.log(key, summoners[key].soloRankWins);
             console.log(key, summoners[key].soloRankLosses);
             console.log(key, summoners[key].soloRankWins / (summoners[key].soloRankWins + summoners[key].soloRankLosses) * 100);
-            console.log(key, summoers[key].);
         }
     });
 }
