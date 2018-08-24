@@ -16,6 +16,7 @@ var krSummonerRef = firebase.database().ref('kr');
 
 //////////////////////////////////////////////////////////////////////////
 
+//Dictionary for the tiers. For decoding purposes
 var tierDict = {
     0: "Bronze",
     1: "Silver",
@@ -160,7 +161,7 @@ function submitted() {
                     saveSummoner(region, userId, userIgn, roles, gameType, grindorfun, micAvail, 
                         flexRankNumber, soloRankNumber, summonerLevel, profileIconId, notes, 
                         flexRankWins, flexRankLosses, soloRankWins, soloRankLosses);
-                        window.location.href = "./list.html?region=" + region + '&soloRankNumber=' + soloRankNumber 
+                    window.location.href = "./list.html?region=" + region + '&soloRankNumber=' + soloRankNumber 
                         + '&flexRankNumber=' + flexRankNumber + '&gameType=' + gameType['aram'] + gameType['flex'] 
                         + gameType['norm'] + gameType['soloduo'] + '&grindorfun=' + grindorfun + '&micavailability=' + micAvail;
                 });
@@ -223,6 +224,7 @@ function saveSummoner(region, userId, ign, roles, gameType, grindorfun, micAvail
     });
 }
 
+//Checking for user's region to decide which firebase table the user will be stored in
 function checkRegion(region) {
     switch(region) {
         case 'na':
@@ -236,6 +238,7 @@ function checkRegion(region) {
     }
 }
 
+//User's input validation. Checks for any inputs that is not filled out
 function validateInput(userIgn, region, roles, gameType, grindorfun, micAvail) {
     var success = true;
     
@@ -277,6 +280,7 @@ function validateInput(userIgn, region, roles, gameType, grindorfun, micAvail) {
     return success;
 }
 
+//Shows and hides the error message for validation
 function validate(condition, id) {
     if (condition) {
         // fail case
@@ -300,6 +304,7 @@ function grindFun() {
     return -1;
 }
 
+//checks for user's input of mic availability
 function checkMic() {
     var e = document.getElementById('micAvailability');
     var userInput = e.options[e.selectedIndex].value;
@@ -310,6 +315,9 @@ function checkMic() {
     return -1;
 }
 
+//Reading data from firebase and console logs.
+//Hard coded for retrieving 'na' region data
+//I think this method is just for test purposes to check how to retrieve data?
 function readData(userRegion) {
     //var userId = firebase.auth().currentUser.uid;
     window.location.href = "./list.html?region=" + userRegion;
@@ -370,6 +378,7 @@ function decodeRank(rank) {
         return 5 - rank % 5;
 }
 
+//calculates user's tier and assigns a number to be added with the rank number
 function calcTier(tier) {
     switch(tier) {
         case 'BRONZE':
@@ -391,6 +400,7 @@ function calcTier(tier) {
     }
 }
 
+//calculates user's rank to be added with the tier number for firebase
 function calcRank(rank) {
     switch(rank) {
         case 'V':
