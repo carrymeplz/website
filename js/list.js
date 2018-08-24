@@ -11,7 +11,7 @@ $(document).ready(function() {
 		        for (var key in summoners) {
 					var row = "<tr>";
 		        	row = row.concat("<td>" + summoners[key].userIgn + "</td>");
-		        	row = row.concat("<td><img src='./pictures/profileicon/" + summoners[key].profileIconId + ".png'/></td>");
+		        	row = row.concat("<td><img src='http://ddragon.leagueoflegends.com/cdn/8.16.1/img/profileicon/" + summoners[key].profileIconId + ".png'/></td>");
 		        	row = row.concat("<td><img src='./pictures/tier/" + tierDict[decodeTier(summoners[key].soloRank)] + ".png'/></td>");
 		        	row = row.concat("<td>" + tierDict[decodeTier(summoners[key].soloRank)] + "</td>");
 		        	row = row.concat("<td>" + decodeRank(summoners[key].soloRank) + "</td>");
@@ -38,11 +38,12 @@ $(document).ready(function() {
 			        	row = row.concat("<td>no</td>");
 			        row = row.concat("<td>" + summoners[key].notes + "</td>")
 		            row = row.concat("</tr>");
-		            console.log(row);
+		            //console.log(row);
 				    $('#summonersList').find('tbody').append(row);
 		        }
 		    });
 		}
+		console.log(queries[i]);
 	}
 
 	function appendChecked(datas) {
@@ -53,5 +54,9 @@ $(document).ready(function() {
 	    }
 	    row = row.concat("</td>");
 	    return row;
+	}
+
+	function applyFilter(summoner) {
+		summoner.soloRank;
 	}
 })

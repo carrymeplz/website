@@ -30,7 +30,7 @@ var tierDict = {
 var https = 'https://'
 var summonerLink = 'api.riotgames.com/lol/summoner/v3/summoners/by-name/'
 var rankLink = 'api.riotgames.com/lol/league/v3/positions/by-summoner/';
-var API_KEY = '?api_key='; //copy and paste your API KEY\
+var API_KEY = '?api_key=RGAPI-aca0f11c-6483-474c-8404-0ad570bc393c'; //copy and paste your API KEY\
 var region;
 var fullSummonerLink;
 var fullRankLink;
@@ -78,10 +78,10 @@ function submitted() {
         fill: document.getElementById('fill').checked
     };
     var gameType = {
-        soloduo: document.getElementById('soloduo').checked,
-        flex: document.getElementById('flex').checked,
-        norm: document.getElementById('norm').checked,
-        aram: document.getElementById('aram').checked
+        soloduo: document.getElementById('soloduo').checked ? 1 : 0,
+        flex: document.getElementById('flex').checked ? 1 : 0,
+        norm: document.getElementById('norm').checked ? 1 : 0,
+        aram: document.getElementById('aram').checked ? 1 : 0
     };
     var micAvail = checkMic();
     var notes = document.getElementById('notes').value;
@@ -151,13 +151,18 @@ function submitted() {
                     saveSummoner(region, userId, userIgn, roles, gameType, grindorfun, micAvail, 
                         flexRankNumber, soloRankNumber, summonerLevel, profileIconId, notes, 
                         flexRankWins, flexRankLosses, soloRankWins, soloRankLosses);
-                    window.location.href = "./list.html?region=" + region;
+                    //window.location.href = "./list.html?region=" + region;
+                    window.location.href = "./list.html?region=" + region + '&soloRankNumber=' + soloRankNumber 
+                        + '&flexRankNumber=' + flexRankNumber + '&gameType=' + gameType['aram'] + gameType['flex'] 
+                        + gameType['norm'] + gameType['soloduo'] + '&grindorfun=' + grindorfun + '&micavailability=' + micAvail;
                 }).fail(function(data) {
                     console.log('Failed');
                     saveSummoner(region, userId, userIgn, roles, gameType, grindorfun, micAvail, 
                         flexRankNumber, soloRankNumber, summonerLevel, profileIconId, notes, 
                         flexRankWins, flexRankLosses, soloRankWins, soloRankLosses);
-                    window.location.href = "./list.html?region=" + region;
+                        window.location.href = "./list.html?region=" + region + '&soloRankNumber=' + soloRankNumber 
+                        + '&flexRankNumber=' + flexRankNumber + '&gameType=' + gameType['aram'] + gameType['flex'] 
+                        + gameType['norm'] + gameType['soloduo'] + '&grindorfun=' + grindorfun + '&micavailability=' + micAvail;
                 });
             }
         })
