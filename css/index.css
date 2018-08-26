@@ -1,27 +1,23 @@
-.warning {
-	color: red;
-}
-
-#serverWarning {
+#RegionError {
 	display: none;
 }
 
-#ignWarning {
+#IGNError {
 	display: none;
 }
 
-#rolesWarning {
+#RoleError {
 	display: none;
 }
 
-#gameTypeWarning {
+#GameTypeError {
 	display: none;
 }
 
-#grindOrFunWarning {
+#ModeError {
 	display: none;
 }
 
-#micAvailWarning {
+#MicAvailabilityError {
 	display: none;
 }

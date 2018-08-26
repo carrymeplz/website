@@ -22,118 +22,144 @@
   </head>
   <body>
     <pre id="object"></pre>
-    <form>
-        <div id="servers">
-            Region:
-            <input type="radio" id="na" name="server" value="na1."> NA
-            <input type="radio" id="euw" name="server" value="euw1."> EUW
-            <input type="radio" id="kr" name="server" value="kr."> KR
-            <!--<input type="radio" id="ru" name="server" value="ru."> RU
-            <input type="radio" id="br" name="server" value="br1."> BR
-            <input type="radio" id="oce" name="server" value="oc1."> OCE
-            <input type="radio" id="jp" name="server" value="jp1."> JP
-            <input type="radio" id="eune" name="server" value="eun1."> EUNE
-            <input type="radio" id="tr" name="server" value="tr1."> TR
-            <input type="radio" id="la1" name="server" value="la1."> LA1
-            <input type="radio" id="la2" name="server" value="la2."> LA2-->
-        </div>
-        <div class="warning" id="serverWarning">
-            <p>You must choose your region</p>
-        </div>
+    <div class="container">
+        <form id="SummonerForm">
+            <div class="form-group row">
+                <label class="col-md-2">Region</label>
+                <div class="col-md-6">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="regionRadioButton" id="CheckboxNA" value="NA">
+                        <label class="form-check-label" for="CheckboxNA">NA</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="regionRadioButton" id="CheckboxEUW" value="EUW">
+                        <label class="form-check-label" for="CheckboxEUW">EUW</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="regionRadioButton" id="CheckboxKR" value="KR">
+                        <label class="form-check-label" for="CheckboxKR">KR</label>
+                    </div>
+                </div>
+                <span class="col-md-10 offset-2 text-danger" id="RegionError">You must choose your region</span>
+            </div>
 
-        <br />
-        
-        <div>
-            IGN: <input type="text" name="ign" id="ign" placeholder="IGN" required /><br />
-        </div>
-        <div class="warning" id="ignWarning">
-            <p>You must enter a valid in game name</p>
-        </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label" for="IGN">IGN</label>
+                <div class="col-md-4">
+                    <input class="form-control" type="text" name="ign" id="IGN" placeholder="IGN" required />
+                </div>
+                <span class="col-md-10 offset-md-2 text-danger" id="IGNError">You must enter a valid in game name</span>
+            </div>
 
-        <br />
+            <div class="form-group row">
+                <label class="col-md-2">Preferred Roles</label>
+                <div class="col-md-6">
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="role" class="form-check-input" id="Top" value="Top">
+                        <label for="Top" class="form-check-label">top</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="role" class="form-check-input" id="Jungle" value="Jungle">
+                        <label for="Jungle" class="form-check-label" name="role">Jungle</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="role" class="form-check-input" id="Mid" value="Mid">
+                        <label for="Mid" class="form-check-label">Mid</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="role" class="form-check-input" id="Adc" value="Adc">
+                        <label for="Adc" class="form-check-label">Adc</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="role" class="form-check-input" id="Support" value="Support">
+                        <label for="Support" class="form-check-label">Support</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="role" class="form-check-input" id="Fill" value="Fill">
+                        <label for="Fill" class="form-check-label">Fill</label>
+                    </div>
+                </div>
+                <span class="col-md-10 offset-2 text-danger" id="RoleError">You must select at least one role</span>
+            </div>
 
-        <div>
-            Preferred Roles:<br />
-            Top: <input type="checkbox" name="roles" id="top" value="top" />
-            Jungle: <input type="checkbox" name="roles" id="jg" value="jg" />
-            Mid: <input type="checkbox" name="roles" id="mid" value="mid" />
-            Adc: <input type="checkbox" name="roles" id="adc" value="adc" />
-            Support: <input type="checkbox" name="roles" id="supp" value="supp" />
-            Fill: <input type="checkbox" name="roles" id="fill" value="fill" />
-        </div>
-        <div class="warning" id="rolesWarning">
-            <p>Must select at least one role</p>
-        </div>
+            <div class="form-group row">
+                <label class="col-md-2">Game Type</label>
+                <div class="col-md-6">
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="gametype" class="form-check-input" id="SoloDuo" value="SoloDuo">
+                        <label for="SoloDuo" class="form-check-label">Solo/Duo</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="gametype" class="form-check-input" id="Flex" value="Flex">
+                        <label for="Flex" class="form-check-label">Flex</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="gametype" class="form-check-input" id="Normal" value="Normal">
+                        <label for="Normal" class="form-check-label">Normal</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="gametype" class="form-check-input" id="ARAM" value="ARAM">
+                        <label for="ARAM" class="form-check-label">ARAM</label>
+                    </div>
+                </div>
+                <span class="col-md-10 offset-2 text-danger" id="GameTypeError">You must select at least one game type</span>
+            </div>
 
-        <br />
+            <div class="form-group row">
+                <label class="col-md-2">Mode</label>
+                <div class="col-md-6">
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="gametype" class="form-check-input" id="Casual" value="Casual">
+                        <label for="Casual" class="form-check-label">Casual</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="gametype" class="form-check-input" id="Flex" value="Competitive">
+                        <label for="FlCompetitiveex" class="form-check-label">Competitive</label>
+                    </div>
+                </div>
+                <span class="col-md-10 offset-2 text-danger" id="ModeError">You must select at least one option</span>
+            </div>
 
-        <div>
-            Game Type:<br />
-            Solo/Duo: <input type="checkbox" name="gametype" id="soloduo" value="soloduo" />
-            Flex: <input type="checkbox" name="gametype" id="flex" value="flex" />
-            Normal: <input type="checkbox" name="gametype" id="norm" value="norm" />
-            ARAM: <input type="checkbox" name="gametype" id="aram" value="aram" />
-        </div>
-        <div class="warning" id="gameTypeWarning">
-            <p>Must select at least one game type</p>
-        </div>
+            <div class="form-group row">
+                <label for="MicAvailability" class="col-md-2 col-form-label">Mic Availability</label>
+                <div class="col-md-2">
+                    <select class="form-control" id="MicAvailability">
+                        <option>Select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                <span class="col-md-10 offset-md-2 text-danger" id="MicAvailabilityError">You must select a mic availability</span>
+            </div>
 
-        <br />
-
-        <div>
-            Grind or Fun
-            Grind: <input type="checkbox" name="gof" id="grind" value="grind" />
-            Fun: <input type="checkbox" name="gof" id="fun" value="fun" />
-        </div>
-        <div class="warning" id="grindOrFunWarning">
-            <p>Must select at least one option</p>
-        </div>
-
-        <br />
-
-        <div>
-            Mic availability
-            <select id="micAvailability">
-                <option></option>
-                <option id="yes" value="yes">Yes</option>
-                <option id="no" value="no">No</option>
-            </select>
-        </div>
-        <div class="warning" id="micAvailWarning">
-            <p>Must select a mic availability</p>
-        </div>
-
-        <br />
-
-        <div>
-            Notes:<br />
-            <textarea id="notes" rows="4" cols="40"></textarea>
-        </div>
-
-        <br />
-
-        <div>
-            <button type="button" onclick="submitted()">Submit</button>
-        </div>
-
-        <div>
-            <button type="button" onclick="readData('na')">Read</button>
-        </div>
-
-        <div>
-            <button type="submit" disabled={pristine || submitting}>
-                Submit
-            </button>
-            <button type="button" disabled={pristine || submitting} onClick={reset}>
-                Clear Values
-            </button>
-        </div>
-    </form>
+            <div class="form-group">
+                <label for="Messages">Messages</label>
+                <textarea class="form-control col-md-10" id="Messages" rows="4"></textarea>
+            </div>
+            <div class="form-group row offset-md-2">
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-outline-dark" onclick="submitted()">Submit</button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-outline-dark" onclick="readData('na')">Read</button>
+                </div>
+            </div>
+            <div>
+                <button type="submit" disabled={pristine || submitting}>
+                    Submit
+                </button>
+                <button type="button" disabled={pristine || submitting} onClick={reset}>
+                    Clear values
+                </button>
+            </div>
+        </form>
+    </div>
     <footer>
     </footer>
 
     <script src="https://www.gstatic.com/firebasejs/5.4.0/firebase.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
     <script src="js/myfunction.js"></script>
