@@ -31,7 +31,7 @@ var tierDict = {
 var https = 'https://'
 var summonerLink = 'api.riotgames.com/lol/summoner/v3/summoners/by-name/'
 var rankLink = 'api.riotgames.com/lol/league/v3/positions/by-summoner/';
-var API_KEY = '?api_key=RGAPI-aca0f11c-6483-474c-8404-0ad570bc393c'; //copy and paste your API KEY\
+var API_KEY = '?api_key=RGAPI-35a53fc3-d267-4c09-abfd-69a2ebc01358'; //copy and paste your API KEY\
 var region;
 var fullSummonerLink;
 var fullRankLink;
@@ -198,6 +198,10 @@ function submitted() {
     // })
 }
 
+function submittedTest() {
+    window.location.href = 'file:///C:/Users/ching/source/repos/Matcher/website/list.html?region=na&soloRankNumber=10&flexRankNumber=8&gameType=0100&grindorfun=1&micavailability=0';        
+}
+
 //pushes the information to the firebase database
 function saveSummoner(region, userId, ign, roles, gameType, grindorfun, micAvail, 
     flexRankNumber, soloRankNumber, summonerLevel, profileIconId, notes, 
@@ -337,8 +341,8 @@ function readData(userRegion) {
             console.log(key, summoners[key].soloRankWins);
             console.log(key, summoners[key].soloRankLosses);
             console.log(key, Math.round(summoners[key].soloRankWins / (summoners[key].soloRankWins + summoners[key].soloRankLosses) * 100));
-            // appendChecked(summoners[key].roles);
-            // appendChecked(summoners[key].gameType);
+            appendChecked(summoners[key].roles);
+            appendChecked(summoners[key].gameType);
             if (summoners[key].grindorfun == 2)
                 console.log('grind/fun');
             else if (summoners[key].grindorfun == 1)

@@ -117,16 +117,11 @@
         </div>
 
         <div>
-            <button type="button" onclick="readData('na')">Read</button>
+            <button type="button" onclick="submittedTest()">Submit test</button>
         </div>
 
         <div>
-            <button type="submit" disabled={pristine || submitting}>
-                Submit
-            </button>
-            <button type="button" disabled={pristine || submitting} onClick={reset}>
-                Clear Values
-            </button>
+            <button type="button" onclick="readData('na')">Read</button>
         </div>
     </form>
     <footer>

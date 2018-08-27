@@ -15,22 +15,22 @@
 </head>
 <body>
     <div>
-        <div id="2TierAbove" class="filterButton">+2</div>
-        <div id="1TierAbove" class="filterButton">+1</div>
-        <div id="0TierAbove" class="filterButton">0</div>
-        <div id="1TierBelow" class="filterButton">-1</div>
-        <div id="2TierBelow" class="filterButton">-2</div>
+        <div id="2TierAbove" class="filterButton" onclick="filterTier(2)">+2</div>
+        <div id="1TierAbove" class="filterButton" onclick="filterTier(1)">+1</div>
+        <div id="0TierAbove" class="filterButton" onclick="filterTier(0)">0</div>
+        <div id="1TierBelow" class="filterButton" onclick="filterTier(-1)">-1</div>
+        <div id="2TierBelow" class="filterButton" onclick="filterTier(-2)">-2</div>
     </div>
         
     <br />
     <br />
 
     <div>
-        <div id="topFiler" class="filterButton">top</div>
-        <div id="jgFilter" class="filterButton">jg</div>
-        <div id="midFilter" class="filterButton">mid</div>
-        <div id="adcFilter" class="filterButton">adc</div>
-        <div id="suppFilter" class="filterButton">supp</div>
+        <div id="topFilter" class="filterButton" onclick="filterRole('top')">top</div>
+        <div id="jgFilter" class="filterButton" onclick="filterRole('jg')">jg</div>
+        <div id="midFilter" class="filterButton" onclick="filterRole('mid')">mid</div>
+        <div id="adcFilter" class="filterButton" onclick="filterRole('adc')">adc</div>
+        <div id="suppFilter" class="filterButton" onclick="filterRole('supp')">supp</div>
     </div>
 
     <br />
@@ -61,12 +61,93 @@
     <br />
     <br />
 
-    <div id="applyFilter" class="filterButton">Apply Filter</div>
+    <div id="applyFilter" class="filterButton" onclick="applyFilter()">Apply Filter</div>
 
     <br />
     <br />
     
-    <table id="summonersList">
+    <table id="soloduoSummonersList">
+        <thead>
+            <tr>
+                <th>IGN</th>
+                <th>Profile icon</th>
+                <th>Solo icon</th>
+                <th>Solo tier</th>
+                <th>Solo rank</th>
+                <th>Flex icon</th>
+                <th>Flex tier</th>
+                <th>Flex rank</th>
+                <th>Flex rank wins</th>
+                <th>Flex rank losses</th>
+                <th>Flex win percent</th>
+                <th>Solo rank wins</th>
+                <th>Solo rank losses</th>
+                <th>Solo win percent</th>
+                <th>Roles</th>
+                <th>Game type</th>
+                <th>Grind or fun</th>
+                <th>Mic availability</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <table id="flexSummonersList">
+        <thead>
+            <tr>
+                <th>IGN</th>
+                <th>Profile icon</th>
+                <th>Solo icon</th>
+                <th>Solo tier</th>
+                <th>Solo rank</th>
+                <th>Flex icon</th>
+                <th>Flex tier</th>
+                <th>Flex rank</th>
+                <th>Flex rank wins</th>
+                <th>Flex rank losses</th>
+                <th>Flex win percent</th>
+                <th>Solo rank wins</th>
+                <th>Solo rank losses</th>
+                <th>Solo win percent</th>
+                <th>Roles</th>
+                <th>Game type</th>
+                <th>Grind or fun</th>
+                <th>Mic availability</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <table id="normSummonersList">
+        <thead>
+            <tr>
+                <th>IGN</th>
+                <th>Profile icon</th>
+                <th>Solo icon</th>
+                <th>Solo tier</th>
+                <th>Solo rank</th>
+                <th>Flex icon</th>
+                <th>Flex tier</th>
+                <th>Flex rank</th>
+                <th>Flex rank wins</th>
+                <th>Flex rank losses</th>
+                <th>Flex win percent</th>
+                <th>Solo rank wins</th>
+                <th>Solo rank losses</th>
+                <th>Solo win percent</th>
+                <th>Roles</th>
+                <th>Game type</th>
+                <th>Grind or fun</th>
+                <th>Mic availability</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <table id="aramSummonersList">
         <thead>
             <tr>
                 <th>IGN</th>
