@@ -16,6 +16,7 @@ var krSummonerRef = firebase.database().ref('kr');
 
 //////////////////////////////////////////////////////////////////////////
 
+//Dictionary for the tiers. For decoding purposes
 var tierDict = {
     0: "Bronze",
     1: "Silver",
@@ -30,7 +31,7 @@ var tierDict = {
 var https = 'https://'
 var summonerLink = 'api.riotgames.com/lol/summoner/v3/summoners/by-name/'
 var rankLink = 'api.riotgames.com/lol/league/v3/positions/by-summoner/';
-var API_KEY = '?api_key=RGAPI-e4f9f48d-e358-433b-a3bc-1bff37ab7052'; //copy and paste your API KEY\
+var API_KEY = '?api_key=RGAPI-aca0f11c-6483-474c-8404-0ad570bc393c'; //copy and paste your API KEY\
 var region;
 var fullSummonerLink;
 var fullRankLink;
@@ -78,33 +79,36 @@ function submitted() {
         fill: document.getElementById('fill').checked
     };
     var gameType = {
-        soloduo: document.getElementById('soloduo').checked,
-        flex: document.getElementById('flex').checked,
-        norm: document.getElementById('norm').checked,
-        aram: document.getElementById('aram').checked
+        soloduo: document.getElementById('soloduo').checked ? 1 : 0,
+        flex: document.getElementById('flex').checked ? 1 : 0,
+        norm: document.getElementById('norm').checked ? 1 : 0,
+        aram: document.getElementById('aram').checked ? 1 : 0
     };
     var micAvail = checkMic();
     var notes = document.getElementById('notes').value;
 
     fullSummonerLink = https + region + summonerLink + userIgn.replace(/ /g, '') + API_KEY;
     console.log(fullSummonerLink);
-    var validIgn = false;
+    var isValidIgn = false;
     if (validateInput(userIgn, region, roles, gameType, grindorfun, micAvail)) {
         $.getJSON('https://json2jsonp.com/?url=' + encodeURIComponent(fullSummonerLink) + '&callback=?', function(data) {
         //$.getJSON('http://cors.io/?' + encodeURIComponent(fullSummonerLink) + '&callback=?', function(data) {
         //$.getJSON(encodeURIComponent(fullSummonerLink) + '?jsoncallback=?', {format: "json"}, function(data) {
             if (Object.keys(data).length == 1 && data['status']['status_code'] == 404) {
                 console.log('Data not found');
+                validate(true, '#ignWarning');
             } else {
                 userId = data['id'];
                 userIgn = data['name'];
                 summonerLevel = data['summonerLevel'];
                 profileIconId = data['profileIconId'];
-                validIgn = true;
+                isValidIgn = true;
             }
         }).then(function() {
-            if (validIgn) {
+            if (isValidIgn) {
                 fullRankLink = https + region + rankLink + userId + API_KEY;
+                region = region.replace(/[1.]/g, '');
+                console.log(region);
                 flexRankNumber = -1;
                 soloRankNumber = -1;
                 var soloRankWins = -1;
@@ -148,12 +152,19 @@ function submitted() {
                     saveSummoner(region, userId, userIgn, roles, gameType, grindorfun, micAvail, 
                         flexRankNumber, soloRankNumber, summonerLevel, profileIconId, notes, 
                         flexRankWins, flexRankLosses, soloRankWins, soloRankLosses);
+                    //window.location.href = "./list.html?region=" + region;
+                    window.location.href = "./list.html?region=" + region + '&soloRankNumber=' + soloRankNumber 
+                        + '&flexRankNumber=' + flexRankNumber + '&gameType=' + gameType['aram'] + gameType['flex'] 
+                        + gameType['norm'] + gameType['soloduo'] + '&grindorfun=' + grindorfun + '&micavailability=' + micAvail;
                 }).fail(function(data) {
                     console.log('Failed');
                     saveSummoner(region, userId, userIgn, roles, gameType, grindorfun, micAvail, 
                         flexRankNumber, soloRankNumber, summonerLevel, profileIconId, notes, 
                         flexRankWins, flexRankLosses, soloRankWins, soloRankLosses);
-                });            
+                    window.location.href = "./list.html?region=" + region + '&soloRankNumber=' + soloRankNumber 
+                        + '&flexRankNumber=' + flexRankNumber + '&gameType=' + gameType['aram'] + gameType['flex'] 
+                        + gameType['norm'] + gameType['soloduo'] + '&grindorfun=' + grindorfun + '&micavailability=' + micAvail;
+                });
             }
         })
     }
@@ -213,19 +224,21 @@ function saveSummoner(region, userId, ign, roles, gameType, grindorfun, micAvail
     });
 }
 
+//Checking for user's region to decide which firebase table the user will be stored in
 function checkRegion(region) {
     switch(region) {
-        case 'na1.':
+        case 'na':
             return naSummonerRef;
-        case 'euw1.':
+        case 'euw':
             return euwSummonerRef;
-        case 'kr.':
+        case 'kr':
             return krSummonerRef;
         default:
             return '';
     }
 }
 
+//User's input validation. Checks for any inputs that is not filled out
 function validateInput(userIgn, region, roles, gameType, grindorfun, micAvail) {
     var success = true;
     
@@ -267,6 +280,7 @@ function validateInput(userIgn, region, roles, gameType, grindorfun, micAvail) {
     return success;
 }
 
+//Shows and hides the error message for validation
 function validate(condition, id) {
     if (condition) {
         // fail case
@@ -290,6 +304,7 @@ function grindFun() {
     return -1;
 }
 
+//checks for user's input of mic availability
 function checkMic() {
     var e = document.getElementById('micAvailability');
     var userInput = e.options[e.selectedIndex].value;
@@ -300,6 +315,9 @@ function checkMic() {
     return -1;
 }
 
+//Reading data from firebase and console logs.
+//Hard coded for retrieving 'na' region data
+//I think this method is just for test purposes to check how to retrieve data?
 function readData(userRegion) {
     //var userId = firebase.auth().currentUser.uid;
     window.location.href = "./list.html?region=" + userRegion;
@@ -360,6 +378,7 @@ function decodeRank(rank) {
         return 5 - rank % 5;
 }
 
+//calculates user's tier and assigns a number to be added with the rank number
 function calcTier(tier) {
     switch(tier) {
         case 'BRONZE':
@@ -381,6 +400,7 @@ function calcTier(tier) {
     }
 }
 
+//calculates user's rank to be added with the tier number for firebase
 function calcRank(rank) {
     switch(rank) {
         case 'V':
