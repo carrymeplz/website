@@ -31,7 +31,7 @@ var tierDict = {
 var https = 'https://'
 var summonerLink = 'api.riotgames.com/lol/summoner/v3/summoners/by-name/'
 var rankLink = 'api.riotgames.com/lol/league/v3/positions/by-summoner/';
-var API_KEY = '?api_key=RGAPI-35a53fc3-d267-4c09-abfd-69a2ebc01358'; //copy and paste your API KEY\
+var API_KEY = '?api_key=RGAPI-7037c70f-26fc-480c-8299-6b33e2f23f27'; //copy and paste your API KEY\
 var region;
 var fullSummonerLink;
 var fullRankLink;
@@ -199,7 +199,7 @@ function submitted() {
 }
 
 function submittedTest() {
-    window.location.href = 'file:///C:/Users/ching/source/repos/Matcher/website/list.html?region=na&soloRankNumber=10&flexRankNumber=8&gameType=0100&grindorfun=1&micavailability=0';        
+    window.location.href = 'file:///C:/Users/Ryan/Desktop/website/ject/list.html?region=na&soloRankNumber=10&flexRankNumber=8&gameType=0100&grindorfun=1&micavailability=0';        
 }
 
 //pushes the information to the firebase database

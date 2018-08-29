@@ -1,7 +1,14 @@
+// permanent lists
 var soloDuoList = [];
 var flexList = [];
 var normList = [];
 var aramList = [];
+
+// filtered lists
+var soloDuoListF = [];
+var flexListF = [];
+var normListF = [];
+var aramListF = [];
 
 // filter variables
 var rankPlusTwo = true;
@@ -15,10 +22,6 @@ var roleMid = true;
 var roleAdc = true;
 var roleSupp = true;
 
-var soloDuoListF = [];
-var flexListF = [];
-var normListF = [];
-
 var region;
 var flexR;
 var soloR;
@@ -28,6 +31,10 @@ var flex;
 var norm;
 var aram;
 var grindOrFun;
+var grind = true;
+var fun = true;
+var mic = true;
+var noMic = true;
 var micAvail;
 
 $(document).ready(function() {
@@ -39,13 +46,37 @@ $(document).ready(function() {
     region = queries[0].split('=')[1];
     soloR = queries[1].split('=')[1];
     flexR = queries[2].split('=')[1];
-    gameType = queries[3].split('=')[1];
+	gameType = queries[3].split('=')[1];
     soloduo = Math.floor(gameType / 1000);
     flex = Math.floor(gameType / 100) % 10;
     norm = Math.floor(gameType / 10) % 10;
     aram = gameType % 10;
     grindOrFun = queries[4].split('=')[1];
     micAvail = queries[5].split('=')[1];
+
+	if (!soloduo)
+		$('#soloduoFilter').css('background-color', 'grey');
+	
+	if (!flex)
+		$('#flexFilter').css('background-color', 'grey');
+	
+	if (!norm)
+		$('#normalFilter').css('background-color', 'grey');
+
+	if (!aram)
+		$('#aramFilter').css('background-color', 'grey');
+
+	if (grindOrFun == 0) {
+		grind = false;
+		fun = true;
+		$('#grindFilter').css('background-color', 'grey');
+	}
+		
+	if (grindOrFun == 1) {
+		grind = true;
+		fun = false;
+		$('#funFilter').css('background-color', 'grey');
+	}
 
     firebase.database().ref(region).once('value').then(function(snapshot) {
         var summoners = snapshot.val();
@@ -56,8 +87,8 @@ $(document).ready(function() {
     });
 })
 
-function filterTier(filter) {
-	switch (filter) {
+function filterTier(tierFilter) {
+	switch (tierFilter) {
 		case 2:
 			rankPlusTwo = !rankPlusTwo;
 			if (rankPlusTwo)
@@ -98,8 +129,8 @@ function filterTier(filter) {
 	}
 }
 
-function filterRole(role) {
-	switch (role) {
+function filterRole(roleFilter) {
+	switch (roleFilter) {
 		case 'top':
 			roleTop = !roleTop;
 			if (roleTop)
@@ -140,8 +171,84 @@ function filterRole(role) {
 	}
 }
 
-// Apply selected filter
-function applyFilter() {
+function filterGameType(gameTypeFilter) {
+	switch (gameTypeFilter) {
+		case 'soloduo':
+			soloduo = !soloduo;
+			if (soloduo)
+				$('#soloduoFilter').css('background-color', 'cyan');
+			else 
+				$('#soloduoFilter').css('background-color', 'grey');
+			break;
+		case 'flex':
+			flex = !flex;
+			if (flex)
+				$('#flexFilter').css('background-color', 'cyan');
+			else 
+				$('#flexFilter').css('background-color', 'grey');
+			break;
+		case 'normal':
+			norm = !norm;
+			if (norm)
+				$('#normalFilter').css('background-color', 'cyan');
+			else 
+				$('#normalFilter').css('background-color', 'grey');
+			break;
+		case 'aram':
+			aram = !aram;
+			if (aram)
+				$('#aramFilter').css('background-color', 'cyan');
+			else 
+				$('#aramFilter').css('background-color', 'grey');
+			break;
+		default:
+			break;
+	}
+}
+
+function filterGrindOrFun(filter) {
+	switch (filter) {
+		case 'grind':
+			grind = !grind;
+			if (grind)
+				$('#grindFilter').css('background-color', 'cyan');
+			else 
+				$('#grindFilter').css('background-color', 'grey');
+			break;
+		case 'fun':
+			fun = !fun;
+			if (fun)
+				$('#funFilter').css('background-color', 'cyan');
+			else 
+				$('#funFilter').css('background-color', 'grey');
+			break;
+		default:
+			break;
+	}
+}
+
+function filterMic(filter) {
+	switch (filter) {
+		case 'yes':
+			mic = !mic;
+			if (mic)
+				$('#micFilter').css('background-color', 'cyan');
+			else
+				$('#micFilter').css('background-color', 'grey');
+			break;
+		case 'no':
+			noMic = !noMic;
+			if (noMic)
+				$('#noMicFilter').css('background-color', 'cyan');
+			else
+				$('#noMicFilter').css('background-color', 'grey');
+			break;
+		default:
+			break;
+	}
+}
+
+function rankFilter() {
 	soloDuoListF = [];
 	for (var player in soloDuoList) {
 		if (rankPlusTwo && parseInt(soloR) + 2 == soloDuoList[player].soloRank)
@@ -157,7 +264,6 @@ function applyFilter() {
 	}
 
 	flexListF = [];
-	console.log(flexList);
 	for (var player in flexList) {
 		if (rankPlusTwo && parseInt(flexR) + 2 == flexList[player].flexRank)
 			flexListF.push(flexList[player]);
@@ -170,20 +276,22 @@ function applyFilter() {
 		if (rankMinusTwo && flexR - 2 == flexList[player].flexRank)
 			flexListF.push(flexList[player]);
 	}
+}
 
-	// filter out based on roles
-	// top bot supp
-	// temp list to copy the filtered list
-	// clear the filtered list
-	// use the temp list to find match
-	//     if top add to filtered list
-	//     if bot add to filtered list
-	//     if supp add to filtered list
+// filter out based on roles
+// top bot supp
+// temp list to copy the filtered list
+// clear the filtered list
+// use the temp list to find match
+//     if top add to filtered list
+//     if bot add to filtered list
+//     if supp add to filtered list
+function roleFilter() {
 	var tempSoloDuoListF = Array.from(soloDuoListF);
-	soloDuoListF = [];
 	var tempFlexListF = Array.from(flexListF);
+	
+	soloDuoListF = [];
 	flexListF = [];
-	var tempNormListF = Array.from(normListF);
 	normListF = [];
 
 	var matched = false;
@@ -210,8 +318,10 @@ function applyFilter() {
 		matched = false;
 	}
 
-	matched = false;
+	
 	for (var player in tempFlexListF) {
+		matched = false;
+
 		if (roleTop && tempFlexListF[player].roles['top']) {
 			flexListF.push(tempFlexListF[player]);
 			matched = true;
@@ -230,57 +340,202 @@ function applyFilter() {
 		}
 		if (!matched && roleSupp && tempFlexListF[player].roles['supp']) {
 			flexListF.push(tempFlexListF[player]);
+		}
+	}
+
+	
+	for (var player in normList) {
+		matched = false;
+
+		if (roleTop && normList[player].roles['top']) {
+			normListF.push(normList[player]);
 			matched = true;
+		}
+		if (!matched && roleJg && normList[player].roles['jg']) {
+			normListF.push(normList[player]);
+			matched = true;
+		}
+		if (!matched && roleMid && normList[player].roles['mid']) {
+			normListF.push(normList[player]);
+			matched = true;
+		}
+		if (!matched && roleAdc && normList[player].roles['adc']) {
+			normListF.push(normList[player]);
+			matched = true;
+		}
+		if (!matched && roleSupp && normList[player].roles['supp']) {
+			normListF.push(normList[player]);
+		}
+	}
+}
+
+function grindOrFunFilter() {
+	var tempSoloDuoListF = Array.from(soloDuoListF);
+	var tempFlexListF = Array.from(flexListF);
+	var tempNormalListF = Array.from(normListF);
+
+	soloDuoListF = [];
+	flexListF = [];
+	normListF = [];
+	aramListF = [];
+
+	var matched = false;
+	for (var player in tempSoloDuoListF) {
+		var gof = tempSoloDuoListF[player]['grindorfun'];
+
+		if (grind && !fun && (gof == 1 || gof == 2)) {
+			soloDuoListF.push(tempSoloDuoListF[player]);
+			matched = true;
+		}
+		if (!matched && !grind && fun && (gof == 0 || gof == 2)) {
+			soloDuoListF.push(tempSoloDuoListF[player]);
+		}
+		matched = false;
+	}
+	
+	for (var player in tempFlexListF) {
+		matched = false;
+		var gof = tempFlexListF[player]['grindorfun'];
+
+		if (grind && !fun && (gof == 1 || gof == 2)) {
+			flexListF.push(tempFlexListF[player]);
+			matched = true;
+		}
+		if (!matched && !grind && fun && (gof == 0 || gof == 2)) {
+			flexListF.push(tempFlexListF[player]);
+		}
+	}
+
+	
+	for (var player in tempNormalListF) {
+		matched = false;
+		var gof = tempNormalListF[player]['grindorfun'];
+
+		if (grind && !fun && (gof == 1 || gof == 2)) {
+			normListF.push(tempNormalListF[player]);
+			matched = true;
+		}
+		if (!matched && !grind && fun && (gof == 0 || gof == 2)) {
+			normListF.push(tempNormalListF[player]);
+		}
+	}
+
+	
+	for (var player in aramList) {
+		matched = false;
+		var gof = aramList[player]['grindorfun'];
+
+		if (grind && !fun && (gof == 1 || gof == 2)) {
+			aramListF.push(aramList[player]);
+			matched = true;
+		}
+		if (!matched && !grind && fun && (gof == 0 || gof == 2)) {
+			aramListF.push(aramList[player]);
+		}
+	}
+}
+
+function applyMicFilter() {
+	var tempSoloDuoListF = Array.from(soloDuoListF);
+	var tempFlexListF = Array.from(flexListF);
+	var tempNormalListF = Array.from(normListF);
+	var tempAramListF = Array.from(aramListF);
+
+	soloDuoListF = [];
+	flexListF = [];
+	normListF = [];
+	aramListF = [];
+
+	var matched = false;
+	for (var player in tempSoloDuoListF) {
+		var micAvailability = tempSoloDuoListF[player]['micAvail'];
+
+		if (mic && !noMic && micAvailability == 1) {
+			soloDuoListF.push(tempSoloDuoListF[player]);
+			matched = true;
+		}
+		if (!mic && noMic && micAvailability == 0) {
+			soloDuoListF.push(tempSoloDuoListF[player]);
 		}
 		matched = false;
 	}
 
-	matched = false;
-	for (var player in tempNormListF) {
-		if (roleTop && tempNormListF[player].roles['top']) {
-			normListF.push(tempNormListF[player]);
-			matched = true;
-		}
-		if (!matched && roleJg && tempNormListF[player].roles['jg']) {
-			normListF.push(tempNormListF[player]);
-			matched = true;
-		}
-		if (!matched && roleMid && tempNormListF[player].roles['mid']) {
-			normListF.push(tempNormListF[player]);
-			matched = true;
-		}
-		if (!matched && roleAdc && tempNormListF[player].roles['adc']) {
-			normListF.push(tempNormListF[player]);
-			matched = true;
-		}
-		if (!matched && roleSupp && tempNormListF[player].roles['supp']) {
-			normListF.push(tempNormListF[player]);
-			matched = true;
-		}
+	for (var player in tempFlexListF) {
 		matched = false;
+		var micAvailability = tempFlexListF[player]['micAvail'];
+
+		if (mic && !noMic && micAvailability == 1) {
+			flexListF.push(tempFlexListF[player]);
+			matched = true;
+		}
+		if (!mic && noMic && micAvailability == 0) {
+			flexListF.push(tempFlexListF[player]);
+		}
 	}
 
-	appendList(soloDuoListF, flexListF, normListF, aramList);
+	for (var player in tempNormalListF) {
+		matched = false;
+		var micAvailability = tempNormalListF[player]['micAvail'];
+
+		if (mic && !noMic && micAvailability == 1) {
+			normListF.push(tempNormalListF[player]);
+			matched = true;
+		}
+		if (!mic && noMic && micAvailability == 0) {
+			normListF.push(tempNormalListF[player]);
+		}
+	}
+
+	for (var player in tempAramListF) {
+		matched = false;
+		var micAvailability = tempAramListF[player]['micAvail'];
+
+		if (mic && !noMic && micAvailability == 1) {
+			aramListF.push(tempAramListF[player]);
+			matched = true;
+		}
+		if (!mic && noMic && micAvailability == 0) {
+			aramListF.push(tempAramListF[player]);
+		}
+	}
+}
+
+// Apply selected filter
+function applyFilter() {
+	rankFilter(); 
+	roleFilter();
+	if (!grind || !fun) {
+		grindOrFunFilter();
+	} else {
+		//lol jokes
+	}
+	if (!mic || !noMic) {
+		applyMicFilter();
+	} else {
+		//jokes again lol
+	}
+	
+	appendList(soloDuoListF, flexListF, normListF, aramListF);
 }
 
 function appendList(list1, list2, list3, list4) {
+	$('#soloduoSummonersList tbody').empty();
 	if (soloduo) {
-		$('#soloduoSummonersList tbody tr').remove();
 		appendListHelper(list1, '#soloduoSummonersList');
 	}
 
+	$('#flexSummonersList tbody').empty();
 	if (flex) {
-		$('#flexSummonersList tbody tr').remove();
 		appendListHelper(list2, '#flexSummonersList');
 	}
 
+	$('#normSummonersList tbody').empty();
 	if (norm) {
-		$('#normSummonersList tbody tr').remove();
 		appendListHelper(list3, '#normSummonersList');
 	}
 
+	$('#aramSummonersList tbody').empty();
 	if (aram) {
-		$('#aramSummonersList tbody tr').remove();
 		appendListHelper(list4, '#aramSummonersList');
 	}
 }
@@ -331,6 +586,9 @@ function appendChecked(datas) {
 }
 
 // Sort list of summoner into 4 lists of each game type
+// This is done at the beginning to make the list but only some lists are shown
+// depending on the user's choice. (makes it efficient for us as we dont need to 
+// enter the database everytime when the user changes filters)
 function sortGameType(summoner) {
 	if (summoner.gameType.soloduo) {
     	if (summoner.soloRank >= soloR - 2 && summoner.soloRank <= parseInt(soloR) + 2)
@@ -338,9 +596,8 @@ function sortGameType(summoner) {
 	}
 
 	if (summoner.gameType.flex) {
-    	if (summoner.flexRank >= flexR - 2 && summoner.flexRank <= parseInt(flexR) + 2) {
+    	if (summoner.flexRank >= flexR - 2 && summoner.flexRank <= parseInt(flexR) + 2)
     		flexList.push(summoner);
-       	}
 	}
 
 	if (summoner.gameType.norm) {
