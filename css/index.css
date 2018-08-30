@@ -25,3 +25,16 @@
 #micAvailWarning {
 	display: none;
 }
+
+.role_icons {
+	height: 30px;
+	width: 30px;
+}
+
+#fillImg {
+	background-color: #606060;
+}
+
+/* .role_checkbox {
+	display: none;
+} */

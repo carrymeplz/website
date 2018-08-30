@@ -405,7 +405,6 @@ function grindOrFunFilter() {
 			flexListF.push(tempFlexListF[player]);
 		}
 	}
-
 	
 	for (var player in tempNormalListF) {
 		matched = false;
@@ -419,7 +418,6 @@ function grindOrFunFilter() {
 			normListF.push(tempNormalListF[player]);
 		}
 	}
-
 	
 	for (var player in aramList) {
 		matched = false;

@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/index.css">
 
-    <title>Ryan Cha</title>
+    <title>find friends</title>
   </head>
   <body>
     <pre id="object"></pre>
@@ -54,12 +54,30 @@
 
         <div>
             Preferred Roles:<br />
-            Top: <input type="checkbox" name="roles" id="top" value="top" />
-            Jungle: <input type="checkbox" name="roles" id="jg" value="jg" />
-            Mid: <input type="checkbox" name="roles" id="mid" value="mid" />
-            Adc: <input type="checkbox" name="roles" id="adc" value="adc" />
-            Support: <input type="checkbox" name="roles" id="supp" value="supp" />
-            Fill: <input type="checkbox" name="roles" id="fill" value="fill" />
+            <input type="checkbox" name="roles" class="role_checkbox" id="fill" value="fill" onclick="rolesButtonClicked(fill)" />
+            <label for="fill">
+                <img src="pictures/role_icons/Fill_icon.png" id="fillImg" class="role_icons" alt="Fill_icon" />
+            </label>
+            <input type="checkbox" name="roles" class="role_checkbox" id="top" value="top" />
+            <label for="top">
+                <img src="pictures/role_icons/Top_icon.png" class="role_icons" alt="Top_icon" />
+            </label>
+            <input type="checkbox" name="roles" class="role_checkbox" id="jg" value="jg" />
+            <label for="jg">
+                <img src="pictures/role_icons/Jungle_icon.png" class="role_icons" alt="Jungle_icon" />
+            </label>
+            <input type="checkbox" name="roles" class="role_checkbox" id="mid" value="mid" />
+            <label for="mid">
+                <img src="pictures/role_icons/Mid_icon.png" class="role_icons" alt="Mid_icon" />
+            </label>
+            <input type="checkbox" name="roles" class="role_checkbox" id="adc" value="adc" />
+            <label for="adc">
+                <img src="pictures/role_icons/Bot_icon.png" class="role_icons" alt="Bot_icon" />
+            </label>
+            <input type="checkbox" name="roles" class="role_checkbox" id="supp" value="supp" />
+            <label for="supp">
+                <img src="pictures/role_icons/Support_icon.png" class="role_icons" alt="Support_icon" />
+            </label>
         </div>
         <div class="warning" id="rolesWarning">
             <p>Must select at least one role</p>

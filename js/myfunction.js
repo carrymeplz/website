@@ -49,13 +49,6 @@ function getRegion() {
     }
 }
 
-// var string = document.getElementById('txt').value;
-// chars = string.split(' ');
-// if (chars.length > 1)
-// alert('Space(s) found in the string.');
-// else
-// alert('No space in the string.');
-
 //Submitted button was clicked
 function submitted() {
     getRegion();
@@ -421,3 +414,34 @@ function calcRank(rank) {
             return -1;
     }
 }
+
+// changes the background color of the roles buttons when clicked
+function rolesButtonClicked(role) {
+
+    if (!document.getElementById(role).checked) {
+        document.getElementById(role).css('background-color', '#000000');
+    } else {
+        document.getElementById(role).css('background-color', '#606060');
+    }
+    // if (!this.checked) {
+    //     $('.role_icons').on('click', function() {
+    //         $(this).css('background-color', '#000000');
+    //     });
+    // } else {
+    //     $('.role_icons').on('click', function() {
+    //         $(this).css('background-color', '#606060');
+    //     });
+    // }
+
+    // if (!(this.checked)) {
+    //     $('.role_icons').click(function(e){
+    //         $(e.currentTarget).css('background-color', '#000000');
+    //     });
+    // } else {
+    //     $('.role_icons').click(function(e){
+    //         $(e.currentTarget).css('background-color', '#606060');
+    //     });
+    // }
+    
+}
+
