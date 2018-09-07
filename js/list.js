@@ -47,10 +47,10 @@ $(document).ready(function() {
     soloR = queries[1].split('=')[1];
     flexR = queries[2].split('=')[1];
 	gameType = queries[3].split('=')[1];
-    soloduo = Math.floor(gameType / 1000);
+    aram = Math.floor(gameType / 1000);
     flex = Math.floor(gameType / 100) % 10;
     norm = Math.floor(gameType / 10) % 10;
-    aram = gameType % 10;
+	soloduo = gameType % 10;
     grindOrFun = queries[4].split('=')[1];
     micAvail = queries[5].split('=')[1];
 

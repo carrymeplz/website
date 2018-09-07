@@ -15,6 +15,48 @@ var euwSummonerRef = firebase.database().ref('euw');
 var krSummonerRef = firebase.database().ref('kr');
 
 //////////////////////////////////////////////////////////////////////////
+//Functions for stepper
+
+var indexNumber = 1;
+
+$("div.next-btn").click(function() {
+    if (indexNumber == 1) {
+        $("#first-form").css('display', 'none');
+        $("#second-form").css('display', 'block');
+        $("#submit-btn").css('display', 'none');
+        $(".next-btn").css('display', 'block');
+        $(".prev-btn").css('display', 'block');
+    } else if (indexNumber == 2) {
+        $("#second-form").css('display', 'none');
+        $("#third-form").css('display', 'block');
+        $("#submit-btn").css('display', 'block');
+        $(".next-btn").css('display', 'none');
+        $(".prev-btn").css('display', 'block');
+    } else {
+        alert("success");
+    }
+    indexNumber++;
+});
+
+$("div.prev-btn").click(function() {
+    if (indexNumber == 2) {
+        $("#first-form").css('display', 'block');
+        $("#second-form").css('display', 'none');
+        $("#submit-btn").css('display', 'none');
+        $(".next-btn").css('display', 'block');
+        $(".prev-btn").css('display', 'none');
+    } else if (indexNumber == 3) {
+        $("#second-form").css('display', 'block');
+        $("#third-form").css('display', 'none');
+        $("#submit-btn").css('display', 'none');
+        $(".next-btn").css('display', 'block');
+    } else {
+        alert("success");
+    }
+    indexNumber--;
+});
+
+//////////////////////////////////////////////////////////////////////////
 
 //Dictionary for the tiers. For decoding purposes
 var tierDict = {
@@ -31,10 +73,14 @@ var tierDict = {
 var https = 'https://'
 var summonerLink = 'api.riotgames.com/lol/summoner/v3/summoners/by-name/'
 var rankLink = 'api.riotgames.com/lol/league/v3/positions/by-summoner/';
-var API_KEY = '?api_key=RGAPI-7037c70f-26fc-480c-8299-6b33e2f23f27'; //copy and paste your API KEY\
+var API_KEY = '?api_key=RGAPI-405f1ba5-6661-4e0c-9cab-38c09b6e7284'; //copy and paste your API KEY\
 var region;
 var fullSummonerLink;
 var fullRankLink;
+var micAvail;
+var numRoles = 0;
+var roleFirstPick;
+var roleSecondPick;
 
 //Get the region of the player
 function getRegion() {
@@ -77,7 +123,6 @@ function submitted() {
         norm: document.getElementById('norm').checked ? 1 : 0,
         aram: document.getElementById('aram').checked ? 1 : 0
     };
-    var micAvail = checkMic();
     var notes = document.getElementById('notes').value;
 
     fullSummonerLink = https + region + summonerLink + userIgn.replace(/ /g, '') + API_KEY;
@@ -416,13 +461,64 @@ function calcRank(rank) {
 }
 
 // changes the background color of the roles buttons when clicked
+// role is a string passed from index.html (ex.fill, top, mid)
+// haha understand this method at your own will
 function rolesButtonClicked(role) {
-
-    if (!document.getElementById(role).checked) {
-        document.getElementById(role).css('background-color', '#000000');
+    if (document.getElementById(role).checked) {
+        $('#' + role + 'Icon').css('background-color', '#000000');
+        if (numRoles == 0 && role == 'fill') {
+            roleFirstPick = 'fill';
+            numRoles = 5;
+        } else if (numRoles == 0) {
+            roleFirstPick = role;
+            numRoles++;
+        } else if (numRoles == 1 && role == 'fill') {
+            $('#' + roleFirstPick + 'Icon').css('background-color', '#606060');
+            $('#' + roleFirstPick).prop("checked", false);
+            roleFirstPick = role;
+            numRoles = 5;
+        } else if (numRoles == 2 && role == 'fill') {
+            $('#' + roleFirstPick + 'Icon').css('background-color', '#606060');
+            $('#' + roleFirstPick).prop("checked", false);
+            $('#' + roleSecondPick + 'Icon').css('background-color', '#606060');
+            $('#' + roleSecondPick).prop("checked", false);
+            roleFirstPick = role;
+            roleSecondPick = '';
+            numRoles = 5;
+        } else if (numRoles == 1) {
+            roleSecondPick = role;
+            numRoles++;
+        } else if (numRoles == 2) {
+            $('#' + roleFirstPick + 'Icon').css('background-color', '#606060');
+            $('#' + roleFirstPick).prop("checked", false);
+            roleFirstPick = roleSecondPick;
+            roleSecondPick = role;
+        } else if (numRoles == 5) {
+            $('#' + roleFirstPick + 'Icon').css('background-color', '#606060');
+            $('#' + roleFirstPick).prop("checked", false);
+            roleFirstPick = role;
+            numRoles = 1;
+        }
     } else {
-        document.getElementById(role).css('background-color', '#606060');
+        if (numRoles == 1) {
+            roleFirstPick = '';
+            numRoles--;
+        } else if (numRoles == 2) {
+            if (roleFirstPick == role) {
+                roleFirstPick = roleSecondPick;
+                roleSecondPick = '';
+                numRoles--;
+            } else if (roleSecondPick == role) {
+                roleSecondPick = '';
+                numRoles--;
+            }
+        } else if (numRoles == 5) {
+            roleFirstPick = '';
+            numRoles = 0;
+        } 
+        $('#' + role + 'Icon').css('background-color', '#606060');
     }
+    
     // if (!this.checked) {
     //     $('.role_icons').on('click', function() {
     //         $(this).css('background-color', '#000000');
@@ -445,3 +541,14 @@ function rolesButtonClicked(role) {
     
 }
 
+function micButtonClicked(answer) {
+    if (answer == 'mic') {
+        $(micIcon).css('background-color', '#000000');
+        $(noMicIcon).css('background-color', '#606060');
+        micAvail = 1;
+    } else if (answer == 'noMic') {
+        $(micIcon).css('background-color', '#606060');
+        $(noMicIcon).css('background-color', '#000000');
+        micAvail = 0;
+    }
+}
