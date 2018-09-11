@@ -1,3 +1,42 @@
+/*
+red: #EE6F59
+light blue: #0082c8
+dark blue: #002448
+white" #FFFFFF
+*/
+
+body {
+    background-color: #161B27;
+    font-family: 'Fredoka One', cursive;
+}
+
+#container {
+    width: 40%;
+    margin: 0 auto;
+}
+
+#banner {
+    width: 100%;
+    height: 20vh;
+    margin-top: 7%;
+    background-color: white;
+    text-align: center;
+    font-size: 3em;
+    line-height: 20vh;
+}
+
+.texts {
+    color: white;
+}
+
+radio {
+    display: none;
+}
+
+input[type=checkbox] {
+    display: none;
+  }
+
 .warning {
 	color: red;
 }
@@ -27,8 +66,15 @@
 }
 
 .role_icons {
-	height: 30px;
-	width: 30px;
+	height: 35px;
+	width: 35px;
+}
+
+#servers {
+    width: 75%;
+    padding-top: 3vh;
+    margin: 0 auto;
+    text-align: center;
 }
 
 #fillIcon, 
@@ -49,26 +95,21 @@
 	background-color: #606060;
 }
 
-/* 
-.mic_checkbox {
-	display: none;
-} */
-
 .mic_icons {
-	height: 30px;
-	width: 30px;
+	height: 50px;
+    width: 50px;
+    margin: 0 1.5%;
 }
 
 .form {
-    width: 50%;
-    height: 65%;
-    margin: 5% auto;
+    margin-top: 5%;
+    position: relative;
 }
 
 .index-forms {
     width: 100%;
-    height: 100%;
-    background-color: #808080;
+    height: 65vh;
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 #first-form {
@@ -76,37 +117,161 @@
 }
 
 #second-form {
-    background-color: #808080;
     display: none;
 }
 
 #third-form {
-    background-color: #808080;
     display: none;
 }
 
 .prev-btn {
-    background-color: #606060;
-    width: 8%;
-    height: 5%;
-    top: -10%;
-    position: relative;
-    float: left;
-	margin-left: 30%;
-	display: none;
+    background-image: url("../pictures/prev_btn.png");
+    width: 11%;
+    height: 11vh;
+    position: absolute;
+    display: none;
+    background-size: contain;
+    background-repeat: no-repeat;
+    right: 82%;
+    bottom: 14%;
 }
 
 .next-btn {
-    background-color: #606060;
-    width: 7%;
-    height: 5%;
-    top: -10%;
-    position: relative;
-    float: right;
-	margin-right: 30%;
-	display: block;
+    background-image: url("../pictures/next_btn.png");
+    width: 11%;
+    height: 11vh;
+    position: absolute;
+    display: block;
+    background-size: contain;
+    background-repeat: no-repeat;
+    right: 7%;
+    bottom: 14%;
 }
 
 #submit-btn {
-	display: none;
+    display: none;
+    width: 11%;
+    height: 11vh;
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    right: 7%;
+    bottom: 14%;
+}
+
+.region_btn {
+    position: relative;
+    width: 13.5%;
+    background-color: #0082c8;
+    border-radius: 15px;
+    margin: 0 5.4%;
+    vertical-align: middle;
+}
+
+.region_btn:after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+}
+
+.region_btn div {
+    text-align: center;
+    color: white;
+    font-size: 1.3rem;
+    position: absolute;
+    width: 100%;
+    
+}
+
+.region_rows {
+    margin: 2.4vh 0;
+    text-align: left;
+}
+
+.region_rows:nth-of-type(1) {
+    margin-top: 4vh;
+}
+
+#ign_container {
+    text-align: center;
+    margin-top: 3%;
+}
+
+#ign_background {
+    width: 35%;
+    background-color: #0082c8;
+    padding: 5px;
+    border-radius: 4px;
+    margin: 0 auto;
+}
+
+#ign {
+    width: 100%;
+}
+
+#gof_container {
+    padding-top: 7vh;
+}
+
+.gof_btn {
+    width: 25%;
+    height: 30px;
+    font-size: 1.1em;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 7px;
+    margin: 0 1.5%;
+}
+
+.gof_btn:nth-of-type(1) {
+    background-color: white;
+    color: black;
+}
+
+.gof_btn:nth-of-type(2) {
+    background-color: white;
+    color: black;
+}
+
+#second-form {
+    text-align: center;
+}
+
+#third-form {
+    text-align: center;
+}
+
+.gametype_btn {
+    width: 18%;
+    height: 30px;
+    line-height: 30px;
+    background-color: white;
+    text-align: center;
+    border-radius: 7px;
+    font-size: 1.1em;
+    margin: 0 1.5%;
+}
+
+#gametype_container {
+    padding-top: 7vh;
+}
+
+#micAvail_container {
+    padding-top: 7vh;
+}
+
+#micAvail_container p {
+    font-size: 1.1em;
+}
+
+#roles_container {
+    padding-top: 7vh;
+}
+
+.roles_btn {
+    margin: 0 1.5%;
+}
+
+#notes_container {
+    padding-top: 7vh;
 }

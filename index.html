@@ -17,131 +17,193 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/index.css">
+    <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
 
     <title>find friends</title>
   </head>
   <body>
-    <pre id="object"></pre>
-    <form class="form">
-        <div class="index-forms" id="first-form">
-            <div id="servers">
-                Region:
-                <input type="radio" id="na" name="server" value="na1."> NA
-                <input type="radio" id="euw" name="server" value="euw1."> EUW
-                <input type="radio" id="kr" name="server" value="kr."> KR
-                <!--<input type="radio" id="ru" name="server" value="ru."> RU
-                <input type="radio" id="br" name="server" value="br1."> BR
-                <input type="radio" id="oce" name="server" value="oc1."> OCE
-                <input type="radio" id="jp" name="server" value="jp1."> JP
-                <input type="radio" id="eune" name="server" value="eun1."> EUNE
-                <input type="radio" id="tr" name="server" value="tr1."> TR
-                <input type="radio" id="la1" name="server" value="la1."> LA1
-                <input type="radio" id="la2" name="server" value="la2."> LA2-->
+    <div id="container">
+        <div id="banner">DUOSQUAD.GG</div>
+        <form class="form">
+            <div class="index-forms" id="first-form">
+                <div id="servers">
+                    <p class="texts">CHOOSE YOUR REGION</p>
+                    <div class="region_rows">
+                        <input type="radio" id="na" name="server" value="na1." onclick="regionButtonClicked('na')" />
+                        <label class="region_btn" for="na">
+                            <div>NA</div>
+                        </label>
+                        <input type="radio" id="euw" name="server" value="euw1." onclick="regionButtonClicked('euw')" /> 
+                        <label class="region_btn" for="euw">
+                            <div>EUW</div>
+                        </label>
+                        <input type="radio" id="eune" name="server" value="eun1." onclick="regionButtonClicked('eune')" />
+                        <label class="region_btn" for="eune">
+                            <div>EUNE</div>
+                        </label>
+                        <input type="radio" id="kr" name="server" value="kr." onclick="regionButtonClicked('kr')" />
+                        <label class="region_btn" for="kr">
+                            <div>KR</div>
+                        </label>
+                    </div>
+                    <div class="region_rows">
+                        <input type="radio" id="ru" name="server" value="ru." onclick="regionButtonClicked('ru')" />
+                        <label class="region_btn" for="ru">
+                            <div>RU</div>
+                        </label>
+                        <input type="radio" id="br" name="server" value="br1." onclick="regionButtonClicked('br')" />
+                        <label class="region_btn" for="br">
+                            <div>BR</div>
+                        </label>
+                        <input type="radio" id="oce" name="server" value="oc1."onclick="regionButtonClicked('oce')"  />
+                        <label class="region_btn" for="oce">
+                            <div>OCE</div>
+                        </label>
+                        <input type="radio" id="jp" name="server" value="jp1." onclick="regionButtonClicked('jp')" />
+                        <label class="region_btn" for="jp">
+                            <div>JP</div>
+                        </label>
+                    </div>
+                    <div class="region_rows">
+                        <input type="radio" id="tr" name="server" value="tr1." onclick="regionButtonClicked('tr')" />
+                        <label class="region_btn" for="tr">
+                            <div>TR</div>
+                        </label>
+                        <input type="radio" id="la1" name="server" value="la1." onclick="regionButtonClicked('la1')" />
+                        <label class="region_btn" for="la1">
+                            <div>LA1</div>
+                        </label>
+                        <input type="radio" id="la2" name="server" value="la2." onclick="regionButtonClicked('la2')" />
+                        <label class="region_btn" for="la2">
+                            <div>LA2</div>
+                        </label>
+                    </div>
+                </div>
+                <div class="warning" id="serverWarning">
+                    <p>You must choose your region</p>
+                </div>
+        
+                <br />
+                
+                <div id="ign_container">
+                    <p class="texts">ENTER YOUR IGN</p>
+                    <div id="ign_background">
+                        <input type="text" name="ign" id="ign" placeholder="IGN" width="50px" required /><br />
+                    </div>
+                </div>
+                <div class="warning" id="ignWarning">
+                    <p>You must enter a valid in game name</p>
+                </div>
             </div>
-            <div class="warning" id="serverWarning">
-                <p>You must choose your region</p>
-            </div>
+
+            <div class="index-forms" id="second-form">
+                <div id="gof_container">
+                    <p class="texts">CHOOSE YOUR PLAY STYLE</p>
+                    <input type="checkbox" name="gof" id="grind" value="grind" onclick="gofButtonClicked('grind')" />
+                    <label class="gof_btn" for="grind">
+                        <div>COMPETITIVE</div>
+                    </label>
+                    <input type="checkbox" name="gof" id="fun" value="fun" onclick="gofButtonClicked('fun')" />
+                    <label class="gof_btn" for="fun">
+                        <div>CASUAL</div>
+                    </label>
+                </div>
+                <div class="warning" id="grindOrFunWarning">
+                    <p>Must select at least one option</p>
+                </div>
     
-            <br />
-            
-            <div>
-                IGN: <input type="text" name="ign" id="ign" placeholder="IGN" required /><br />
-            </div>
-            <div class="warning" id="ignWarning">
-                <p>You must enter a valid in game name</p>
-            </div>
+                <div id="gametype_container">
+                    <p class="texts">CHOOSE YOUR GAME TYPE</p>
+                    <input type="checkbox" name="gametype" id="soloduo" value="soloduo" onclick="gametypeButtonClicked('soloduo')" />
+                    <label class="gametype_btn" for="soloduo">
+                        <div>SOLO/DUO</div>
+                    </label> 
+                    <input type="checkbox" name="gametype" id="flex" value="flex" onclick="gametypeButtonClicked('flex')" />
+                    <label class="gametype_btn" for="flex">
+                        <div>FLEX</div>
+                    </label>
+                    <input type="checkbox" name="gametype" id="norm" value="norm" onclick="gametypeButtonClicked('norm')" />
+                    <label class="gametype_btn" for="norm">
+                        <div>NORMAL</div>
+                    </label>
+                    <input type="checkbox" name="gametype" id="aram" value="aram" onclick="gametypeButtonClicked('aram')" />
+                    <label class="gametype_btn" for="aram">
+                        <div>ARAM</div>
+                    </label>
+                </div>
+                <div class="warning" id="gameTypeWarning">
+                    <p>Must select at least one game type</p>
+                </div>
     
-            <br />
-        </div>
-        <div class="index-forms" id="second-form">
-            <div>
-                Grind or Fun
-                Grind: <input type="checkbox" name="gof" id="grind" value="grind" />
-                Fun: <input type="checkbox" name="gof" id="fun" value="fun" />
+                <div id="micAvail_container">
+                    <p class="texts">Mic availability</p>
+                    <!-- <select id="micAvailability">
+                        <option></option>
+                        <option id="yes" value="yes">Yes</option>
+                        <option id="no" value="no">No</option>
+                    </select> -->
+                    <img src="pictures/mic/mic.png" id="micIcon" class="mic_icons" alt="Mic_icon" onclick="micButtonClicked('mic')" />
+                    <img src="pictures/mic/no_mic.png" id="noMicIcon" class="mic_icons" alt="NoMic_icon" onclick="micButtonClicked('noMic')" />
+                </div>
+                <div class="warning" id="micAvailWarning">
+                    <p>Must select a mic availability</p>
+                </div>
             </div>
-            <div class="warning" id="grindOrFunWarning">
-                <p>Must select at least one option</p>
-            </div>
-
-            <div>
-                Game Type:<br />
-                Solo/Duo: <input type="checkbox" name="gametype" id="soloduo" value="soloduo" />
-                Flex: <input type="checkbox" name="gametype" id="flex" value="flex" />
-                Normal: <input type="checkbox" name="gametype" id="norm" value="norm" />
-                ARAM: <input type="checkbox" name="gametype" id="aram" value="aram" />
-            </div>
-            <div class="warning" id="gameTypeWarning">
-                <p>Must select at least one game type</p>
-            </div>
-
-            <div>
-                Mic availability
-                <!-- <select id="micAvailability">
-                    <option></option>
-                    <option id="yes" value="yes">Yes</option>
-                    <option id="no" value="no">No</option>
-                </select> -->
-                <img src="pictures/mic/mic.png" id="micIcon" class="mic_icons" alt="Mic_icon" onclick="micButtonClicked('mic')" />
-                <img src="pictures/mic/no_mic.png" id="noMicIcon" class="mic_icons" alt="NoMic_icon" onclick="micButtonClicked('noMic')" />
-            </div>
-            <div class="warning" id="micAvailWarning">
-                <p>Must select a mic availability</p>
-            </div>
-        </div>
-        <div class="index-forms" id="third-form">
-            <div>
-                Preferred Roles:<br />
-                <input type="checkbox" name="roles" class="role_checkbox" id="fill" value="fill" onclick="rolesButtonClicked('fill')" />
-                <label for="fill">
-                    <img src="pictures/role_icons/Fill_icon.png" id="fillIcon" class="role_icons" alt="Fill_icon" />
-                </label>
-                <input type="checkbox" name="roles" class="role_checkbox" id="top" value="top" onclick="rolesButtonClicked('top')" />
-                <label for="top">
-                    <img src="pictures/role_icons/Top_icon.png" id="topIcon" class="role_icons" alt="Top_icon" />
-                </label>
-                <input type="checkbox" name="roles" class="role_checkbox" id="jg" value="jg" onclick="rolesButtonClicked('jg')" />
-                <label for="jg">
-                    <img src="pictures/role_icons/Jungle_icon.png" id="jgIcon" class="role_icons" alt="Jungle_icon" />
-                </label>
-                <input type="checkbox" name="roles" class="role_checkbox" id="mid" value="mid" onclick="rolesButtonClicked('mid')" />
-                <label for="mid">
-                    <img src="pictures/role_icons/Mid_icon.png" id="midIcon" class="role_icons" alt="Mid_icon" />
-                </label>
-                <input type="checkbox" name="roles" class="role_checkbox" id="adc" value="adc" onclick="rolesButtonClicked('adc')" />
-                <label for="adc">
-                    <img src="pictures/role_icons/Bot_icon.png" id="adcIcon" class="role_icons" alt="Bot_icon" />
-                </label>
-                <input type="checkbox" name="roles" class="role_checkbox" id="supp" value="supp" onclick="rolesButtonClicked('supp')" />
-                <label for="supp">
-                    <img src="pictures/role_icons/Support_icon.png" id="suppIcon" class="role_icons" alt="Support_icon" />
-                </label>
-            </div>
-            <div class="warning" id="rolesWarning">
-                <p>Must select at least one role</p>
-            </div>
-
-            <div>
-                    Notes:<br />
+            <div class="index-forms" id="third-form">
+                <div id="roles_container">
+                    <p class="texts">PREFERRED ROLES</p>
+                    <input type="checkbox" name="roles" class="role_checkbox" id="fill" value="fill" onclick="rolesButtonClicked('fill')" />
+                    <label class="roles_btn" for="fill">
+                        <img src="pictures/role_icons/Fill_icon.png" id="fillIcon" class="role_icons" alt="Fill_icon" />
+                    </label>
+                    <input type="checkbox" name="roles" class="role_checkbox" id="top" value="top" onclick="rolesButtonClicked('top')" />
+                    <label class="roles_btn" for="top">
+                        <img src="pictures/role_icons/Top_icon.png" id="topIcon" class="role_icons" alt="Top_icon" />
+                    </label>
+                    <input type="checkbox" name="roles" class="role_checkbox" id="jg" value="jg" onclick="rolesButtonClicked('jg')" />
+                    <label class="roles_btn" for="jg">
+                        <img src="pictures/role_icons/Jungle_icon.png" id="jgIcon" class="role_icons" alt="Jungle_icon" />
+                    </label>
+                    <input type="checkbox" name="roles" class="role_checkbox" id="mid" value="mid" onclick="rolesButtonClicked('mid')" />
+                    <label class="roles_btn" for="mid">
+                        <img src="pictures/role_icons/Mid_icon.png" id="midIcon" class="role_icons" alt="Mid_icon" />
+                    </label>
+                    <input type="checkbox" name="roles" class="role_checkbox" id="adc" value="adc" onclick="rolesButtonClicked('adc')" />
+                    <label class="roles_btn" for="adc">
+                        <img src="pictures/role_icons/Bot_icon.png" id="adcIcon" class="role_icons" alt="Bot_icon" />
+                    </label>
+                    <input type="checkbox" name="roles" class="role_checkbox" id="supp" value="supp" onclick="rolesButtonClicked('supp')" />
+                    <label class="roles_btn" for="supp">
+                        <img src="pictures/role_icons/Support_icon.png" id="suppIcon" class="role_icons" alt="Support_icon" />
+                    </label>
+                </div>
+                <div class="warning" id="rolesWarning">
+                    <p>Must select at least one role</p>
+                </div>
+    
+                <div id="notes_container">
+                    <p class="texts">NOTES</p>
                     <textarea id="notes" rows="4" cols="40"></textarea>
                 </div>
-        </div>
-        <div class="prev-btn">Previous</div>
-        <div class="next-btn">Next</div>
-
-        <br />
-
-        <div id="submit-btn">
-            <button type="button" onclick="submitted()">Submit</button>
-        </div>
-
-        <div>
-            <button type="button" onclick="submittedTest()">Submit test</button>
-        </div>
-
-        <div>
-            <button type="button" onclick="readData('na')">Read</button>
-        </div>
-    </form>
+            </div>
+            <div class="prev-btn">&nbsp;</div>
+            <div class="next-btn">&nbsp;</div>
+            
+            <br />
+    
+            <div id="submit-btn">
+                <button type="button" onclick="submitted()">Submit</button>
+            </div>
+    
+            <div>
+                <button type="button" onclick="submittedTest()">Submit test</button>
+            </div>
+    
+            <div>
+                <button type="button" onclick="readData('na')">Read</button>
+            </div>
+        </form>
+    </div>
     <footer>
     </footer>
 
