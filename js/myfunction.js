@@ -57,6 +57,20 @@ $("div.prev-btn").click(function() {
 });
 
 //////////////////////////////////////////////////////////////////////////
+//runs as soon as the website starts
+$(document).ready(function() {
+    $( "input[type='radio']" ).css( "display", "none" );
+    $(".region_btn div").css('line-height', '' + $(".region_btn div").width() + 'px');
+});
+
+//////////////////////////////////////////////////////////////////////////
+//called whenever there is a resize because of the region button size
+
+$(window).on('resize', function() {
+    $(".region_btn div").css('line-height', '' + $(".region_btn div").width() + 'px');
+});
+
+/////////////////////////////////////////////////////////////////////////
 
 //Dictionary for the tiers. For decoding purposes
 var tierDict = {
@@ -73,7 +87,7 @@ var tierDict = {
 var https = 'https://'
 var summonerLink = 'api.riotgames.com/lol/summoner/v3/summoners/by-name/'
 var rankLink = 'api.riotgames.com/lol/league/v3/positions/by-summoner/';
-var API_KEY = '?api_key=RGAPI-405f1ba5-6661-4e0c-9cab-38c09b6e7284'; //copy and paste your API KEY\
+var API_KEY = '?api_key=RGAPI-baad6c8a-c614-475d-9846-07f3c80e49b7'; //copy and paste your API KEY\
 var region;
 var fullSummonerLink;
 var fullRankLink;
@@ -81,6 +95,8 @@ var micAvail;
 var numRoles = 0;
 var roleFirstPick;
 var roleSecondPick;
+var regionRowNumber = 0;
+var regionDivNumber = 0;
 
 //Get the region of the player
 function getRegion() {
@@ -539,6 +555,134 @@ function rolesButtonClicked(role) {
     //     });
     // }
     
+}
+
+function regionButtonClicked(region) {
+    switch(region) {
+        case 'na':
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#0082c8');
+            regionRowNumber = 1;
+            regionDivNumber = 1;
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#002448');
+            break;
+        case 'euw':
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#0082c8');
+            regionRowNumber = 1;
+            regionDivNumber = 2;
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#002448');
+            break;
+        case 'eune':
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#0082c8');
+            regionRowNumber = 1;
+            regionDivNumber = 3;
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#002448');
+            break;
+        case 'kr':
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#0082c8');
+            regionRowNumber = 1;
+            regionDivNumber = 4;
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#002448');
+            break;
+        case 'ru':
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#0082c8');
+            regionRowNumber = 2;
+            regionDivNumber = 1;
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#002448');
+            break;
+        case 'br':
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#0082c8');
+            regionRowNumber = 2;
+            regionDivNumber = 2;
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#002448');
+            break;
+        case 'oce':
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#0082c8');
+            regionRowNumber = 2;
+            regionDivNumber = 3;
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#002448');
+            break;
+        case 'jp':
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#0082c8');
+            regionRowNumber = 2;
+            regionDivNumber = 4;
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#002448');
+            break;
+        case 'tr':
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#0082c8');
+            regionRowNumber = 3;
+            regionDivNumber = 1;
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#002448');
+            break;
+        case 'la1':
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#0082c8');
+            regionRowNumber = 3;
+            regionDivNumber = 2;
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#002448');
+            break;
+        case 'la2':
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#0082c8');
+            regionRowNumber = 3;
+            regionDivNumber = 3;
+            $(".region_rows:nth-of-type(" + regionRowNumber + ") .region_btn:nth-of-type(" + regionDivNumber + ")").css('background-color', '#002448');
+            break;
+    }
+
+}
+
+function gofButtonClicked(playstyle) {
+    if (playstyle == 'grind' && document.getElementById('grind').checked) {
+        $(".gof_btn:nth-of-type(1)").css('background-color', '#EE6F59');
+        $(".gof_btn:nth-of-type(1)").css('color', 'white');
+    } else if (playstyle == 'grind' && !document.getElementById('grind').checked) {
+        $(".gof_btn:nth-of-type(1)").css('background-color', 'white');
+        $(".gof_btn:nth-of-type(1)").css('color', 'black');
+    } else if (playstyle == 'fun' && document.getElementById('fun').checked) {
+        $(".gof_btn:nth-of-type(2)").css('background-color', '#EE6F59');
+        $(".gof_btn:nth-of-type(2)").css('color', 'white');
+    } else if (playstyle == 'fun' && !document.getElementById('fun').checked) {
+        $(".gof_btn:nth-of-type(2)").css('background-color', 'white');
+        $(".gof_btn:nth-of-type(2)").css('color', 'black');
+    }
+}
+
+function gametypeButtonClicked(gametype) {
+    if (gametype == 'soloduo' && document.getElementById('soloduo').checked) {
+        $(".gametype_btn:nth-of-type(1)").css('background-color', '#EE6F59');
+        $(".gametype_btn:nth-of-type(1)").css('color', 'white');
+        // $(".gametype_btn:nth-of-type(4)").css('background-color', 'white');
+        // $(".gametype_btn:nth-of-type(4)").css('color', 'black');
+    } else if (gametype == 'soloduo' && !document.getElementById('soloduo').checked) {
+        $(".gametype_btn:nth-of-type(1)").css('background-color', 'white');
+        $(".gametype_btn:nth-of-type(1)").css('color', 'black');
+    } else if (gametype == 'flex' && document.getElementById('flex').checked) {
+        $(".gametype_btn:nth-of-type(2)").css('background-color', '#EE6F59');
+        $(".gametype_btn:nth-of-type(2)").css('color', 'white');
+        // $(".gametype_btn:nth-of-type(4)").css('background-color', 'white');
+        // $(".gametype_btn:nth-of-type(4)").css('color', 'black');
+    } else if (gametype == 'flex' && !document.getElementById('flex').checked) {
+        $(".gametype_btn:nth-of-type(2)").css('background-color', 'white');
+        $(".gametype_btn:nth-of-type(2)").css('color', 'black');
+    } else if (gametype == 'norm' && document.getElementById('norm').checked) {
+        $(".gametype_btn:nth-of-type(3)").css('background-color', '#EE6F59');
+        $(".gametype_btn:nth-of-type(3)").css('color', 'white');
+        // $(".gametype_btn:nth-of-type(4)").css('background-color', 'white');
+        // $(".gametype_btn:nth-of-type(4)").css('color', 'black');
+    } else if (gametype == 'norm' && !document.getElementById('norm').checked) {
+        $(".gametype_btn:nth-of-type(3)").css('background-color', 'white');
+        $(".gametype_btn:nth-of-type(3)").css('color', 'black');
+    } else if (gametype == 'aram' && document.getElementById('aram').checked) {
+        $(".gametype_btn:nth-of-type(4)").css('background-color', '#EE6F59');
+        $(".gametype_btn:nth-of-type(4)").css('color', 'white');
+        // $(".gametype_btn:nth-of-type(1)").css('background-color', 'white');
+        // $(".gametype_btn:nth-of-type(1)").css('color', 'black');
+        // $(".gametype_btn:nth-of-type(2)").css('background-color', 'white');
+        // $(".gametype_btn:nth-of-type(2)").css('color', 'black');
+        // $(".gametype_btn:nth-of-type(3)").css('background-color', 'white');
+        // $(".gametype_btn:nth-of-type(3)").css('color', 'black');
+    } else if (gametype == 'aram' && !document.getElementById('aram').checked) {
+        $(".gametype_btn:nth-of-type(4)").css('background-color', 'white');
+        $(".gametype_btn:nth-of-type(4)").css('color', 'black');
+    }
 }
 
 function micButtonClicked(answer) {
