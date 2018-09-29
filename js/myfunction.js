@@ -12,7 +12,15 @@ firebase.initializeApp(config);
 //Reference messages collection
 var naSummonerRef = firebase.database().ref('na');
 var euwSummonerRef = firebase.database().ref('euw');
+var euneSummonerRef = firebase.database().ref('eune');
 var krSummonerRef = firebase.database().ref('kr');
+var ruSummonerRef = firebase.database().ref('ru');
+var brSummonerRef = firebase.database().ref('br');
+var oceSummonerRef = firebase.database().ref('oce');
+var jpSummonerRef = firebase.database().ref('jp');
+var trSummonerRef = firebase.database().ref('tr');
+var la1SummonerRef = firebase.database().ref('la1');
+var la2wSummonerRef = firebase.database().ref('la2');
 
 //////////////////////////////////////////////////////////////////////////
 //Functions for stepper
@@ -21,11 +29,13 @@ var indexNumber = 1;
 
 $("div.next-btn").click(function() {
     if (indexNumber == 1) {
-        $("#first-form").css('display', 'none');
-        $("#second-form").css('display', 'block');
-        $("#submit-btn").css('display', 'none');
-        $(".next-btn").css('display', 'block');
-        $(".prev-btn").css('display', 'block');
+        if (!alreadySubmitted()) {
+            $("#first-form").css('display', 'none');
+            $("#second-form").css('display', 'block');
+            $("#submit-btn").css('display', 'none');
+            $(".next-btn").css('display', 'block');
+            $(".prev-btn").css('display', 'block');
+        }
     } else if (indexNumber == 2) {
         $("#second-form").css('display', 'none');
         $("#third-form").css('display', 'block');
@@ -87,7 +97,7 @@ var tierDict = {
 var https = 'https://'
 var summonerLink = 'api.riotgames.com/lol/summoner/v3/summoners/by-name/'
 var rankLink = 'api.riotgames.com/lol/league/v3/positions/by-summoner/';
-var API_KEY = '?api_key=RGAPI-baad6c8a-c614-475d-9846-07f3c80e49b7'; //copy and paste your API KEY\
+var API_KEY = '?api_key=RGAPI-ff762f8b-0d39-4361-89b2-7dcfbbf75f93'; //copy and paste your API KEY\
 var region;
 var fullSummonerLink;
 var fullRankLink;
@@ -99,7 +109,7 @@ var regionRowNumber = 0;
 var regionDivNumber = 0;
 
 //Get the region of the player
-function getRegion() {
+function assignRegion() {
     if (document.getElementById('na').checked) {
         region = document.getElementById('na').value;
     } else if (document.getElementById('euw').checked) {
@@ -111,9 +121,47 @@ function getRegion() {
     }
 }
 
+function alreadySubmitted() {
+    // from here checks if the user's ign is already in our database and erases the old one
+    // from the database and replaces it with the new inputs from the user
+    assignRegion();
+    var userIgn = document.getElementById("ign").value;
+    console.log(userIgn);
+    userIgn = userIgn.replace(/ /g, '').toLowerCase();
+    console.log(userIgn);
+    var regionReplaced = region.replace(/[1.]/g, '');
+    var summonerRef = firebase.database().ref();
+    fullSummonerLink = https + region + summonerLink + userIgn.replace(/ /g, '') + API_KEY;
+    // $.getJSON('https://json2jsonp.com/?url=' + encodeURIComponent(fullSummonerLink) + '&callback=?', function(data) {
+    //     if (Object.keys(data).length == 1 && data['status']['status_code'] == 404) {
+    //         alert('Summoner not registered. Please check your IGN');
+    //         validate(true, '#ignWarning');
+    //     } else {
+    //         userIgn = data['name'];
+    //         console.log(userIgn);
+    //     }
+    // });
+    summonerRef.child(regionReplaced).orderByChild("userIgnSave").equalTo(userIgn).once("value", snapshot => {
+        if (snapshot.exists()) {
+            console.log("User with the same IGN exists in our database");
+            snapshot.forEach(function(data) {
+                //summonerRef.child(regionReplaced).child(data.key).remove();
+                firebase.database().ref(regionReplaced).once('value').then(function(snapshot2) {
+                    var summoners = snapshot2.val();
+                    var summoner = summoners[data.key];
+                    
+                    window.location.href = "./list.html?region=" + summoner.region + '&userIgn=' + summoner.userIgn + '&soloRankNumber=' + summoner.soloRank
+                        + '&flexRankNumber=' + summoner.flexRank + '&gameType=' + summoner.gameType['aram'] + summoner.gameType['flex'] 
+                        + summoner.gameType['norm'] + summoner.gameType['soloduo'] + '&grindorfun=' + summoner.grindorfun + '&micavailability=' + summoner.micAvail;
+                });
+            });
+        }
+    });
+}
+
 //Submitted button was clicked
 function submitted() {
-    getRegion();
+    assignRegion();
     var userId;
     var flexTier;
     var flexRank;
@@ -140,16 +188,22 @@ function submitted() {
         aram: document.getElementById('aram').checked ? 1 : 0
     };
     var notes = document.getElementById('notes').value;
+    var currentDate = new Date();
+    var dateTime = getPostedMonth(currentDate) + " "
+        + currentDate.getDate()  + ", "
+        + currentDate.getFullYear() + " at "
+        + currentDate.getHours() + ":"
+        + currentDate.getMinutes() + ":"
+        + currentDate.getSeconds();
 
     fullSummonerLink = https + region + summonerLink + userIgn.replace(/ /g, '') + API_KEY;
-    console.log(fullSummonerLink);
     var isValidIgn = false;
     if (validateInput(userIgn, region, roles, gameType, grindorfun, micAvail)) {
         $.getJSON('https://json2jsonp.com/?url=' + encodeURIComponent(fullSummonerLink) + '&callback=?', function(data) {
         //$.getJSON('http://cors.io/?' + encodeURIComponent(fullSummonerLink) + '&callback=?', function(data) {
         //$.getJSON(encodeURIComponent(fullSummonerLink) + '?jsoncallback=?', {format: "json"}, function(data) {
             if (Object.keys(data).length == 1 && data['status']['status_code'] == 404) {
-                console.log('Data not found');
+                alert('Summoner not registered. Please check your IGN');
                 validate(true, '#ignWarning');
             } else {
                 userId = data['id'];
@@ -162,13 +216,14 @@ function submitted() {
             if (isValidIgn) {
                 fullRankLink = https + region + rankLink + userId + API_KEY;
                 region = region.replace(/[1.]/g, '');
-                console.log(region);
                 flexRankNumber = -1;
                 soloRankNumber = -1;
                 var soloRankWins = -1;
                 var soloRankLosses = -1;
                 var flexRankWins = -1;
                 var flexRankLosses = -1;
+                var soloLeaguePoints = -1;
+                var flexLeaguePoints = -1;
                 $.getJSON('https://json2jsonp.com/?url=' + fullRankLink +'&callback=?', function(data) {
                     var objectSize = Object.keys(data).length;
                     if (objectSize == 1) {
@@ -177,25 +232,42 @@ function submitted() {
                             soloRank = data[0]['rank'];
                             soloRankWins = data[0]['wins'];
                             soloRankLosses = data[0]['losses'];
-                            flexRankNumber = -1;
+                            soloLeaguePoints = data[0]['leaguePoints'];
+                            //flexRankNumber = -1;
                             soloRankNumber = calcTier(soloTier);         
                         } else if (data[0]['queueType'].localeCompare('RANKED_FLEX_SR')) {
                             flexTier = data[0]['tier'];
                             flexRank = data[0]['rank'];
                             flexRankWins = data[0]['wins'];
                             flexRankLosses = data[0]['losses'];
+                            flexLeaguePoints = data[0]['leaguePoints'];
                             flexRankNumber = calcTier(flexTier);
-                            soloRankNumber = -1;
+                            //soloRankNumber = -1;
                         }
                     } else if (objectSize == 2) {
-                        flexTier = data[0]['tier'];
-                        flexRank = data[0]['rank'];
-                        soloTier = data[1]['tier'];
-                        soloRank = data[1]['rank'];
-                        flexRankWins = data[0]['wins'];
-                        flexRankLosses = data[0]['losses'];
-                        soloRankWins = data[1]['wins'];
-                        soloRankLosses = data[1]['losses'];                   
+                        if (data[1]['queueType'].localeCompare('RANKED_SOLO_5X5') && data[0]['queueType'].localeCompare('RANKED_FLEX_SR') ) {
+                            flexTier = data[1]['tier'];
+                            flexRank = data[1]['rank'];
+                            soloTier = data[0]['tier'];
+                            soloRank = data[0]['rank'];
+                            flexRankWins = data[1]['wins'];
+                            flexRankLosses = data[1]['losses'];
+                            soloRankWins = data[0]['wins'];
+                            soloRankLosses = data[0]['losses'];
+                            soloLeaguePoints = data[0]['leaguePoints'];
+                            flexLeaguePoints = data[1]['leaguePoints'];
+                        } else if (data[1]['queueType'].localeCompare('RANKED_FLEX_SR') && data[0]['queueType'].localeCompare('RANKED_SOLO_5X5')) {
+                            flexTier = data[0]['tier'];
+                            flexRank = data[0]['rank'];
+                            soloTier = data[1]['tier'];
+                            soloRank = data[1]['rank'];
+                            flexRankWins = data[0]['wins'];
+                            flexRankLosses = data[0]['losses'];
+                            soloRankWins = data[1]['wins'];
+                            soloRankLosses = data[1]['losses'];
+                            soloLeaguePoints = data[1]['leaguePoints'];
+                            flexLeaguePoints = data[0]['leaguePoints'];
+                        }
                         flexRankNumber = calcTier(flexTier);
                         soloRankNumber = calcTier(soloTier);
                     }                    
@@ -205,17 +277,18 @@ function submitted() {
                         soloRankNumber += calcRank(soloRank);
                     saveSummoner(region, userId, userIgn, roles, gameType, grindorfun, micAvail, 
                         flexRankNumber, soloRankNumber, summonerLevel, profileIconId, notes, 
-                        flexRankWins, flexRankLosses, soloRankWins, soloRankLosses);
-                    //window.location.href = "./list.html?region=" + region;
-                    window.location.href = "./list.html?region=" + region + '&soloRankNumber=' + soloRankNumber 
+                        flexRankWins, flexRankLosses, soloRankWins, soloRankLosses, dateTime, 
+                        soloLeaguePoints, flexLeaguePoints);
+                    window.location.href = "./list.html?region=" + region + '&userIgn=' + userIgn + '&soloRankNumber=' + soloRankNumber 
                         + '&flexRankNumber=' + flexRankNumber + '&gameType=' + gameType['aram'] + gameType['flex'] 
                         + gameType['norm'] + gameType['soloduo'] + '&grindorfun=' + grindorfun + '&micavailability=' + micAvail;
                 }).fail(function(data) {
-                    console.log('Failed');
+                    alert('Failed');
                     saveSummoner(region, userId, userIgn, roles, gameType, grindorfun, micAvail, 
                         flexRankNumber, soloRankNumber, summonerLevel, profileIconId, notes, 
-                        flexRankWins, flexRankLosses, soloRankWins, soloRankLosses);
-                    window.location.href = "./list.html?region=" + region + '&soloRankNumber=' + soloRankNumber 
+                        flexRankWins, flexRankLosses, soloRankWins, soloRankLosses, dateTime, 
+                        soloLeaguePoints, flexLeaguePoints);
+                    window.location.href = "./list.html?region=" + region + '&userIgn=' + userIgn + '&soloRankNumber=' + soloRankNumber 
                         + '&flexRankNumber=' + flexRankNumber + '&gameType=' + gameType['aram'] + gameType['flex'] 
                         + gameType['norm'] + gameType['soloduo'] + '&grindorfun=' + grindorfun + '&micavailability=' + micAvail;
                 });
@@ -259,13 +332,14 @@ function submittedTest() {
 //pushes the information to the firebase database
 function saveSummoner(region, userId, ign, roles, gameType, grindorfun, micAvail, 
     flexRankNumber, soloRankNumber, summonerLevel, profileIconId, notes, 
-    flexRankWins, flexRankLosses, soloRankWins, soloRankLosses) {
+    flexRankWins, flexRankLosses, soloRankWins, soloRankLosses, postedTime, soloLeaguePoints, flexLeaguePoints) {
     var summonerRef = checkRegion(region);
     var newSummonerRef = summonerRef.push();
     newSummonerRef.set({
         region: region,
         userId: userId,
         userIgn: ign,
+        userIgnSave: ign.replace(/ /g, '').toLowerCase(),
         roles: roles,
         gameType: gameType,
         grindorfun: grindorfun,
@@ -278,7 +352,10 @@ function saveSummoner(region, userId, ign, roles, gameType, grindorfun, micAvail
         flexRankWins: flexRankWins,
         flexRankLosses: flexRankLosses,
         soloRankWins: soloRankWins,
-        soloRankLosses: soloRankLosses
+        soloRankLosses: soloRankLosses,
+        postedTime: postedTime, 
+        soloLeaguePoints: soloLeaguePoints,
+        flexLeaguePoints: flexLeaguePoints
     });
 }
 
@@ -289,8 +366,26 @@ function checkRegion(region) {
             return naSummonerRef;
         case 'euw':
             return euwSummonerRef;
+        case 'eune':
+            return euneSummonerRef;
         case 'kr':
             return krSummonerRef;
+        case 'ru':
+            return ruSummonerRef;
+        case 'br':
+            return brSummonerRef;
+        case 'oce':
+            return oceSummonerRef;
+        case 'jp':
+            return jpSummonerRef;
+        case 'tr':
+            return trSummonerRef;
+        case 'oce':
+            return oceSummonerRef;
+        case 'la1':
+            return la1SummonerRef;
+        case 'la2':
+            return la2SummonerRef;
         default:
             return '';
     }
@@ -427,7 +522,7 @@ function decodeTier(tier) {
 //decodes the rank when grabbing from the database
 function decodeRank(rank) {
     if (rank == -1)
-        return ;
+        return '';
     else if (rank == 26)
         return 1;
     else if (rank == 25)
@@ -491,13 +586,16 @@ function rolesButtonClicked(role) {
         } else if (numRoles == 1 && role == 'fill') {
             $('#' + roleFirstPick + 'Icon').css('background-color', '#606060');
             $('#' + roleFirstPick).prop("checked", false);
+            $('#' + roleFirstPick).checked = false;
             roleFirstPick = role;
             numRoles = 5;
         } else if (numRoles == 2 && role == 'fill') {
             $('#' + roleFirstPick + 'Icon').css('background-color', '#606060');
             $('#' + roleFirstPick).prop("checked", false);
+            $('#' + roleFirstPick).checked = false;
             $('#' + roleSecondPick + 'Icon').css('background-color', '#606060');
             $('#' + roleSecondPick).prop("checked", false);
+            $('#' + roleSecondPick).checked = false;
             roleFirstPick = role;
             roleSecondPick = '';
             numRoles = 5;
@@ -507,28 +605,34 @@ function rolesButtonClicked(role) {
         } else if (numRoles == 2) {
             $('#' + roleFirstPick + 'Icon').css('background-color', '#606060');
             $('#' + roleFirstPick).prop("checked", false);
+            $('#' + roleFirstPick).checked = false;
             roleFirstPick = roleSecondPick;
             roleSecondPick = role;
         } else if (numRoles == 5) {
             $('#' + roleFirstPick + 'Icon').css('background-color', '#606060');
             $('#' + roleFirstPick).prop("checked", false);
+            $('#' + roleFirstPick).checked = false;
             roleFirstPick = role;
             numRoles = 1;
         }
     } else {
         if (numRoles == 1) {
+            $('#' + roleFirstPick).checked = false;
             roleFirstPick = '';
             numRoles--;
         } else if (numRoles == 2) {
             if (roleFirstPick == role) {
+                $('#' + roleFirstPick).checked = false;
                 roleFirstPick = roleSecondPick;
                 roleSecondPick = '';
                 numRoles--;
             } else if (roleSecondPick == role) {
+                $('#' + roleSecondPick).checked = false;
                 roleSecondPick = '';
                 numRoles--;
             }
         } else if (numRoles == 5) {
+            $('#' + roleFirstPick).checked = false;
             roleFirstPick = '';
             numRoles = 0;
         } 
@@ -694,5 +798,38 @@ function micButtonClicked(answer) {
         $(micIcon).css('background-color', '#606060');
         $(noMicIcon).css('background-color', '#000000');
         micAvail = 0;
+    }
+}
+
+function getPostedMonth(currentDate) {
+    var month = (currentDate.getMonth() + 1);
+
+    switch(month) {
+        case 1:
+            return 'JAN';
+        case 2:
+            return 'FEB';
+        case 3:
+            return 'MAR';
+        case 4:
+            return 'APR';
+        case 5:
+            return 'MAY';
+        case 6:
+            return 'JUN';
+        case 7:
+            return 'JUL';
+        case 8:
+            return 'AUG';
+        case 9:
+            return 'SEPT';
+        case 10:
+            return 'OCT';
+        case 11:
+            return 'NOV';
+        case 12:
+            return 'DEC';
+        default:
+            return ;
     }
 }

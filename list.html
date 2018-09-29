@@ -9,76 +9,217 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/list.css">
+    <link rel="stylesheet" href="css/edit.css">
+    <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
 
     <title>find friends</title>
 </head>
 <body>
-    <div>
-        <div id="2TierAbove" class="filterButton" onclick="filterTier(2)">+2</div>
-        <div id="1TierAbove" class="filterButton" onclick="filterTier(1)">+1</div>
-        <div id="0TierAbove" class="filterButton" onclick="filterTier(0)">0</div>
-        <div id="1TierBelow" class="filterButton" onclick="filterTier(-1)">-1</div>
-        <div id="2TierBelow" class="filterButton" onclick="filterTier(-2)">-2</div>
-    </div>
+    <div id="listpage_container">
+        <div id="banner">DUOSQUAD.GG</div>
+        <div id="editButtons">
+            <div id="roles_container2">
+                <input type="checkbox" name="roles" class="role_checkbox" id="fill2" onclick="filterRole('fill', 0)" />
+                <label class="roles_btn" for="fill2">
+                    <img src="pictures/role_icons/Fill_icon.png" id="fillEditer" class="role_icons" alt="Fill_icon" />
+                </label>
+                <input type="checkbox" name="roles" class="role_checkbox" id="top2" onclick="filterRole('top', 0)" />
+                <label class="roles_btn" for="top2">
+                    <img src="pictures/role_icons/Top_icon.png" id="topEditer" class="role_icons" alt="Top_icon" />
+                </label>
+                <input type="checkbox" name="roles" class="role_checkbox" id="jg2" onclick="filterRole('jg', 0)" />
+                <label class="roles_btn" for="jg2">
+                    <img src="pictures/role_icons/Jungle_icon.png" id="jgEditer" class="role_icons" alt="Jungle_icon" />
+                </label>
+                <input type="checkbox" name="roles" class="role_checkbox" id="mid2" onclick="filterRole('mid', 0)" />
+                <label class="roles_btn" for="mid2">
+                    <img src="pictures/role_icons/Mid_icon.png" id="midEditer" class="role_icons" alt="Mid_icon" />
+                </label>
+                <input type="checkbox" name="roles" class="role_checkbox" id="adc2" onclick="filterRole('adc', 0)" />
+                <label class="roles_btn" for="adc2">
+                    <img src="pictures/role_icons/Bot_icon.png" id="adcEditer" class="role_icons" alt="Bot_icon" />
+                </label>
+                <input type="checkbox" name="roles" class="role_checkbox" id="supp2" onclick="filterRole('supp', 0)" />
+                <label class="roles_btn" for="supp2">
+                    <img src="pictures/role_icons/Support_icon.png" id="suppEditer" class="role_icons" alt="Support_icon" />
+                </label>
+            </div>
         
-    <br />
-    <br />
-
-    <div>
-        <div id="topFilter" class="filterButton" onclick="filterRole('top')">top</div>
-        <div id="jgFilter" class="filterButton" onclick="filterRole('jg')">jg</div>
-        <div id="midFilter" class="filterButton" onclick="filterRole('mid')">mid</div>
-        <div id="adcFilter" class="filterButton" onclick="filterRole('adc')">adc</div>
-        <div id="suppFilter" class="filterButton" onclick="filterRole('supp')">supp</div>
-    </div>
-
-    <br />
-    <br />
-
-    <div>
-        <div id="soloduoFilter" class="filterButton" onclick="filterGameType('soloduo')">Solo/Duo</div>
-        <div id="flexFilter" class="filterButton" onclick="filterGameType('flex')">Flex</div>
-        <div id="normalFilter" class="filterButton" onclick="filterGameType('normal')">Normal</div>
-        <div id="aramFilter" class="filterButton" onclick="filterGameType('aram')">ARAM</div>
-    </div>
-
-    <br />
-    <br />
-
-    <div>
-        <div id="grindFilter" class="filterButton" onclick="filterGrindOrFun('grind')">Grind</div>
-        <div id="funFilter" class="filterButton" onclick="filterGrindOrFun('fun')">Fun</div>
-    </div>
-
-    <br />
-    <br />
-
-    <div>
-        <div id="micFilter" class="filterButton" onclick="filterMic('yes')">Mic</div>
-        <div id="noMicFilter" class="filterButton" onclick="filterMic('no')">No Mic</div>
-    </div>
-
-    <br />
-    <br />
-
-    <div id="applyFilter" class="filterButton" onclick="applyFilter()">Apply Filter</div>
-
-    <br />
-    <br />
-    <div id="soloduoSummonersList">
-        <div>
+            <div id="multiselectContainer2">
+                <div id="multiselect2">
+                    <div class="selectBox" onclick="showCheckboxes('gametype')">
+                        <select class="dropdown">
+                            <option>Filter Game Type</option>
+                        </select>
+                        <div class="overSelect"></div>
+                    </div>
+                    <div id="checkboxes_gametype">
+                        <!-- <div id="soloduoFilter" class="filterButton" onclick="filterGameType('soloduo')">Solo/Duo</div>
+                        <div id="flexFilter" class="filterButton" onclick="filterGameType('flex')">Flex</div>
+                        <div id="normalFilter" class="filterButton" onclick="filterGameType('normal')">Normal</div>
+                        <div id="aramFilter" class="filterButton" onclick="filterGameType('aram')">ARAM</div> -->
+                        <label class="gametype_btn" for="soloduoFilter">
+                        <input type="checkbox" id="soloduoFilter" class="checkbox_filters" onclick="filterGameType('soloduo')" />&nbsp;SOLO/DUO</label> 
+                        <label class="gametype_btn" for="flexFilter">
+                        <input type="checkbox" id="flexFilter" class="checkbox_filters" onclick="filterGameType('flex')" />&nbsp;FLEX</label>
+                        <label class="gametype_btn" for="normalFilter">
+                        <input type="checkbox" id="normalFilter" class="checkbox_filters" onclick="filterGameType('normal')" />&nbsp;NORMAL</label>
+                        <label class="gametype_btn" for="aramFilter">
+                        <input type="checkbox" id="aramFilter" class="checkbox_filters" onclick="filterGameType('aram')" />&nbsp;ARAM</label>
+                    </div>
+                </div>
+            </div>
+        
+            <div id="gofContainer">
+                <div id="grindFilter" class="filterButton" onclick="filterGrindOrFun('grind')">Grind</div>
+                <div id="funFilter" class="filterButton" onclick="filterGrindOrFun('fun')">Fun</div>
+            </div>
+        
+            <div id="micContainer">
+                <!-- <div id="micFilter" class="filterButton" onclick="filterMic('yes')">Mic</div>
+                <div id="noMicFilter" class="filterButton" onclick="filterMic('no')">No Mic</div> -->
+                <div class="micAvailFilters">
+                    <img src="pictures/mic/mic.png" id="micIcon" class="mic_icons" alt="Mic_icon" onclick="micFilterClicked('mic')" />
+                </div>
+                <div class="micAvailFilters">
+                    <img src="pictures/mic/no_mic.png" id="noMicIcon" class="mic_icons" alt="NoMic_icon" onclick="micFilterClicked('noMic')" />
+                </div>
+            </div>
+            
+        
+            <div id="applyFilterContainer">
+                <div id="applyFilter" class="filterButton2" onclick="applyFilter()">Apply Filter</div>
+            </div>
         </div>
-    </div>
-    <div id="flexSummonersList">
-        <div>
+        <div class="lists" id="masterUser">
+            <div>
+            </div>
         </div>
-    </div>
-    <div id="normSummonersList">
-        <div>
+        <div id="filterButtons">
+            <div id="multiselectContainer">
+                <div id="multiselect">
+                    <div class="selectBox" onclick="showCheckboxes('tiers')">
+                        <select class="dropdown">
+                            <option>Filter Tiers</option>
+                        </select>
+                        <div class="overSelect"></div>
+                    </div>
+                    <div id="checkboxes_tiers">
+                        <!-- <div id="2TierAbove" class="filterButton" onclick="filterTier(2)">+2</div>
+                        <div id="1TierAbove" class="filterButton" onclick="filterTier(1)">+1</div>
+                        <div id="0TierAbove" class="filterButton" onclick="filterTier(0)">0</div>
+                        <div id="1TierBelow" class="filterButton" onclick="filterTier(-1)">-1</div>
+                        <div id="2TierBelow" class="filterButton" onclick="filterTier(-2)">-2</div> -->
+                        <label class="tiertype_btn" for="2TierAbove">
+                        <input type="checkbox" id="2TierAbove" class="checkbox_filters" onclick="filterTier(2)">&nbsp;+2</label>
+                        <label class="tiertype_btn" for="1TierAbove">
+                        <input type="checkbox" id="1TierAbove" class="checkbox_filters" onclick="filterTier(1)">&nbsp;+1</label>
+                        <label class="tiertype_btn" for="0TierAbove">
+                        <input type="checkbox" id="0TierAbove" class="checkbox_filters" onclick="filterTier(0)">&nbsp;0</label>
+                        <label class="tiertype_btn" for="1TierBelow">
+                        <input type="checkbox" id="1TierBelow" class="checkbox_filters" onclick="filterTier(-1)">&nbsp;-1</label>
+                        <label class="tiertype_btn" for="2TierBelow">
+                        <input type="checkbox" id="2TierBelow" class="checkbox_filters" onclick="filterTier(-2)">&nbsp;-2</label>
+                    </div>
+                </div> 
+            </div>
+                      
+            <!-- <div>
+                <div id="topFilter" class="filterButton" onclick="filterRole('top')">top</div>
+                <div id="jgFilter" class="filterButton" onclick="filterRole('jg')">jg</div>
+                <div id="midFilter" class="filterButton" onclick="filterRole('mid')">mid</div>
+                <div id="adcFilter" class="filterButton" onclick="filterRole('adc')">adc</div>
+                <div id="suppFilter" class="filterButton" onclick="filterRole('supp')">supp</div>
+            </div> -->
+            <div id="roles_container">
+                <input type="checkbox" name="roles" class="role_checkbox" id="fill" onclick="filterRole('fill', 1)" />
+                <label class="roles_btn" for="fill">
+                    <img src="pictures/role_icons/Fill_icon.png" id="fillFilter" class="role_icons" alt="Fill_icon" />
+                </label>
+                <input type="checkbox" name="roles" class="role_checkbox" id="top" onclick="filterRole('top', 1)" />
+                <label class="roles_btn" for="top">
+                    <img src="pictures/role_icons/Top_icon.png" id="topFilter" class="role_icons" alt="Top_icon" />
+                </label>
+                <input type="checkbox" name="roles" class="role_checkbox" id="jg" onclick="filterRole('jg', 1)" />
+                <label class="roles_btn" for="jg">
+                    <img src="pictures/role_icons/Jungle_icon.png" id="jgFilter" class="role_icons" alt="Jungle_icon" />
+                </label>
+                <input type="checkbox" name="roles" class="role_checkbox" id="mid" onclick="filterRole('mid', 1)" />
+                <label class="roles_btn" for="mid">
+                    <img src="pictures/role_icons/Mid_icon.png" id="midFilter" class="role_icons" alt="Mid_icon" />
+                </label>
+                <input type="checkbox" name="roles" class="role_checkbox" id="adc" onclick="filterRole('adc', 1)" />
+                <label class="roles_btn" for="adc">
+                    <img src="pictures/role_icons/Bot_icon.png" id="adcFilter" class="role_icons" alt="Bot_icon" />
+                </label>
+                <input type="checkbox" name="roles" class="role_checkbox" id="supp" onclick="filterRole('supp', 1)" />
+                <label class="roles_btn" for="supp">
+                    <img src="pictures/role_icons/Support_icon.png" id="suppFilter" class="role_icons" alt="Support_icon" />
+                </label>
+            </div>
+        
+            <div id="multiselectContainer2">
+                <div id="multiselect2">
+                    <div class="selectBox" onclick="showCheckboxes('gametype')">
+                        <select class="dropdown">
+                            <option>Filter Game Type</option>
+                        </select>
+                        <div class="overSelect"></div>
+                    </div>
+                    <div id="checkboxes_gametype">
+                        <!-- <div id="soloduoFilter" class="filterButton" onclick="filterGameType('soloduo')">Solo/Duo</div>
+                        <div id="flexFilter" class="filterButton" onclick="filterGameType('flex')">Flex</div>
+                        <div id="normalFilter" class="filterButton" onclick="filterGameType('normal')">Normal</div>
+                        <div id="aramFilter" class="filterButton" onclick="filterGameType('aram')">ARAM</div> -->
+                        <label class="gametype_btn" for="soloduoFilter">
+                        <input type="checkbox" id="soloduoFilter" class="checkbox_filters" onclick="filterGameType('soloduo')" />&nbsp;SOLO/DUO</label> 
+                        <label class="gametype_btn" for="flexFilter">
+                        <input type="checkbox" id="flexFilter" class="checkbox_filters" onclick="filterGameType('flex')" />&nbsp;FLEX</label>
+                        <label class="gametype_btn" for="normalFilter">
+                        <input type="checkbox" id="normalFilter" class="checkbox_filters" onclick="filterGameType('normal')" />&nbsp;NORMAL</label>
+                        <label class="gametype_btn" for="aramFilter">
+                        <input type="checkbox" id="aramFilter" class="checkbox_filters" onclick="filterGameType('aram')" />&nbsp;ARAM</label>
+                    </div>
+                </div>
+            </div>
+        
+            <div id="gofContainer">
+                <div id="grindFilter" class="filterButton" onclick="filterGrindOrFun('grind')">Grind</div>
+                <div id="funFilter" class="filterButton" onclick="filterGrindOrFun('fun')">Fun</div>
+            </div>
+        
+            <div id="micContainer">
+                <!-- <div id="micFilter" class="filterButton" onclick="filterMic('yes')">Mic</div>
+                <div id="noMicFilter" class="filterButton" onclick="filterMic('no')">No Mic</div> -->
+                <div class="micAvailFilters">
+                    <img src="pictures/mic/mic.png" id="micIcon" class="mic_icons" alt="Mic_icon" onclick="micFilterClicked('mic')" />
+                </div>
+                <div class="micAvailFilters">
+                    <img src="pictures/mic/no_mic.png" id="noMicIcon" class="mic_icons" alt="NoMic_icon" onclick="micFilterClicked('noMic')" />
+                </div>
+            </div>
+            
+        
+            <div id="applyFilterContainer">
+                <div id="applyFilter" class="filterButton2" onclick="applyFilter()">Apply Filter</div>
+            </div>
         </div>
-    </div>
-    <div id="aramSummonersList">
-        <div>
+
+        <div class="lists" id="soloduoSummonersList">
+            <div>
+            </div>
+        </div>
+        <div class="lists" id="flexSummonersList">
+            <div>
+            </div>
+        </div>
+        <div class="lists" id="normSummonersList">
+            <div>
+            </div>
+        </div>
+        <div class="lists" id="aramSummonersList">
+            <div>
+            </div>
         </div>
     </div>
     <footer>

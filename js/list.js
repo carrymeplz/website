@@ -16,13 +16,21 @@ var rankPlusOne = true;
 var rankSame = true;
 var rankMinusOne = true;
 var rankMinusTwo = true;
+var fill = true;
 var roleTop = true;
 var roleJg = true;
 var roleMid = true;
 var roleAdc = true;
 var roleSupp = true;
+var fill2 = true;
+var roleTop2 = true;
+var roleJg2 = true;
+var roleMid2 = true;
+var roleAdc2 = true;
+var roleSupp2 = true;
 
 var region;
+var userIgn;
 var flexR;
 var soloR;
 var gameType;
@@ -36,6 +44,9 @@ var fun = true;
 var mic = true;
 var noMic = true;
 var micAvail;
+var expanded = false;
+var micFilter = 2;
+var posted = false;
 
 $(document).ready(function() {
 
@@ -43,28 +54,37 @@ $(document).ready(function() {
     queryString = queryString.substring(1);
     var queries = queryString.split("&");
 
-    region = queries[0].split('=')[1];
-    soloR = queries[1].split('=')[1];
-    flexR = queries[2].split('=')[1];
-	gameType = queries[3].split('=')[1];
+	region = queries[0].split('=')[1];
+	userIgn = queries[1].split('=')[1];
+    soloR = queries[2].split('=')[1];
+    flexR = queries[3].split('=')[1];
+	gameType = queries[4].split('=')[1];
     aram = Math.floor(gameType / 1000);
     flex = Math.floor(gameType / 100) % 10;
     norm = Math.floor(gameType / 10) % 10;
 	soloduo = gameType % 10;
-    grindOrFun = queries[4].split('=')[1];
-    micAvail = queries[5].split('=')[1];
+    grindOrFun = queries[5].split('=')[1];
+    micAvail = queries[6].split('=')[1];
 
-	if (!soloduo)
-		$('#soloduoFilter').css('background-color', 'grey');
+	if (soloduo)
+		$('.gametype_btn:nth-of-type(1)').css('background-color', '#EE6F59');
+	else
+		$('.gametype_btn:nth-of-type(1)').css('background-color', '#343a40');
 	
-	if (!flex)
-		$('#flexFilter').css('background-color', 'grey');
+	if (flex)
+		$('.gametype_btn:nth-of-type(2)').css('background-color', '#EE6F59');
+	else
+		$('.gametype_btn:nth-of-type(2)').css('background-color', '#343a40');
 	
-	if (!norm)
-		$('#normalFilter').css('background-color', 'grey');
+	if (norm)
+		$('.gametype_btn:nth-of-type(3)').css('background-color', '#EE6F59');
+	else
+		$('.gametype_btn:nth-of-type(3)').css('background-color', '#343a40');
 
-	if (!aram)
-		$('#aramFilter').css('background-color', 'grey');
+	if (aram)
+		$('.gametype_btn:nth-of-type(4)').css('background-color', '#EE6F59');
+	else
+		$('.gametype_btn:nth-of-type(4)').css('background-color', '#343a40');
 
 	if (grindOrFun == 0) {
 		grind = false;
@@ -92,80 +112,135 @@ function filterTier(tierFilter) {
 		case 2:
 			rankPlusTwo = !rankPlusTwo;
 			if (rankPlusTwo)
-				$('#2TierAbove').css('background-color', 'cyan');
+				$('.tiertype_btn:nth-of-type(1)').css('background-color', '#EE6F59');
 			else
-				$('#2TierAbove').css('background-color', 'grey');
+				$('.tiertype_btn:nth-of-type(1)').css('background-color', '#343a40');
 			break;
 		case 1:
 			rankPlusOne = !rankPlusOne;
 			if (rankPlusOne)
-				$('#1TierAbove').css('background-color', 'cyan');
+				$('.tiertype_btn:nth-of-type(2)').css('background-color', '#EE6F59');
 			else
-				$('#1TierAbove').css('background-color', 'grey');
+				$('.tiertype_btn:nth-of-type(2)').css('background-color', '#343a40');
 			break;
 		case 0:
 			rankSame = !rankSame;
 			if (rankSame)
-				$('#0TierAbove').css('background-color', 'cyan');
+				$('.tiertype_btn:nth-of-type(3)').css('background-color', '#EE6F59');
 			else
-				$('#0TierAbove').css('background-color', 'grey');
+				$('.tiertype_btn:nth-of-type(3)').css('background-color', '#343a40');
 			break;
 		case -1:
 			rankMinusOne = !rankMinusOne;
 			if (rankMinusOne)
-				$('#1TierBelow').css('background-color', 'cyan');
+				$('.tiertype_btn:nth-of-type(4)').css('background-color', '#EE6F59');
 			else
-				$('#1TierBelow').css('background-color', 'grey');
+				$('.tiertype_btn:nth-of-type(4)').css('background-color', '#343a40');
 			break;
 		case -2:
 			rankMinusTwo = !rankMinusTwo;
 			if (rankMinusTwo)
-				$('#2TierBelow').css('background-color', 'cyan');
+				$('.tiertype_btn:nth-of-type(5)').css('background-color', '#EE6F59');
 			else
-				$('#2TierBelow').css('background-color', 'grey');
+				$('.tiertype_btn:nth-of-type(5)').css('background-color', '#343a40');
 			break;
 		default:
 			break;
 	}
 }
 
-function filterRole(roleFilter) {
+function filterRole(roleFilter, callFrom) {
 	switch (roleFilter) {
+		case 'fill':
+			fill = !fill;
+			if (callFrom == 1) {
+				if (fill) 
+					$('#fillFilter').css('background-color', '#EE6F59');
+				else
+					$('#fillFilter').css('background-color', '#606060');
+				break;
+			} else if (callFrom == 0){
+				if (fill) 
+					$('#fillEditer').css('background-color', '#EE6F59');
+				else
+					$('#fillEditer').css('background-color', '#606060');
+				break;
+			}
 		case 'top':
 			roleTop = !roleTop;
-			if (roleTop)
-				$('#topFilter').css('background-color', 'cyan');
-			else
-				$('#topFilter').css('background-color', 'grey');
-			break;
+			if (callFrom == 1) {
+				if (roleTop) 
+					$('#topFilter').css('background-color', '#EE6F59');
+				else
+					$('#topFilter').css('background-color', '#606060');
+				break;
+			} else if (callFrom == 0){
+				if (roleTop) 
+					$('#topEditer').css('background-color', '#EE6F59');
+				else
+					$('#topEditer').css('background-color', '#606060');
+				break;
+			}
 		case 'jg':
 			roleJg = !roleJg;
-			if (roleJg)
-				$('#jgFilter').css('background-color', 'cyan');
-			else
-				$('#jgFilter').css('background-color', 'grey');
-			break;
+			if (callFrom == 1) {
+				if (roleJg) 
+					$('#jgFilter').css('background-color', '#EE6F59');
+				else
+					$('#jgFilter').css('background-color', '#606060');
+				break;
+			} else if (callFrom == 0){
+				if (roleJg) 
+					$('#jgEditer').css('background-color', '#EE6F59');
+				else
+					$('#jgEditer').css('background-color', '#606060');
+				break;
+			}
 		case 'mid':
 			roleMid = !roleMid;
-			if (roleMid)
-				$('#midFilter').css('background-color', 'cyan');
-			else
-				$('#midFilter').css('background-color', 'grey');
-			break;
+			if (callFrom == 1) {
+				if (roleMid) 
+					$('#midFilter').css('background-color', '#EE6F59');
+				else
+					$('#midFilter').css('background-color', '#606060');
+				break;
+			} else if (callFrom == 0){
+				if (roleMid) 
+					$('#midEditer').css('background-color', '#EE6F59');
+				else
+					$('#midEditer').css('background-color', '#606060');
+				break;
+			}
 		case 'adc':
 			roleAdc = !roleAdc;
-			if (roleAdc)
-				$('#adcFilter').css('background-color', 'cyan');
-			else
-				$('#adcFilter').css('background-color', 'grey');
-			break;
+			if (callFrom == 1) {
+				if (roleAdc) 
+					$('#adcFilter').css('background-color', '#EE6F59');
+				else
+					$('#adcFilter').css('background-color', '#606060');
+				break;
+			} else if (callFrom == 0){
+				if (roleAdc) 
+					$('#adcEditer').css('background-color', '#EE6F59');
+				else
+					$('#adcEditer').css('background-color', '#606060');
+				break;
+			}
 		case 'supp':
 			roleSupp = !roleSupp;
-			if (roleSupp)
-				$('#suppFilter').css('background-color', 'cyan');
-			else
-				$('#suppFilter').css('background-color', 'grey');
-			break;
+			if (callFrom == 1) {
+				if (roleSupp) 
+					$('#suppFilter').css('background-color', '#EE6F59');
+				else
+					$('#suppFilter').css('background-color', '#606060');
+				break;
+			} else if (callFrom == 0){
+				if (roleSupp) 
+					$('#suppEditer').css('background-color', '#EE6F59');
+				else
+					$('#suppEditer').css('background-color', '#606060');
+				break;
+			}
 		default:
 			break;
 	}
@@ -176,30 +251,30 @@ function filterGameType(gameTypeFilter) {
 		case 'soloduo':
 			soloduo = !soloduo;
 			if (soloduo)
-				$('#soloduoFilter').css('background-color', 'cyan');
-			else 
-				$('#soloduoFilter').css('background-color', 'grey');
+				$('.gametype_btn:nth-of-type(1)').css('background-color', '#EE6F59');
+			else
+				$('.gametype_btn:nth-of-type(1)').css('background-color', '#343a40');
 			break;
 		case 'flex':
 			flex = !flex;
 			if (flex)
-				$('#flexFilter').css('background-color', 'cyan');
-			else 
-				$('#flexFilter').css('background-color', 'grey');
+				$('.gametype_btn:nth-of-type(2)').css('background-color', '#EE6F59');
+			else
+				$('.gametype_btn:nth-of-type(2)').css('background-color', '#343a40');
 			break;
 		case 'normal':
 			norm = !norm;
 			if (norm)
-				$('#normalFilter').css('background-color', 'cyan');
-			else 
-				$('#normalFilter').css('background-color', 'grey');
+				$('.gametype_btn:nth-of-type(3)').css('background-color', '#EE6F59');
+			else
+				$('.gametype_btn:nth-of-type(3)').css('background-color', '#343a40');
 			break;
 		case 'aram':
 			aram = !aram;
 			if (aram)
-				$('#aramFilter').css('background-color', 'cyan');
-			else 
-				$('#aramFilter').css('background-color', 'grey');
+				$('.gametype_btn:nth-of-type(4)').css('background-color', '#EE6F59');
+			else
+				$('.gametype_btn:nth-of-type(4)').css('background-color', '#343a40');
 			break;
 		default:
 			break;
@@ -211,14 +286,14 @@ function filterGrindOrFun(filter) {
 		case 'grind':
 			grind = !grind;
 			if (grind)
-				$('#grindFilter').css('background-color', 'cyan');
+				$('#grindFilter').css('background-color', '#EE6F59');
 			else 
 				$('#grindFilter').css('background-color', 'grey');
 			break;
 		case 'fun':
 			fun = !fun;
 			if (fun)
-				$('#funFilter').css('background-color', 'cyan');
+				$('#funFilter').css('background-color', '#EE6F59');
 			else 
 				$('#funFilter').css('background-color', 'grey');
 			break;
@@ -512,7 +587,6 @@ function applyFilter() {
 	} else {
 		//jokes again lol
 	}
-	
 	appendList(soloDuoListF, flexListF, normListF, aramListF);
 }
 
@@ -563,58 +637,65 @@ function appendListHelper(list, id) {
 	}
 
 	for (var player in list) {	
-		row = row.concat("<div class=\"player-list-card row offset-2\">");
+		row = row.concat("<div class=\"player-list-card row offset-2 \">");
 		row = row.concat("");
 		row = row.concat("<!-- Left Side -->");
-		row = row.concat("    <div class=\"player-info-section col-5\" style=\"border: 1px solid black\">");
+		row = row.concat("    <div class=\"player-info-section col-5\" style=\"border: 1px solid black; background-color: rgba(255, 255, 255, 0.05);\">");
 		row = row.concat("        <div class=\"row\" style=\"margin: 1.2vw\">");
 		row = row.concat("            <div class=\"col-4\" style=\"margin-top: 2vw\">");
 		row = row.concat("                <div class=\"row\" align=\"center\">");
 		row = row.concat("                    <div class=\"user-icon col text-center\" >");
-		row = row.concat("                    <img src=\"http://ddragon.leagueoflegends.com/cdn/8.16.1/img/profileicon/" + list[player].profileIconId + ".png\" height=\"150vw\" \/> ");
+		row = row.concat("                    <img src=\"http://ddragon.leagueoflegends.com/cdn/8.18.2/img/profileicon/" + list[player].profileIconId + ".png\" height=\"150vw\" \/> "); //visit this link to check for the latest patch https://ddragon.leagueoflegends.com/api/versions.json
 		row = row.concat("                    <\/div>");
 		row = row.concat("                    <div class=\"user-ign col text-center\">");
 		row = row.concat("                        <p style=\"font-family: fantasy; font-size: 28px;\">" + list[player].userIgn + "<\/p>");
 		row = row.concat("                    <\/div>");
 		row = row.concat("                <\/div>");
 		row = row.concat("            <\/div>");
-		row = row.concat("            <div class=\"col\" style=\"margin-top: 1.2vw\">");
-		row = row.concat("                 <div class=\"row\" style=\"margin: 0vw 0.7vw 1vw 0vw;\">");
-		row = row.concat("                    <div class=\"user-stats col bg-light text-center\" style=\"border: 1px solid black;\">");
+		row = row.concat("            <div class=\"col\" style=\"margin-top: 1.2vw; \">");
+		row = row.concat("                <div class=\"row\" style=\"margin: 0vw 0vw 1vw 0vw;\">");
+		row = row.concat("                    <div class=\"user-stats col text-center\" style=\"border: 1px solid black; \">");
 		row = row.concat("                        <div class=\"row\">");
-		row = row.concat("                            <div class=\"col\" align=\"center\">");
-		row = row.concat("                                <b><u>SOLO RANK<\/u><\/b>");
-		row = row.concat("                            <\/div>");
-		row = row.concat("                        <\/div>");
-		row = row.concat("                        <div class=\"row\">");
-		row = row.concat("                            <table class=\"player-info-text col outer\" style=\"margin: 0.8vw\">");
-		row = row.concat("                                <tr>");
-		row = row.concat("                                    <td class=\"player-rank-icon\">");
-		row = row.concat("                                        <img src=\"./pictures/tier/" + tierDict[decodeTier(list[player].soloRank)] + ".png\" width=\"130px\"\/>");
+		row = row.concat("                            <table class=\"player-info-text col outer\" style=\"margin: 0vw; background-color: #343a40;\">");
+		row = row.concat("                                <tr class=\"player-info-border\">");
+		row = row.concat("                                    <td class=\"player-rank-icon\" style=\"padding: 7px;\">");
+		row = row.concat("                                        <img src=\"./pictures/tier/" + tierDict[decodeTier(list[player].soloRank)] + ".png\" width=\"110px\"\/>");
 		row = row.concat("                                    <\/td>");
 		row = row.concat("                                    <td>");
-		row = row.concat("                                        <p>" + tierDict[decodeTier(list[player].soloRank)] + "<\/p>");
-		row = row.concat("                                        <p>" + decodeRank(list[player].soloRank) + "<\/p>");
-		row = row.concat("                                        <p><b>43 LP<\/b>\/ " + list[player].soloRankWins + "W " + list[player].soloRankLosses + "L<\/p>");
-		row = row.concat("                                        <p>Win Ratio " + Math.round(list[player].soloRankWins / (list[player].soloRankWins + list[player].soloRankLosses) * 100) + "%<\/p>");
+		row = row.concat("                                        <p style=\"margin-bottom: 0.5rem;\">" + tierDict[decodeTier(list[player].soloRank)] + "  " + decodeRank(list[player].soloRank) + "<\/p>");
+		row = row.concat("                                        <p style=\"margin-bottom: 0.5rem;\">" + list[player].soloLeaguePoints + "LP / " + list[player].soloRankWins + "W " + list[player].soloRankLosses + "L<\/p>");
+		row = row.concat("                                        <p style=\"margin-bottom: 0.5rem;\">Win Ratio " + Math.round(list[player].soloRankWins / (list[player].soloRankWins + list[player].soloRankLosses) * 100) + "%<\/p>");
 		row = row.concat("                                    <\/td>");
 		row = row.concat("                                <\/tr>");
 		row = row.concat("                            <\/table>");
+		row = row.concat("				      		  <table class=\"player-info-text col outer\" style=\"margin: 0vw; background-color: #343a40;\">");
+		row = row.concat("                    		      <tr>");
+		row = row.concat("                    		          <td class=\"player-rank-icon\">");
+		row = row.concat("                    		              <img src=\"./pictures/tier/" + tierDict[decodeTier(list[player].flexRank)] + ".png\" width=\"70px\"\/>");
+		row = row.concat("                    		          <\/td>");
+		row = row.concat("                    		          <td>");
+		row = row.concat("                    		              <p style=\"margin-bottom: 0.2rem;\">" + tierDict[decodeTier(list[player].flexRank)] + "  " + decodeRank(list[player].flexRank) + "<\/p>");
+		row = row.concat("                    		              <p style=\"margin-bottom: 0.2rem;\">" + list[player].flexLeaguePoints + "LP / " + list[player].flexRankWins + "W " + list[player].flexRankLosses + "L<\/p>");
+		row = row.concat("                    		              <p style=\"margin-bottom: 0.2rem;\">Win Ratio " + Math.round(list[player].flexRankWins / (list[player].flexRankWins + list[player].flexRankLosses) * 100) + "%<\/p>");
+		row = row.concat("                    		          <\/td>");
+		row = row.concat("                    		      <\/tr>");
+		row = row.concat("                    		  <\/table>");
 		row = row.concat("                        <\/div>");
 		row = row.concat("                    <\/div>");
 		row = row.concat("                <\/div> ");
 		row = row.concat("                <div class=\"row\">");
-		row = row.concat("                    <div class=\"col\" align=\"center\" style=\"margin-bottom: 1vw\">");
-		row = row.concat("                        <button>Flex Rank<\/button>");
-		row = row.concat("                    <\/div>");
+		
+		// row = row.concat("                    <div class=\"col\" align=\"center\" style=\"margin-bottom: 1vw\">");
+		// row = row.concat("                        <button>Flex Rank<\/button>");
+		// row = row.concat("                    <\/div>");
 		row = row.concat("                <\/div>");
 		row = row.concat("            <\/div>");
 		row = row.concat("        <\/div>");
 		row = row.concat("    <\/div>");
 		row = row.concat("");
 		row = row.concat("<!-- Right Side -->");
-		row = row.concat("    <div class=\"player-preference-section col-4\" style=\"border-top: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black\">");
-		row = row.concat("        <div class=\"posted-date col\" style=\"margin: 1.8vw 0vw 0vw 0.8vw;\">Date Posted: TIME TO BE IMPLEMENTED<\/div>");
+		row = row.concat("    <div class=\"player-preference-section col-4\" style=\"background-color: rgba(255, 255, 255, 0.05); border-top: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black\">");
+		row = row.concat("        <div class=\"posted-date col\" style=\"margin: 0.3vw 0vw 0.3vw 1.3vw; text-align: right \">Date Posted: " + list[player].postedTime + "<\/div>");
 		row = row.concat("        <br \/>");
 		row = row.concat("        <div class=\"row align-items-end\">");
 		row = row.concat("            <div class=\"col-10 offset-1 bg-dark \" style=\"border: 1px solid black; color: white; height: 7vw; padding: 0.7vw\">" + list[player].notes + "<\/div>");
@@ -624,9 +705,17 @@ function appendListHelper(list, id) {
 		row = row.concat("            <div class=\"col-10\">");
 		row = row.concat("                <div class=\"row justify-content-center\"> ");
 		row = row.concat("                    <!-- For loop for info, add margin spacing in between - 0.3vw -->");
-		row = row.concat("                    <div class=\"player-roles\" style=\"margin-right: 0.8vw\">");
-		row = row.concat(                         appendChecked(list[player].roles));
+		row = row.concat("                    <div class=\"player-roles\">");
+		row = row.concat(                         appendCheckedRoles(list[player].roles));
 		row = row.concat("                    <\/div>");
+
+		if (list[player].micAvail == 1) {
+			row = row.concat("                <img src=\"pictures/mic/mic.png\" width=\"40px\" height=\"40px\" style=\"margin-right: 0.3vw\"/>");
+		}
+        else {
+			row = row.concat("                <img src=\"pictures/mic/no_mic.png\" width=\"40px\" height=\"40px\" style=\"margin-right: 0.3vw\"/>");
+		}
+
 		row = row.concat("                    <div class=\"game-type\" style=\"margin-right: 0.8vw\">");
 		row = row.concat(                         appendChecked(list[player].gameType));
 		row = row.concat("                    <\/div>");
@@ -647,17 +736,6 @@ function appendListHelper(list, id) {
 			row = row.concat("                <\/div>");
 		}
 
-		if (list[player].micAvail == 1) {
-			row = row.concat("                <div class=\"player-mic\">");
-			row = row.concat("                    Mic");
-			row = row.concat("                <\/div>");
-		}
-        else {
-			row = row.concat("                <div class=\"player-mic\">");
-			row = row.concat("                    No Mic");
-			row = row.concat("                <\/div>");
-		}
-
 		row = row.concat("                <\/div>");
 		row = row.concat("            <\/div>");
 		row = row.concat("        <\/div>");
@@ -669,11 +747,41 @@ function appendListHelper(list, id) {
 	document.getElementById(id).innerHTML += row;
 }
 
+function appendCheckedRoles(datas) {
+	var row = "<td>";
+	for (var data in datas) {
+		if (datas[data]) {	
+			switch(data) {	
+				case 'fill':
+					row = row.concat("<img src=\"pictures/role_icons/Fill_icon.png\" width=\"40px\" style=\"margin-right: 0.3vw\"/>");
+					break;
+				case 'top':
+					row = row.concat("<img src=\"pictures/role_icons/Top_icon.png\" width=\"40px\" style=\"margin-right: 0.3vw\"/>");
+					break;
+				case 'jg':
+					row = row.concat("<img src=\"pictures/role_icons/Jungle_icon.png\" width=\"40px\" style=\"margin-right: 0.3vw\"/>");
+					break;
+				case 'mid':
+					row = row.concat("<img src=\"pictures/role_icons/Mid_icon.png\" width=\"40px\" style=\"margin-right: 0.3vw\"/>");
+					break;
+				case 'adc':
+					row = row.concat("<img src=\"pictures/role_icons/Bot_icon.png\" width=\"40px\" style=\"margin-right: 0.3vw\"/>");
+					break;
+				case 'supp':
+					row = row.concat("<img src=\"pictures/role_icons/Support_icon.png\" width=\"40px\" style=\"margin-right: 0.3vw\"/>");
+					break;
+			}
+		}	
+	}
+	row = row.concat("</td>");
+	return row;
+}
+
 function appendChecked(datas) {
     var row = "<td>";
     for (var data in datas) {
         if (datas[data])
-            row = row.concat(data + "\n");
+            row = row.concat(data + "/");
     }
     row = row.concat("</td>");
     return row;
@@ -684,21 +792,177 @@ function appendChecked(datas) {
 // depending on the user's choice. (makes it efficient for us as we dont need to 
 // enter the database everytime when the user changes filters)
 function sortGameType(summoner) {
-	if (summoner.gameType.soloduo) {
-    	if (summoner.soloRank >= soloR - 2 && summoner.soloRank <= parseInt(soloR) + 2)
-    		soloDuoList.push(summoner);
-	}
+	if (summoner.userIgn != userIgn) {
+		if (summoner.gameType.soloduo) {
+    		if (summoner.soloRank >= soloR - 2 && summoner.soloRank <= parseInt(soloR) + 2)
+    			soloDuoList.push(summoner);
+		}
 
-	if (summoner.gameType.flex) {
-    	if (summoner.flexRank >= flexR - 2 && summoner.flexRank <= parseInt(flexR) + 2)
-    		flexList.push(summoner);
-	}
+		if (summoner.gameType.flex) {
+			if (summoner.flexRank >= flexR - 2 && summoner.flexRank <= parseInt(flexR) + 2)
+				flexList.push(summoner);
+		}
 
-	if (summoner.gameType.norm) {
-		normList.push(summoner);
-	}
+		if (summoner.gameType.norm) {
+			normList.push(summoner);
+		}
 
-	if (summoner.gameType.aram) {
-		aramList.push(summoner);
+		if (summoner.gameType.aram) {
+			aramList.push(summoner);
+		}
+	} else {
+		if (!posted) {
+			posted = true;
+
+			$('#masterUser div').empty();
+			var row = ("");
+			row = row.concat("<div class=\"player-list-card row offset-2 \">");
+			row = row.concat("");
+			row = row.concat("<!-- Left Side -->");
+			row = row.concat("    <div class=\"player-info-section col-5\" style=\"border: 1px solid black; background-color: rgba(255, 255, 255, 0.05);\">");
+			row = row.concat("        <div class=\"row\" style=\"margin: 1.2vw\">");
+			row = row.concat("            <div class=\"col-4\" style=\"margin-top: 2vw\">");
+			row = row.concat("                <div class=\"row\" align=\"center\">");
+			row = row.concat("                    <div class=\"user-icon col text-center\" >");
+			row = row.concat("                    <img src=\"http://ddragon.leagueoflegends.com/cdn/8.18.2/img/profileicon/" + summoner.profileIconId + ".png\" height=\"150vw\" \/> "); //visit this link to check for the latest patch https://ddragon.leagueoflegends.com/api/versions.json
+			row = row.concat("                    <\/div>");
+			row = row.concat("                    <div class=\"user-ign col text-center\">");
+			row = row.concat("                        <p style=\"font-family: fantasy; font-size: 28px;\">" + summoner.userIgn + "<\/p>");
+			row = row.concat("                    <\/div>");
+			row = row.concat("                <\/div>");
+			row = row.concat("            <\/div>");
+			row = row.concat("            <div class=\"col\" style=\"margin-top: 1.2vw; \">");
+			row = row.concat("                <div class=\"row\" style=\"margin: 0vw 0vw 1vw 0vw;\">");
+			row = row.concat("                    <div class=\"user-stats col text-center\" style=\"border: 1px solid black; \">");
+			row = row.concat("                        <div class=\"row\">");
+			row = row.concat("                            <table class=\"player-info-text col outer\" style=\"margin: 0vw; background-color: #343a40;\">");
+			row = row.concat("                                <tr class=\"player-info-border\">");
+			row = row.concat("                                    <td class=\"player-rank-icon\" style=\"padding: 7px;\">");
+			row = row.concat("                                        <img src=\"./pictures/tier/" + tierDict[decodeTier(summoner.soloRank)] + ".png\" width=\"110px\"\/>");
+			row = row.concat("                                    <\/td>");
+			row = row.concat("                                    <td>");
+			row = row.concat("                                        <p style=\"margin-bottom: 0.5rem;\">" + tierDict[decodeTier(summoner.soloRank)] + "  " + decodeRank(summoner.soloRank) + "<\/p>");
+			row = row.concat("                                        <p style=\"margin-bottom: 0.5rem;\">" + summoner.soloLeaguePoints + "LP / " + summoner.soloRankWins + "W " + summoner.soloRankLosses + "L<\/p>");
+			row = row.concat("                                        <p style=\"margin-bottom: 0.5rem;\">Win Ratio " + Math.round(summoner.soloRankWins / (summoner.soloRankWins + summoner.soloRankLosses) * 100) + "%<\/p>");
+			row = row.concat("                                    <\/td>");
+			row = row.concat("                                <\/tr>");
+			row = row.concat("                            <\/table>");
+			row = row.concat("				      		  <table class=\"player-info-text col outer\" style=\"margin: 0vw; background-color: #343a40;\">");
+			row = row.concat("                    		      <tr>");
+			row = row.concat("                    		          <td class=\"player-rank-icon\">");
+			row = row.concat("                    		              <img src=\"./pictures/tier/" + tierDict[decodeTier(summoner.flexRank)] + ".png\" width=\"70px\"\/>");
+			row = row.concat("                    		          <\/td>");
+			row = row.concat("                    		          <td>");
+			row = row.concat("                    		              <p style=\"margin-bottom: 0.2rem;\">" + tierDict[decodeTier(summoner.flexRank)] + "  " + decodeRank(summoner.flexRank) + "<\/p>");
+			row = row.concat("                    		              <p style=\"margin-bottom: 0.2rem;\">" + summoner.flexLeaguePoints + "LP / " + summoner.flexRankWins + "W " + summoner.flexRankLosses + "L<\/p>");
+			row = row.concat("                    		              <p style=\"margin-bottom: 0.2rem;\">Win Ratio " + Math.round(summoner.flexRankWins / (summoner.flexRankWins + summoner.flexRankLosses) * 100) + "%<\/p>");
+			row = row.concat("                    		          <\/td>");
+			row = row.concat("                    		      <\/tr>");
+			row = row.concat("                    		  <\/table>");
+			row = row.concat("                        <\/div>");
+			row = row.concat("                    <\/div>");
+			row = row.concat("                <\/div> ");
+			row = row.concat("                <div class=\"row\">");
+			
+			// row = row.concat("                    <div class=\"col\" align=\"center\" style=\"margin-bottom: 1vw\">");
+			// row = row.concat("                        <button>Flex Rank<\/button>");
+			// row = row.concat("                    <\/div>");
+			row = row.concat("                <\/div>");
+			row = row.concat("            <\/div>");
+			row = row.concat("        <\/div>");
+			row = row.concat("    <\/div>");
+			row = row.concat("");
+			row = row.concat("<!-- Right Side -->");
+			row = row.concat("    <div class=\"player-preference-section col-4\" style=\"background-color: rgba(255, 255, 255, 0.05); border-top: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black\">");
+			row = row.concat("        <div class=\"posted-date col\" style=\"margin: 0.3vw 0vw 0.3vw 1.3vw; text-align: right \">Date Posted: " + summoner.postedTime + "<\/div>");
+			row = row.concat("        <br \/>");
+			row = row.concat("        <div class=\"row align-items-end\">");
+			row = row.concat("            <div class=\"col-10 offset-1 bg-dark \" style=\"border: 1px solid black; color: white; height: 7vw; padding: 0.7vw\">" + summoner.notes + "<\/div>");
+			row = row.concat("        <\/div>");
+			row = row.concat("        <br \/>");
+			row = row.concat("        <div class=\"user-preference-icons row justify-content-center\">");
+			row = row.concat("            <div class=\"col-10\">");
+			row = row.concat("                <div class=\"row justify-content-center\"> ");
+			row = row.concat("                    <!-- For loop for info, add margin spacing in between - 0.3vw -->");
+			row = row.concat("                    <div class=\"player-roles\">");
+			row = row.concat(                         appendCheckedRoles(summoner.roles));
+			row = row.concat("                    <\/div>");
+
+			if (summoner.micAvail == 1) {
+				row = row.concat("                <img src=\"pictures/mic/mic.png\" width=\"40px\" height=\"40px\" style=\"margin-right: 0.3vw\"/>");
+			}
+			else {
+				row = row.concat("                <img src=\"pictures/mic/no_mic.png\" width=\"40px\" height=\"40px\" style=\"margin-right: 0.3vw\"/>");
+			}
+
+			row = row.concat("                    <div class=\"game-type\" style=\"margin-right: 0.8vw\">");
+			row = row.concat(                         appendChecked(summoner.gameType));
+			row = row.concat("                    <\/div>");
+
+			if (summoner.grindorfun == 2) {
+				row = row.concat("                <div class=\"play-style\" style=\"margin-right: 0.8vw\">");
+				row = row.concat("                    Grind/Fun");
+				row = row.concat("                <\/div>");
+			}
+			else if (summoner.grindorfun == 1) {
+				row = row.concat("                <div class=\"play-style\" style=\"margin-right: 0.8vw\">");
+				row = row.concat("                    Grind");
+				row = row.concat("                <\/div>");
+			}
+			else {
+				row = row.concat("                <div class=\"play-style\" style=\"margin-right: 0.8vw\">");
+				row = row.concat("                    Fun");
+				row = row.concat("                <\/div>");
+			}
+
+			row = row.concat("                <\/div>");
+			row = row.concat("            <\/div>");
+			row = row.concat("        <\/div>");
+			row = row.concat("    <\/div>");
+			row = row.concat("<\/div>");
+			row = row.concat("<\/br \/>");
+		}
+		document.getElementById("masterUser").innerHTML += row;
+	}
+}
+
+function showCheckboxes(from) {
+  var checkboxes = document.getElementById("checkboxes_" + from);
+  if (!expanded) {
+    checkboxes.style.display = "block";
+    expanded = true;
+  } else {
+    checkboxes.style.display = "none";
+    expanded = false;
+  }
+}
+
+// if the user wants to see both mic and no mic people micFilter = 0 
+// only wants to see mic then micFilter = 1, no mic = 2
+function micFilterClicked(answer) {
+	if (answer == 'mic') {
+		if (micFilter == 0) {
+			$(micIcon).css('background-color', '#606060');
+			micFilter = 2;
+		} else if (micFilter == 1) {
+			$(noMicIcon).css('background-color', '#EE6F59');
+			$(micIcon).css('background-color', '#606060');
+			micFilter = 2;
+		} else if (micFilter == 2) {
+			$(micIcon).css('background-color', '#EE6F59');
+			micFilter = 0;
+		}
+	} else if (answer == 'noMic') {
+		if (micFilter == 0) {
+			$(noMicIcon).css('background-color', '#606060');
+			micFilter = 1;
+		} else if (micFilter == 1) {
+			$(noMicIcon).css('background-color', '#EE6F59');
+			micFilter = 0;
+		} else if (micFilter == 2) {
+			$(micIcon).css('background-color', '#EE6F59');
+			$(noMicIcon).css('background-color', '#606060');
+			micFilter = 1;
+		}
 	}
 }

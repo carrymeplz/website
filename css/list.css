@@ -1,7 +1,185 @@
+body {
+    font-family: 'Fredoka One', cursive;
+    background-color: #161B27;
+    color: white;
+}
+
+#banner {
+    width: 100%;
+    height: 20vh;
+    margin-top: 1%;
+    background-color: #161B27;
+    color: white;
+    text-align: center;
+    font-size: 3em;
+    line-height: 20vh;
+}
+
 .filterButton {
-    padding: 10px 20px;
-    background-color: cyan;
+    width: 49%;
+    text-align: center;
+    background-color: #EE6F59;
     float: left;
-    margin: 2px;
-    margin-right: 0px;
+    margin-right: 2%;
+    height: 35px;
+    line-height: 35px;
+    border-radius: 3px;
+}
+
+.filterButton2 {
+    width: 100%;
+    text-align: center;
+    background-color: #EE6F59;
+    float: left;
+    margin-right: 2%;
+    height: 35px;
+    line-height: 35px;
+    border-radius: 3px;
+}
+
+.filterButton:last-of-type {
+    margin-right: 0%;
+}
+
+#filterButtons {
+    width: 80%;
+    min-width: 1220px;
+    margin: 2% 18.25%;
+    height: 50px;
+}
+
+#filterButtons > div {
+    float: left;
+    padding-left: 1%;
+}
+
+#multiselectContainer {
+    width: 12%;
+}
+
+#multiselectContainer2 {
+    width: 16%;
+}
+  
+.dropdown {
+    height: 35px;
+    background-color: grey;
+    color: white;
+    border-radius: 3px;
+}
+
+.selectBox {
+    position: relative;
+}
+
+.selectBox select {
+    width: 100%;
+    font-weight: bold;
+}
+
+.overSelect {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+#roles_container {
+    width: 20%;
+}
+
+.listType {
+    width: 100%;
+}
+
+#checkboxes_tiers {
+    display: none;
+    border: 1px #dadada solid;
+}
+
+#checkboxes_gametype {
+    display: none;
+    border: 1px #dadada solid;
+    position: absolute;
+}
+
+#checkboxes_tiers label {
+    display: block;
+    background-color: #EE6F59;
+}
+
+#checkboxes_gametype label {
+    display: block;
+    background-color: #343a40;
+}
+
+#checkboxes label:hover {
+    background-color: #1e90ff;
+}
+
+#fillFilter, 
+#topFilter,
+#jgFilter,
+#midFilter,
+#adcFilter,
+#suppFilter {
+	background-color: #EE6F59;
+}
+
+.role_checkbox {
+	display: none;
+}
+
+.role_icons {
+	height: 35px;
+    width: 35px;
+    border-radius: 3px;
+}
+
+.gametype_btn {
+    /* width: 18%;
+    height: 30px;
+    line-height: 30px;
+    background-color: white;
+    text-align: center;
+    border-radius: 7px;
+    font-size: 1.1em;
+    margin: 0 1.5%; */
+}
+
+.checkbox_filters {
+    display: none;
+}
+
+.mic_icons {
+    height: 35px;
+    width: 35px;
+    background-color: #EE6F59;
+    border-radius: 3px;
+}
+
+.micAvailFilters {
+    float: left;
+    width: 50%;
+}
+
+#gofContainer {
+    width: 14%;
+}
+
+#micContainer {
+    width: 7.25%;
+}
+
+#applyFilterContainer {
+    width: 11%;
+}
+
+.lists {
+    margin-left: 5%;
+}
+
+.player-info-border {
+    border-bottom: 1px solid black;
 }

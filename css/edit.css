@@ -1,0 +1,24 @@
+#fillEditer, 
+#topEditer,
+#jgEditer,
+#midEditer,
+#adcEditer,
+#suppEditer {
+	background-color: #EE6F59;
+}
+
+#editButtons {
+    width: 80%;
+    min-width: 1220px;
+    margin: 2% 18.25%;
+    height: 50px;
+}
+
+#editButtons > div {
+    float: left;
+    padding-left: 1%;
+}
+
+#roles_container2 {
+    width: 20%;
+}
