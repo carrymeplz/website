@@ -22,3 +22,18 @@
 #roles_container2 {
     width: 20%;
 }
+
+#checkboxes_gametype2 {
+    display: none;
+    border: 1px #dadada solid;
+    position: absolute;
+}
+
+#checkboxes_gametype2 label {
+    display: block;
+    background-color: #343a40;
+}
+
+#checkboxes label:hover {
+    background-color: #1e90ff;
+}

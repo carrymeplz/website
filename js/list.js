@@ -22,8 +22,8 @@ var roleJg = true;
 var roleMid = true;
 var roleAdc = true;
 var roleSupp = true;
-var fill2 = true;
-var roleTop2 = true;
+var fill2 = false;
+var roleTop2 = false;
 var roleJg2 = true;
 var roleMid2 = true;
 var roleAdc2 = true;
@@ -41,41 +41,47 @@ var aram;
 var grindOrFun;
 var grind = true;
 var fun = true;
+var grind2 = true;
+var fun2 = true;
 var mic = true;
 var noMic = true;
+var mic2 = true;
+var noMic2 = true;
 var micAvail;
 var expanded = false;
-var micFilter = 2;
+var expanded2 = false;
+var micFilter = 0;
+var micFilter2 = 0;
 var posted = false;
 
-$(document).ready(function() {
+$(document).ready(function () {
 
-    var queryString = decodeURIComponent(window.location.search);
-    queryString = queryString.substring(1);
-    var queries = queryString.split("&");
+	var queryString = decodeURIComponent(window.location.search);
+	queryString = queryString.substring(1);
+	var queries = queryString.split("&");
 
 	region = queries[0].split('=')[1];
 	userIgn = queries[1].split('=')[1];
-    soloR = queries[2].split('=')[1];
-    flexR = queries[3].split('=')[1];
+	soloR = queries[2].split('=')[1];
+	flexR = queries[3].split('=')[1];
 	gameType = queries[4].split('=')[1];
-    aram = Math.floor(gameType / 1000);
-    flex = Math.floor(gameType / 100) % 10;
-    norm = Math.floor(gameType / 10) % 10;
+	aram = Math.floor(gameType / 1000);
+	flex = Math.floor(gameType / 100) % 10;
+	norm = Math.floor(gameType / 10) % 10;
 	soloduo = gameType % 10;
-    grindOrFun = queries[5].split('=')[1];
-    micAvail = queries[6].split('=')[1];
+	grindOrFun = queries[5].split('=')[1];
+	micAvail = queries[6].split('=')[1];
 
 	if (soloduo)
 		$('.gametype_btn:nth-of-type(1)').css('background-color', '#EE6F59');
 	else
 		$('.gametype_btn:nth-of-type(1)').css('background-color', '#343a40');
-	
+
 	if (flex)
 		$('.gametype_btn:nth-of-type(2)').css('background-color', '#EE6F59');
 	else
 		$('.gametype_btn:nth-of-type(2)').css('background-color', '#343a40');
-	
+
 	if (norm)
 		$('.gametype_btn:nth-of-type(3)').css('background-color', '#EE6F59');
 	else
@@ -91,20 +97,20 @@ $(document).ready(function() {
 		fun = true;
 		$('#grindFilter').css('background-color', 'grey');
 	}
-		
+
 	if (grindOrFun == 1) {
 		grind = true;
 		fun = false;
 		$('#funFilter').css('background-color', 'grey');
 	}
 
-    firebase.database().ref(region).once('value').then(function(snapshot) {
-        var summoners = snapshot.val();
-        for (var key in summoners) {
-        	sortGameType(summoners[key]);
-        }
-        appendList(soloDuoList, flexList, normList, aramList);
-    });
+	firebase.database().ref(region).once('value').then(function (snapshot) {
+		var summoners = snapshot.val();
+		for (var key in summoners) {
+			sortGameType(summoners[key]);
+		}
+		appendList(soloDuoList, flexList, normList, aramList);
+	});
 })
 
 function filterTier(tierFilter) {
@@ -154,13 +160,13 @@ function filterRole(roleFilter, callFrom) {
 		case 'fill':
 			fill = !fill;
 			if (callFrom == 1) {
-				if (fill) 
+				if (fill)
 					$('#fillFilter').css('background-color', '#EE6F59');
 				else
 					$('#fillFilter').css('background-color', '#606060');
 				break;
-			} else if (callFrom == 0){
-				if (fill) 
+			} else if (callFrom == 0) {
+				if (fill2)
 					$('#fillEditer').css('background-color', '#EE6F59');
 				else
 					$('#fillEditer').css('background-color', '#606060');
@@ -169,13 +175,13 @@ function filterRole(roleFilter, callFrom) {
 		case 'top':
 			roleTop = !roleTop;
 			if (callFrom == 1) {
-				if (roleTop) 
+				if (roleTop)
 					$('#topFilter').css('background-color', '#EE6F59');
 				else
 					$('#topFilter').css('background-color', '#606060');
 				break;
-			} else if (callFrom == 0){
-				if (roleTop) 
+			} else if (callFrom == 0) {
+				if (roleTop2)
 					$('#topEditer').css('background-color', '#EE6F59');
 				else
 					$('#topEditer').css('background-color', '#606060');
@@ -184,13 +190,13 @@ function filterRole(roleFilter, callFrom) {
 		case 'jg':
 			roleJg = !roleJg;
 			if (callFrom == 1) {
-				if (roleJg) 
+				if (roleJg)
 					$('#jgFilter').css('background-color', '#EE6F59');
 				else
 					$('#jgFilter').css('background-color', '#606060');
 				break;
-			} else if (callFrom == 0){
-				if (roleJg) 
+			} else if (callFrom == 0) {
+				if (roleJg2)
 					$('#jgEditer').css('background-color', '#EE6F59');
 				else
 					$('#jgEditer').css('background-color', '#606060');
@@ -199,13 +205,13 @@ function filterRole(roleFilter, callFrom) {
 		case 'mid':
 			roleMid = !roleMid;
 			if (callFrom == 1) {
-				if (roleMid) 
+				if (roleMid)
 					$('#midFilter').css('background-color', '#EE6F59');
 				else
 					$('#midFilter').css('background-color', '#606060');
 				break;
-			} else if (callFrom == 0){
-				if (roleMid) 
+			} else if (callFrom == 0) {
+				if (roleMid2)
 					$('#midEditer').css('background-color', '#EE6F59');
 				else
 					$('#midEditer').css('background-color', '#606060');
@@ -214,13 +220,13 @@ function filterRole(roleFilter, callFrom) {
 		case 'adc':
 			roleAdc = !roleAdc;
 			if (callFrom == 1) {
-				if (roleAdc) 
+				if (roleAdc)
 					$('#adcFilter').css('background-color', '#EE6F59');
 				else
 					$('#adcFilter').css('background-color', '#606060');
 				break;
-			} else if (callFrom == 0){
-				if (roleAdc) 
+			} else if (callFrom == 0) {
+				if (roleAdc2)
 					$('#adcEditer').css('background-color', '#EE6F59');
 				else
 					$('#adcEditer').css('background-color', '#606060');
@@ -229,13 +235,13 @@ function filterRole(roleFilter, callFrom) {
 		case 'supp':
 			roleSupp = !roleSupp;
 			if (callFrom == 1) {
-				if (roleSupp) 
+				if (roleSupp)
 					$('#suppFilter').css('background-color', '#EE6F59');
 				else
 					$('#suppFilter').css('background-color', '#606060');
 				break;
-			} else if (callFrom == 0){
-				if (roleSupp) 
+			} else if (callFrom == 0) {
+				if (roleSupp2)
 					$('#suppEditer').css('background-color', '#EE6F59');
 				else
 					$('#suppEditer').css('background-color', '#606060');
@@ -246,57 +252,75 @@ function filterRole(roleFilter, callFrom) {
 	}
 }
 
-function filterGameType(gameTypeFilter) {
+function filterGameType(gameTypeFilter, callerClass) {
 	switch (gameTypeFilter) {
 		case 'soloduo':
 			soloduo = !soloduo;
 			if (soloduo)
-				$('.gametype_btn:nth-of-type(1)').css('background-color', '#EE6F59');
+				$('.' + callerClass + ':nth-of-type(1)').css('background-color', '#EE6F59');
 			else
-				$('.gametype_btn:nth-of-type(1)').css('background-color', '#343a40');
+				$('.' + callerClass + ':nth-of-type(1)').css('background-color', '#343a40');
 			break;
 		case 'flex':
 			flex = !flex;
 			if (flex)
-				$('.gametype_btn:nth-of-type(2)').css('background-color', '#EE6F59');
+				$('.' + callerClass + ':nth-of-type(2)').css('background-color', '#EE6F59');
 			else
-				$('.gametype_btn:nth-of-type(2)').css('background-color', '#343a40');
+				$('.' + callerClass + ':nth-of-type(2)').css('background-color', '#343a40');
 			break;
 		case 'normal':
 			norm = !norm;
 			if (norm)
-				$('.gametype_btn:nth-of-type(3)').css('background-color', '#EE6F59');
+				$('.' + callerClass + ':nth-of-type(3)').css('background-color', '#EE6F59');
 			else
-				$('.gametype_btn:nth-of-type(3)').css('background-color', '#343a40');
+				$('.' + callerClass + ':nth-of-type(3)').css('background-color', '#343a40');
 			break;
 		case 'aram':
 			aram = !aram;
 			if (aram)
-				$('.gametype_btn:nth-of-type(4)').css('background-color', '#EE6F59');
+				$('.' + callerClass + ':nth-of-type(4)').css('background-color', '#EE6F59');
 			else
-				$('.gametype_btn:nth-of-type(4)').css('background-color', '#343a40');
+				$('.' + callerClass + ':nth-of-type(4)').css('background-color', '#343a40');
 			break;
 		default:
 			break;
 	}
 }
 
-function filterGrindOrFun(filter) {
+function filterGrindOrFun(filter, callerId) {
 	switch (filter) {
 		case 'grind':
-			grind = !grind;
-			if (grind)
-				$('#grindFilter').css('background-color', '#EE6F59');
-			else 
-				$('#grindFilter').css('background-color', 'grey');
-			break;
+			if (callerId == 'Filter') {
+				grind = !grind;
+				if (grind)
+					$('#grind' + callerId).css('background-color', '#EE6F59');
+				else
+					$('#grind' + callerId).css('background-color', 'grey');
+				break;
+			} else if (callerId == 'Filter2') {
+				grind2 = !grind2;
+				if (grind2)
+					$('#grind' + callerId).css('background-color', '#EE6F59');
+				else
+					$('#grind' + callerId).css('background-color', 'grey');
+				break;
+			}
 		case 'fun':
-			fun = !fun;
-			if (fun)
-				$('#funFilter').css('background-color', '#EE6F59');
-			else 
-				$('#funFilter').css('background-color', 'grey');
-			break;
+			if (callerId == 'Filter') {
+				fun = !fun;
+				if (fun)
+					$('#fun' + callerId).css('background-color', '#EE6F59');
+				else
+					$('#fun' + callerId).css('background-color', 'grey');
+				break;
+			} else if (callerId == 'Filter2') {
+				fun2 = !fun2;
+				if (fun2)
+					$('#fun' + callerId).css('background-color', '#EE6F59');
+				else
+					$('#fun' + callerId).css('background-color', 'grey');
+				break;
+			}
 		default:
 			break;
 	}
@@ -364,7 +388,7 @@ function rankFilter() {
 function roleFilter() {
 	var tempSoloDuoListF = Array.from(soloDuoListF);
 	var tempFlexListF = Array.from(flexListF);
-	
+
 	soloDuoListF = [];
 	flexListF = [];
 	normListF = [];
@@ -393,7 +417,7 @@ function roleFilter() {
 		matched = false;
 	}
 
-	
+
 	for (var player in tempFlexListF) {
 		matched = false;
 
@@ -418,7 +442,7 @@ function roleFilter() {
 		}
 	}
 
-	
+
 	for (var player in normList) {
 		matched = false;
 
@@ -467,7 +491,7 @@ function grindOrFunFilter() {
 		}
 		matched = false;
 	}
-	
+
 	for (var player in tempFlexListF) {
 		matched = false;
 		var gof = tempFlexListF[player]['grindorfun'];
@@ -480,7 +504,7 @@ function grindOrFunFilter() {
 			flexListF.push(tempFlexListF[player]);
 		}
 	}
-	
+
 	for (var player in tempNormalListF) {
 		matched = false;
 		var gof = tempNormalListF[player]['grindorfun'];
@@ -493,7 +517,7 @@ function grindOrFunFilter() {
 			normListF.push(tempNormalListF[player]);
 		}
 	}
-	
+
 	for (var player in aramList) {
 		matched = false;
 		var gof = aramList[player]['grindorfun'];
@@ -513,6 +537,9 @@ function applyMicFilter() {
 	var tempFlexListF = Array.from(flexListF);
 	var tempNormalListF = Array.from(normListF);
 	var tempAramListF = Array.from(aramListF);
+
+	console.log('Mic: ' + mic);
+	console.log('No Mic: ' + noMic);
 
 	soloDuoListF = [];
 	flexListF = [];
@@ -575,13 +602,25 @@ function applyMicFilter() {
 
 // Apply selected filter
 function applyFilter() {
-	rankFilter(); 
+	rankFilter();
 	roleFilter();
 	if (!grind || !fun) {
 		grindOrFunFilter();
 	} else {
 		//lol jokes
 	}
+
+	if (micFilter == 0) {
+		mic = true;
+		noMic = true;
+	} else if (micFilter == 1) {
+		mic = true;
+		noMic = false;
+	} else if (micFilter == 2) {
+		mic = false;
+		noMic = true;
+	}
+
 	if (!mic || !noMic) {
 		applyMicFilter();
 	} else {
@@ -616,7 +655,7 @@ function appendList(list1, list2, list3, list4) {
  * Creating List to show player entry 
  */
 function appendListHelper(list, id) {
-	
+
 	var row = ("");
 
 	switch (id) {
@@ -636,7 +675,7 @@ function appendListHelper(list, id) {
 			break;
 	}
 
-	for (var player in list) {	
+	for (var player in list) {
 		row = row.concat("<div class=\"player-list-card row offset-2 \">");
 		row = row.concat("");
 		row = row.concat("<!-- Left Side -->");
@@ -684,7 +723,7 @@ function appendListHelper(list, id) {
 		row = row.concat("                    <\/div>");
 		row = row.concat("                <\/div> ");
 		row = row.concat("                <div class=\"row\">");
-		
+
 		// row = row.concat("                    <div class=\"col\" align=\"center\" style=\"margin-bottom: 1vw\">");
 		// row = row.concat("                        <button>Flex Rank<\/button>");
 		// row = row.concat("                    <\/div>");
@@ -706,18 +745,18 @@ function appendListHelper(list, id) {
 		row = row.concat("                <div class=\"row justify-content-center\"> ");
 		row = row.concat("                    <!-- For loop for info, add margin spacing in between - 0.3vw -->");
 		row = row.concat("                    <div class=\"player-roles\">");
-		row = row.concat(                         appendCheckedRoles(list[player].roles));
+		row = row.concat(appendCheckedRoles(list[player].roles));
 		row = row.concat("                    <\/div>");
 
 		if (list[player].micAvail == 1) {
 			row = row.concat("                <img src=\"pictures/mic/mic.png\" width=\"40px\" height=\"40px\" style=\"margin-right: 0.3vw\"/>");
 		}
-        else {
+		else {
 			row = row.concat("                <img src=\"pictures/mic/no_mic.png\" width=\"40px\" height=\"40px\" style=\"margin-right: 0.3vw\"/>");
 		}
 
 		row = row.concat("                    <div class=\"game-type\" style=\"margin-right: 0.8vw\">");
-		row = row.concat(                         appendChecked(list[player].gameType));
+		row = row.concat(appendChecked(list[player].gameType));
 		row = row.concat("                    <\/div>");
 
 		if (list[player].grindorfun == 2) {
@@ -725,12 +764,12 @@ function appendListHelper(list, id) {
 			row = row.concat("                    Grind/Fun");
 			row = row.concat("                <\/div>");
 		}
-        else if (list[player].grindorfun == 1) {
+		else if (list[player].grindorfun == 1) {
 			row = row.concat("                <div class=\"play-style\" style=\"margin-right: 0.8vw\">");
 			row = row.concat("                    Grind");
 			row = row.concat("                <\/div>");
 		}
-        else {
+		else {
 			row = row.concat("                <div class=\"play-style\" style=\"margin-right: 0.8vw\">");
 			row = row.concat("                    Fun");
 			row = row.concat("                <\/div>");
@@ -743,15 +782,15 @@ function appendListHelper(list, id) {
 		row = row.concat("<\/div>");
 		row = row.concat("<\/br \/>");
 	}
-	
+
 	document.getElementById(id).innerHTML += row;
 }
 
 function appendCheckedRoles(datas) {
 	var row = "<td>";
 	for (var data in datas) {
-		if (datas[data]) {	
-			switch(data) {	
+		if (datas[data]) {
+			switch (data) {
 				case 'fill':
 					row = row.concat("<img src=\"pictures/role_icons/Fill_icon.png\" width=\"40px\" style=\"margin-right: 0.3vw\"/>");
 					break;
@@ -771,20 +810,20 @@ function appendCheckedRoles(datas) {
 					row = row.concat("<img src=\"pictures/role_icons/Support_icon.png\" width=\"40px\" style=\"margin-right: 0.3vw\"/>");
 					break;
 			}
-		}	
+		}
 	}
 	row = row.concat("</td>");
 	return row;
 }
 
 function appendChecked(datas) {
-    var row = "<td>";
-    for (var data in datas) {
-        if (datas[data])
-            row = row.concat(data + "/");
-    }
-    row = row.concat("</td>");
-    return row;
+	var row = "<td>";
+	for (var data in datas) {
+		if (datas[data])
+			row = row.concat(data + "/");
+	}
+	row = row.concat("</td>");
+	return row;
 }
 
 // Sort list of summoner into 4 lists of each game type
@@ -794,8 +833,8 @@ function appendChecked(datas) {
 function sortGameType(summoner) {
 	if (summoner.userIgn != userIgn) {
 		if (summoner.gameType.soloduo) {
-    		if (summoner.soloRank >= soloR - 2 && summoner.soloRank <= parseInt(soloR) + 2)
-    			soloDuoList.push(summoner);
+			if (summoner.soloRank >= soloR - 2 && summoner.soloRank <= parseInt(soloR) + 2)
+				soloDuoList.push(summoner);
 		}
 
 		if (summoner.gameType.flex) {
@@ -863,7 +902,7 @@ function sortGameType(summoner) {
 			row = row.concat("                    <\/div>");
 			row = row.concat("                <\/div> ");
 			row = row.concat("                <div class=\"row\">");
-			
+
 			// row = row.concat("                    <div class=\"col\" align=\"center\" style=\"margin-bottom: 1vw\">");
 			// row = row.concat("                        <button>Flex Rank<\/button>");
 			// row = row.concat("                    <\/div>");
@@ -885,7 +924,7 @@ function sortGameType(summoner) {
 			row = row.concat("                <div class=\"row justify-content-center\"> ");
 			row = row.concat("                    <!-- For loop for info, add margin spacing in between - 0.3vw -->");
 			row = row.concat("                    <div class=\"player-roles\">");
-			row = row.concat(                         appendCheckedRoles(summoner.roles));
+			row = row.concat(appendCheckedRoles(summoner.roles));
 			row = row.concat("                    <\/div>");
 
 			if (summoner.micAvail == 1) {
@@ -896,7 +935,7 @@ function sortGameType(summoner) {
 			}
 
 			row = row.concat("                    <div class=\"game-type\" style=\"margin-right: 0.8vw\">");
-			row = row.concat(                         appendChecked(summoner.gameType));
+			row = row.concat(appendChecked(summoner.gameType));
 			row = row.concat("                    <\/div>");
 
 			if (summoner.grindorfun == 2) {
@@ -927,42 +966,76 @@ function sortGameType(summoner) {
 }
 
 function showCheckboxes(from) {
-  var checkboxes = document.getElementById("checkboxes_" + from);
-  if (!expanded) {
-    checkboxes.style.display = "block";
-    expanded = true;
-  } else {
-    checkboxes.style.display = "none";
-    expanded = false;
-  }
+	var checkboxes = document.getElementById("checkboxes_" + from);
+	if (from == 'gametype') {
+		if (!expanded) {
+			checkboxes.style.display = "block";
+			expanded = true;
+		} else {
+			checkboxes.style.display = "none";
+			expanded = false;
+		}
+	} else if (from == 'gametype2') {
+		if (!expanded2) {
+			checkboxes.style.display = "block";
+			expanded2 = true;
+		} else {
+			checkboxes.style.display = "none";
+			expanded2 = false;
+		}
+	}
 }
 
 // if the user wants to see both mic and no mic people micFilter = 0 
 // only wants to see mic then micFilter = 1, no mic = 2
-function micFilterClicked(answer) {
-	if (answer == 'mic') {
+function micFilterClicked(answer, callerId) {
+	if (answer == 'mic' && callerId == 'Icon') {
 		if (micFilter == 0) {
-			$(micIcon).css('background-color', '#606060');
+			$('#mic' + callerId).css('background-color', '#606060');
 			micFilter = 2;
 		} else if (micFilter == 1) {
-			$(noMicIcon).css('background-color', '#EE6F59');
-			$(micIcon).css('background-color', '#606060');
+			$('#noMic' + callerId).css('background-color', '#EE6F59');
+			$('#mic' + callerId).css('background-color', '#606060');
 			micFilter = 2;
 		} else if (micFilter == 2) {
-			$(micIcon).css('background-color', '#EE6F59');
+			$('#mic' + callerId).css('background-color', '#EE6F59');
 			micFilter = 0;
 		}
-	} else if (answer == 'noMic') {
+	} else if (answer == 'noMic' && callerId == 'Icon') {
 		if (micFilter == 0) {
-			$(noMicIcon).css('background-color', '#606060');
+			$('#noMic' + callerId).css('background-color', '#606060');
 			micFilter = 1;
 		} else if (micFilter == 1) {
-			$(noMicIcon).css('background-color', '#EE6F59');
+			$('#noMic' + callerId).css('background-color', '#EE6F59');
 			micFilter = 0;
 		} else if (micFilter == 2) {
-			$(micIcon).css('background-color', '#EE6F59');
-			$(noMicIcon).css('background-color', '#606060');
+			$('#mic' + callerId).css('background-color', '#EE6F59');
+			$('#noMic' + callerId).css('background-color', '#606060');
 			micFilter = 1;
+		}
+	} else if (answer == 'mic' && callerId == 'Icon2') {
+		if (micFilter2 == 0) {
+			$('#mic' + callerId).css('background-color', '#606060');
+			micFilter2 = 2;
+		} else if (micFilter2 == 1) {
+			$('#noMic' + callerId).css('background-color', '#EE6F59');
+			$('#mic' + callerId).css('background-color', '#606060');
+			micFilter2 = 2;
+		} else if (micFilter2 == 2) {
+			$('#mic' + callerId).css('background-color', '#EE6F59');
+			micFilter2 = 0;
+		}
+	} else if (answer == 'noMic' && callerId == 'Icon2') {
+		if (micFilter2 == 0) {
+			$('#noMic' + callerId).css('background-color', '#606060');
+			micFilter2 = 1;
+		} else if (micFilter2 == 1) {
+			$('#noMic' + callerId).css('background-color', '#EE6F59');
+			micFilter2 = 0;
+		} else if (micFilter2 == 2) {
+			$('#mic' + callerId).css('background-color', '#EE6F59');
+			$('#noMic' + callerId).css('background-color', '#606060');
+			micFilter2 = 1;
 		}
 	}
 }

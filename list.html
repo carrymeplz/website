@@ -47,48 +47,48 @@
         
             <div id="multiselectContainer2">
                 <div id="multiselect2">
-                    <div class="selectBox" onclick="showCheckboxes('gametype')">
+                    <div class="selectBox" onclick="showCheckboxes('gametype2')">
                         <select class="dropdown">
                             <option>Filter Game Type</option>
                         </select>
                         <div class="overSelect"></div>
                     </div>
-                    <div id="checkboxes_gametype">
+                    <div id="checkboxes_gametype2">
                         <!-- <div id="soloduoFilter" class="filterButton" onclick="filterGameType('soloduo')">Solo/Duo</div>
                         <div id="flexFilter" class="filterButton" onclick="filterGameType('flex')">Flex</div>
                         <div id="normalFilter" class="filterButton" onclick="filterGameType('normal')">Normal</div>
                         <div id="aramFilter" class="filterButton" onclick="filterGameType('aram')">ARAM</div> -->
-                        <label class="gametype_btn" for="soloduoFilter">
-                        <input type="checkbox" id="soloduoFilter" class="checkbox_filters" onclick="filterGameType('soloduo')" />&nbsp;SOLO/DUO</label> 
-                        <label class="gametype_btn" for="flexFilter">
-                        <input type="checkbox" id="flexFilter" class="checkbox_filters" onclick="filterGameType('flex')" />&nbsp;FLEX</label>
-                        <label class="gametype_btn" for="normalFilter">
-                        <input type="checkbox" id="normalFilter" class="checkbox_filters" onclick="filterGameType('normal')" />&nbsp;NORMAL</label>
-                        <label class="gametype_btn" for="aramFilter">
-                        <input type="checkbox" id="aramFilter" class="checkbox_filters" onclick="filterGameType('aram')" />&nbsp;ARAM</label>
+                        <label class="gametype_btn2" for="soloduoFilter">
+                        <input type="checkbox" id="soloduoFilter" class="checkbox_filters" onclick="filterGameType('soloduo', 'gametype_btn2')" />&nbsp;SOLO/DUO</label> 
+                        <label class="gametype_btn2" for="flexFilter">
+                        <input type="checkbox" id="flexFilter" class="checkbox_filters" onclick="filterGameType('flex', 'gametype_btn2')" />&nbsp;FLEX</label>
+                        <label class="gametype_btn2" for="normalFilter">
+                        <input type="checkbox" id="normalFilter" class="checkbox_filters" onclick="filterGameType('normal', 'gametype_btn2')" />&nbsp;NORMAL</label>
+                        <label class="gametype_btn2" for="aramFilter">
+                        <input type="checkbox" id="aramFilter" class="checkbox_filters" onclick="filterGameType('aram', 'gametype_btn2')" />&nbsp;ARAM</label>
                     </div>
                 </div>
             </div>
         
             <div id="gofContainer">
-                <div id="grindFilter" class="filterButton" onclick="filterGrindOrFun('grind')">Grind</div>
-                <div id="funFilter" class="filterButton" onclick="filterGrindOrFun('fun')">Fun</div>
+                <div id="grindFilter2" class="filterButton" onclick="filterGrindOrFun('grind', 'Filter2')">Grind</div>
+                <div id="funFilter2" class="filterButton" onclick="filterGrindOrFun('fun', 'Filter2')">Fun</div>
             </div>
         
             <div id="micContainer">
                 <!-- <div id="micFilter" class="filterButton" onclick="filterMic('yes')">Mic</div>
                 <div id="noMicFilter" class="filterButton" onclick="filterMic('no')">No Mic</div> -->
                 <div class="micAvailFilters">
-                    <img src="pictures/mic/mic.png" id="micIcon" class="mic_icons" alt="Mic_icon" onclick="micFilterClicked('mic')" />
+                    <img src="pictures/mic/mic.png" id="micIcon2" class="mic_icons" alt="Mic_icon" onclick="micFilterClicked('mic', 'Icon2')" />
                 </div>
                 <div class="micAvailFilters">
-                    <img src="pictures/mic/no_mic.png" id="noMicIcon" class="mic_icons" alt="NoMic_icon" onclick="micFilterClicked('noMic')" />
+                    <img src="pictures/mic/no_mic.png" id="noMicIcon2" class="mic_icons" alt="NoMic_icon" onclick="micFilterClicked('noMic', 'Icon2')" />
                 </div>
             </div>
             
         
             <div id="applyFilterContainer">
-                <div id="applyFilter" class="filterButton2" onclick="applyFilter()">Apply Filter</div>
+                <div id="applyFilter" class="filterButton2" onclick="applyFilter()">Edit</div>
             </div>
         </div>
         <div class="lists" id="masterUser">
@@ -172,30 +172,30 @@
                         <div id="normalFilter" class="filterButton" onclick="filterGameType('normal')">Normal</div>
                         <div id="aramFilter" class="filterButton" onclick="filterGameType('aram')">ARAM</div> -->
                         <label class="gametype_btn" for="soloduoFilter">
-                        <input type="checkbox" id="soloduoFilter" class="checkbox_filters" onclick="filterGameType('soloduo')" />&nbsp;SOLO/DUO</label> 
+                        <input type="checkbox" id="soloduoFilter" class="checkbox_filters" onclick="filterGameType('soloduo', 'gametype_btn')" />&nbsp;SOLO/DUO</label> 
                         <label class="gametype_btn" for="flexFilter">
-                        <input type="checkbox" id="flexFilter" class="checkbox_filters" onclick="filterGameType('flex')" />&nbsp;FLEX</label>
+                        <input type="checkbox" id="flexFilter" class="checkbox_filters" onclick="filterGameType('flex', 'gametype_btn')" />&nbsp;FLEX</label>
                         <label class="gametype_btn" for="normalFilter">
-                        <input type="checkbox" id="normalFilter" class="checkbox_filters" onclick="filterGameType('normal')" />&nbsp;NORMAL</label>
+                        <input type="checkbox" id="normalFilter" class="checkbox_filters" onclick="filterGameType('normal', 'gametype_btn')" />&nbsp;NORMAL</label>
                         <label class="gametype_btn" for="aramFilter">
-                        <input type="checkbox" id="aramFilter" class="checkbox_filters" onclick="filterGameType('aram')" />&nbsp;ARAM</label>
+                        <input type="checkbox" id="aramFilter" class="checkbox_filters" onclick="filterGameType('aram', 'gametype_btn')" />&nbsp;ARAM</label>
                     </div>
                 </div>
             </div>
         
             <div id="gofContainer">
-                <div id="grindFilter" class="filterButton" onclick="filterGrindOrFun('grind')">Grind</div>
-                <div id="funFilter" class="filterButton" onclick="filterGrindOrFun('fun')">Fun</div>
+                <div id="grindFilter" class="filterButton" onclick="filterGrindOrFun('grind', 'Filter')">Grind</div>
+                <div id="funFilter" class="filterButton" onclick="filterGrindOrFun('fun', 'Filter')">Fun</div>
             </div>
         
             <div id="micContainer">
                 <!-- <div id="micFilter" class="filterButton" onclick="filterMic('yes')">Mic</div>
                 <div id="noMicFilter" class="filterButton" onclick="filterMic('no')">No Mic</div> -->
                 <div class="micAvailFilters">
-                    <img src="pictures/mic/mic.png" id="micIcon" class="mic_icons" alt="Mic_icon" onclick="micFilterClicked('mic')" />
+                    <img src="pictures/mic/mic.png" id="micIcon" class="mic_icons" alt="Mic_icon" onclick="micFilterClicked('mic', 'Icon')" />
                 </div>
                 <div class="micAvailFilters">
-                    <img src="pictures/mic/no_mic.png" id="noMicIcon" class="mic_icons" alt="NoMic_icon" onclick="micFilterClicked('noMic')" />
+                    <img src="pictures/mic/no_mic.png" id="noMicIcon" class="mic_icons" alt="NoMic_icon" onclick="micFilterClicked('noMic', 'Icon')" />
                 </div>
             </div>
             
