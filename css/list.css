@@ -60,6 +60,14 @@ body {
 #multiselectContainer2 {
     width: 16%;
 }
+
+#multiselect {
+    position: relative;
+}
+
+#multiselect2 {
+    position: relative;
+}
   
 .dropdown {
     height: 35px;
@@ -95,13 +103,20 @@ body {
 
 #checkboxes_tiers {
     display: none;
-    border: 1px #dadada solid;
+    position: absolute;
+    height: 35px;
+    line-height: 35px;
+    width: 100%;
+    z-index: 1; 
 }
 
 #checkboxes_gametype {
     display: none;
-    border: 1px #dadada solid;
     position: absolute;
+    height: 35px;
+    line-height: 35px;
+    width: 100%;
+    z-index: 1;
 }
 
 #checkboxes_tiers label {
@@ -150,6 +165,11 @@ body {
 
 .checkbox_filters {
     display: none;
+    border: 1px white solid;
+}
+
+label {
+    margin: 0;
 }
 
 .mic_icons {

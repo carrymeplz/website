@@ -22,8 +22,8 @@ var roleJg = true;
 var roleMid = true;
 var roleAdc = true;
 var roleSupp = true;
-var fill2 = false;
-var roleTop2 = false;
+var fill2 = true;
+var roleTop2 = true;
 var roleJg2 = true;
 var roleMid2 = true;
 var roleAdc2 = true;
@@ -50,8 +50,11 @@ var noMic2 = true;
 var micAvail;
 var expanded = false;
 var expanded2 = false;
+var expandedTier = false;
 var micFilter = 0;
 var micFilter2 = 0;
+var gofFilter = 0;
+var gofFilter2 = 0;
 var posted = false;
 
 $(document).ready(function () {
@@ -95,12 +98,14 @@ $(document).ready(function () {
 	if (grindOrFun == 0) {
 		grind = false;
 		fun = true;
+		gofFilter = 2;
 		$('#grindFilter').css('background-color', 'grey');
 	}
 
 	if (grindOrFun == 1) {
 		grind = true;
 		fun = false;
+		gofFilter = 1;
 		$('#funFilter').css('background-color', 'grey');
 	}
 
@@ -158,14 +163,15 @@ function filterTier(tierFilter) {
 function filterRole(roleFilter, callFrom) {
 	switch (roleFilter) {
 		case 'fill':
-			fill = !fill;
 			if (callFrom == 1) {
+				fill = !fill;
 				if (fill)
 					$('#fillFilter').css('background-color', '#EE6F59');
 				else
 					$('#fillFilter').css('background-color', '#606060');
 				break;
 			} else if (callFrom == 0) {
+				fill2 = !fill2;
 				if (fill2)
 					$('#fillEditer').css('background-color', '#EE6F59');
 				else
@@ -173,14 +179,15 @@ function filterRole(roleFilter, callFrom) {
 				break;
 			}
 		case 'top':
-			roleTop = !roleTop;
 			if (callFrom == 1) {
+				roleTop = !roleTop;
 				if (roleTop)
 					$('#topFilter').css('background-color', '#EE6F59');
 				else
 					$('#topFilter').css('background-color', '#606060');
 				break;
 			} else if (callFrom == 0) {
+				roleTop2 = !roleTop;
 				if (roleTop2)
 					$('#topEditer').css('background-color', '#EE6F59');
 				else
@@ -188,14 +195,15 @@ function filterRole(roleFilter, callFrom) {
 				break;
 			}
 		case 'jg':
-			roleJg = !roleJg;
 			if (callFrom == 1) {
+				roleJg = !roleJg;
 				if (roleJg)
 					$('#jgFilter').css('background-color', '#EE6F59');
 				else
 					$('#jgFilter').css('background-color', '#606060');
 				break;
 			} else if (callFrom == 0) {
+				roleJg2 = !roleJg2;
 				if (roleJg2)
 					$('#jgEditer').css('background-color', '#EE6F59');
 				else
@@ -203,14 +211,15 @@ function filterRole(roleFilter, callFrom) {
 				break;
 			}
 		case 'mid':
-			roleMid = !roleMid;
 			if (callFrom == 1) {
+				roleMid = !roleMid;
 				if (roleMid)
 					$('#midFilter').css('background-color', '#EE6F59');
 				else
 					$('#midFilter').css('background-color', '#606060');
 				break;
 			} else if (callFrom == 0) {
+				roleMid2 = !roleMid2;
 				if (roleMid2)
 					$('#midEditer').css('background-color', '#EE6F59');
 				else
@@ -218,14 +227,15 @@ function filterRole(roleFilter, callFrom) {
 				break;
 			}
 		case 'adc':
-			roleAdc = !roleAdc;
 			if (callFrom == 1) {
+				roleAdc = !roleAdc;
 				if (roleAdc)
 					$('#adcFilter').css('background-color', '#EE6F59');
 				else
 					$('#adcFilter').css('background-color', '#606060');
 				break;
 			} else if (callFrom == 0) {
+				roleAdc2 = !roleAdc2;
 				if (roleAdc2)
 					$('#adcEditer').css('background-color', '#EE6F59');
 				else
@@ -233,14 +243,15 @@ function filterRole(roleFilter, callFrom) {
 				break;
 			}
 		case 'supp':
-			roleSupp = !roleSupp;
 			if (callFrom == 1) {
+				roleSupp = !roleSupp;
 				if (roleSupp)
 					$('#suppFilter').css('background-color', '#EE6F59');
 				else
 					$('#suppFilter').css('background-color', '#606060');
 				break;
 			} else if (callFrom == 0) {
+				roleSupp2 = !roleSupp2;
 				if (roleSupp2)
 					$('#suppEditer').css('background-color', '#EE6F59');
 				else
@@ -287,60 +298,79 @@ function filterGameType(gameTypeFilter, callerClass) {
 	}
 }
 
+// if the user wants to see both grind or fun: gofFilter = 0 
+// only wants to see grind then = 1, fun = 2
 function filterGrindOrFun(filter, callerId) {
 	switch (filter) {
 		case 'grind':
 			if (callerId == 'Filter') {
-				grind = !grind;
-				if (grind)
-					$('#grind' + callerId).css('background-color', '#EE6F59');
-				else
+				if (gofFilter == 0) {
+					grind = !grind;
+					gofFilter = 2;
 					$('#grind' + callerId).css('background-color', 'grey');
-				break;
+				} else if (gofFilter == 1) {
+					fun = !fun;
+					grind = !grind;
+					gofFilter = 2;
+					$('#grind' + callerId).css('background-color', 'grey');
+					$('#fun' + callerId).css('background-color', '#EE6F59');
+				} else if (gofFilter == 2) {
+					grind = !grind;
+					gofFilter = 0;
+					$('#grind' + callerId).css('background-color', '#EE6F59');
+				}
 			} else if (callerId == 'Filter2') {
-				grind2 = !grind2;
-				if (grind2)
-					$('#grind' + callerId).css('background-color', '#EE6F59');
-				else
+				if (gofFilter2 == 0) {
+					grind2 = !grind2;
+					gofFilter2 = 2;
 					$('#grind' + callerId).css('background-color', 'grey');
-				break;
+				} else if (gofFilter2 == 1) {
+					fun2 = !fun2;
+					grind2 = !grind2;
+					gofFilter2 = 2;
+					$('#grind' + callerId).css('background-color', 'grey');
+					$('#fun' + callerId).css('background-color', '#EE6F59');
+				} else if (gofFilter2 == 2) {
+					grind2 = !grind2;
+					gofFilter2 = 0;
+					$('#grind' + callerId).css('background-color', '#EE6F59');
+				}
 			}
+			break;
 		case 'fun':
 			if (callerId == 'Filter') {
-				fun = !fun;
-				if (fun)
-					$('#fun' + callerId).css('background-color', '#EE6F59');
-				else
+				if (gofFilter == 0) {
+					fun = !fun;
+					gofFilter = 1;
 					$('#fun' + callerId).css('background-color', 'grey');
-				break;
+				} else if (gofFilter == 1) {
+					fun = !fun;
+					gofFilter = 0;
+					$('#fun' + callerId).css('background-color', '#EE6F59');
+				} else if (gofFilter == 2) {
+					fun = !fun;
+					grind = !grind;
+					gofFilter = 1;
+					$('#fun' + callerId).css('background-color', 'grey');
+					$('#grind' + callerId).css('background-color', '#EE6F59');
+				}
 			} else if (callerId == 'Filter2') {
-				fun2 = !fun2;
-				if (fun2)
-					$('#fun' + callerId).css('background-color', '#EE6F59');
-				else
+				if (gofFilter2 == 0) {
+					fun2 = !fun2;
+					gofFilter2 = 1;
 					$('#fun' + callerId).css('background-color', 'grey');
-				break;
+				} else if (gofFilter2 == 1) {
+					fun2 = !fun2;
+					gofFilter2 = 0;
+					$('#fun' + callerId).css('background-color', '#EE6F59');
+				} else if (gofFilter2 == 2) {
+					grind2 = !grind2;
+					fun2 = !fun2;
+					gofFilter2 = 1;
+					$('#fun' + callerId).css('background-color', 'grey');
+					$('#grind' + callerId).css('background-color', '#EE6F59');
+				}
 			}
-		default:
-			break;
-	}
-}
-
-function filterMic(filter) {
-	switch (filter) {
-		case 'yes':
-			mic = !mic;
-			if (mic)
-				$('#micFilter').css('background-color', 'cyan');
-			else
-				$('#micFilter').css('background-color', 'grey');
-			break;
-		case 'no':
-			noMic = !noMic;
-			if (noMic)
-				$('#noMicFilter').css('background-color', 'cyan');
-			else
-				$('#noMicFilter').css('background-color', 'grey');
 			break;
 		default:
 			break;
@@ -982,6 +1012,14 @@ function showCheckboxes(from) {
 		} else {
 			checkboxes.style.display = "none";
 			expanded2 = false;
+		}
+	} else if (from == 'tiers') {
+		if (!expandedTier) {
+			checkboxes.style.display = "block";
+			expandedTier = true;
+		} else {
+			checkboxes.style.display = "none";
+			expandedTier = false;
 		}
 	}
 }
