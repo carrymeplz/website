@@ -104,8 +104,6 @@ body {
 #checkboxes_tiers {
     display: none;
     position: absolute;
-    height: 35px;
-    line-height: 35px;
     width: 100%;
     z-index: 1; 
 }
@@ -113,20 +111,25 @@ body {
 #checkboxes_gametype {
     display: none;
     position: absolute;
-    height: 35px;
-    line-height: 35px;
     width: 100%;
     z-index: 1;
+    border: 1px #aaaaaa solid;
 }
 
 #checkboxes_tiers label {
     display: block;
     background-color: #EE6F59;
+    height: 35px;
+    line-height: 35px;
+    border-bottom: 1px #333333 solid;
 }
 
 #checkboxes_gametype label {
     display: block;
     background-color: #343a40;
+    height: 35px;
+    line-height: 35px;
+    border-bottom: 1px #333333 solid;
 }
 
 #checkboxes label:hover {
