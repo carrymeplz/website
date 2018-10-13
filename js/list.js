@@ -22,12 +22,15 @@ var roleJg = true;
 var roleMid = true;
 var roleAdc = true;
 var roleSupp = true;
-var fill2 = true;
-var roleTop2 = true;
-var roleJg2 = true;
-var roleMid2 = true;
-var roleAdc2 = true;
-var roleSupp2 = true;
+var fill2 = false;
+var roletop2 = false;
+var rolejg2 = false;
+var rolemid2 = false;
+var roleadc2 = false;
+var rolesupp2 = false;
+var numRoles = 0;
+var roleFirstPick;
+var roleSecondPick;
 
 var region;
 var userIgn;
@@ -75,25 +78,34 @@ $(document).ready(function () {
 	grindOrFun = queries[5].split('=')[1];
 	micAvail = queries[6].split('=')[1];
 
-	if (soloduo)
+	if (soloduo) {
 		$('.gametype_btn:nth-of-type(1)').css('background-color', '#EE6F59');
-	else
+		$('.gametype_btn2:nth-of-type(1)').css('background-color', '#EE6F59');
+	} else {
 		$('.gametype_btn:nth-of-type(1)').css('background-color', '#343a40');
+	}
 
-	if (flex)
+	if (flex) {
 		$('.gametype_btn:nth-of-type(2)').css('background-color', '#EE6F59');
-	else
+		$('.gametype_btn2:nth-of-type(2)').css('background-color', '#EE6F59');
+	} else {
 		$('.gametype_btn:nth-of-type(2)').css('background-color', '#343a40');
+	}	
 
-	if (norm)
+	if (norm) {
 		$('.gametype_btn:nth-of-type(3)').css('background-color', '#EE6F59');
-	else
+		$('.gametype_btn2:nth-of-type(3)').css('background-color', '#EE6F59');
+	} else {
 		$('.gametype_btn:nth-of-type(3)').css('background-color', '#343a40');
+	}
 
-	if (aram)
+	if (aram) {
 		$('.gametype_btn:nth-of-type(4)').css('background-color', '#EE6F59');
-	else
-		$('.gametype_btn:nth-of-type(4)').css('background-color', '#343a40');
+		$('.gametype_btn2:nth-of-type(4)').css('background-color', '#EE6F59');
+	}
+	else {
+		$('.gametype_btn:nth-of-type(4)').css('background-color', '#343a40');	
+	}
 
 	if (grindOrFun == 0) {
 		grind = false;
@@ -172,10 +184,30 @@ function filterRole(roleFilter, callFrom) {
 				break;
 			} else if (callFrom == 0) {
 				fill2 = !fill2;
-				if (fill2)
+				if (fill2 && numRoles == 1) {
 					$('#fillEditer').css('background-color', '#EE6F59');
-				else
+					$('#' + roleFirstPick + 'Editer').css('background-color', '#606060');
+					filterRoleHelper(roleFirstPick);
+					numRoles = 5;
+					roleFirstPick = 'fill';
+				} else if (fill2 && numRoles == 2) {
+					$('#fillEditer').css('background-color', '#EE6F59');
+					$('#' + roleFirstPick + 'Editer').css('background-color', '#606060');
+					$('#' + roleSecondPick + 'Editer').css('background-color', '#606060');
+					filterRoleHelper(roleFirstPick);
+					filterRoleHelper(roleSecondPick);
+					numRoles = 5;
+					roleFirstPick = 'fill';
+					roleSecondPick = '';
+				} else if (fill2 && numRoles == 0) {
+					$('#fillEditer').css('background-color', '#EE6F59');
+					numRoles = 5;
+					roleFirstPick = 'fill';
+				} else if (!fill2) {
 					$('#fillEditer').css('background-color', '#606060');
+					numRoles = 0;
+					roleFirstPick = '';
+				}
 				break;
 			}
 		case 'top':
@@ -187,11 +219,41 @@ function filterRole(roleFilter, callFrom) {
 					$('#topFilter').css('background-color', '#606060');
 				break;
 			} else if (callFrom == 0) {
-				roleTop2 = !roleTop;
-				if (roleTop2)
+				roletop2 = !roletop2;
+				if (roletop2 && numRoles == 0) {
 					$('#topEditer').css('background-color', '#EE6F59');
-				else
+					numRoles++;
+					roleFirstPick = 'top';
+				} else if (roletop2 && numRoles == 1) {
+					$('#topEditer').css('background-color', '#EE6F59');
+					numRoles++;
+					roleSecondPick = 'top';
+				} else if (roletop2 && numRoles == 2) {
+					$('#topEditer').css('background-color', '#EE6F59');
+					$('#' + roleFirstPick + 'Editer').css('background-color', '#606060');
+					filterRoleHelper(roleFirstPick);
+					roleFirstPick = roleSecondPick;
+					roleSecondPick = 'top';
+				} else if (roletop2 && numRoles == 5) {
+					$('#topEditer').css('background-color', '#EE6F59');
+					$('#' + roleFirstPick + 'Editer').css('background-color', '#606060');
+					filterRoleHelper(roleFirstPick);
+					roleFirstPick = 'top';
+					numRoles = 1;
+				} else if (!roletop2 && numRoles == 1) {
 					$('#topEditer').css('background-color', '#606060');
+					numRoles--;
+					roleFirstPick = '';
+				} else if (!roletop2 && numRoles == 2) {
+					$('#topEditer').css('background-color', '#606060');
+					numRoles--;
+					if (roleFirstPick == 'top') {
+						roleFirstPick = roleSecondPick;
+						roleSecondPick = '';
+					} else if (roleSecondPick == 'top') {
+						roleSecondPick = '';
+					}
+				}
 				break;
 			}
 		case 'jg':
@@ -203,11 +265,41 @@ function filterRole(roleFilter, callFrom) {
 					$('#jgFilter').css('background-color', '#606060');
 				break;
 			} else if (callFrom == 0) {
-				roleJg2 = !roleJg2;
-				if (roleJg2)
+				rolejg2 = !rolejg2;
+				if (rolejg2 && numRoles == 0) {
 					$('#jgEditer').css('background-color', '#EE6F59');
-				else
+					numRoles++;
+					roleFirstPick = 'jg';
+				} else if (rolejg2 && numRoles == 1) {
+					$('#jgEditer').css('background-color', '#EE6F59');
+					numRoles++;
+					roleSecondPick = 'jg';
+				} else if (rolejg2 && numRoles == 2) {
+					$('#jgEditer').css('background-color', '#EE6F59');
+					$('#' + roleFirstPick + 'Editer').css('background-color', '#606060');
+					filterRoleHelper(roleFirstPick);
+					roleFirstPick = roleSecondPick;
+					roleSecondPick = 'jg';
+				} else if (rolejg2 && numRoles == 5) {
+					$('#jgEditer').css('background-color', '#EE6F59');
+					$('#' + roleFirstPick + 'Editer').css('background-color', '#606060');
+					filterRoleHelper(roleFirstPick);
+					roleFirstPick = 'jg';
+					numRoles = 1;
+				} else if (!rolejg2 && numRoles == 1) {
 					$('#jgEditer').css('background-color', '#606060');
+					numRoles--;
+					roleFirstPick = '';
+				} else if (!rolejg2 && numRoles == 2) {
+					$('#jgEditer').css('background-color', '#606060');
+					numRoles--;
+					if (roleFirstPick == 'jg') {
+						roleFirstPick = roleSecondPick;
+						roleSecondPick = '';
+					} else if (roleSecondPick == 'jg') {
+						roleSecondPick = '';
+					}
+				}
 				break;
 			}
 		case 'mid':
@@ -219,11 +311,41 @@ function filterRole(roleFilter, callFrom) {
 					$('#midFilter').css('background-color', '#606060');
 				break;
 			} else if (callFrom == 0) {
-				roleMid2 = !roleMid2;
-				if (roleMid2)
+				rolemid2 = !rolemid2;
+				if (rolemid2 && numRoles == 0) {
 					$('#midEditer').css('background-color', '#EE6F59');
-				else
+					numRoles++;
+					roleFirstPick = 'mid';
+				} else if (rolemid2 && numRoles == 1) {
+					$('#midEditer').css('background-color', '#EE6F59');
+					numRoles++;
+					roleSecondPick = 'mid';
+				} else if (rolemid2 && numRoles == 2) {
+					$('#midEditer').css('background-color', '#EE6F59');
+					$('#' + roleFirstPick + 'Editer').css('background-color', '#606060');
+					filterRoleHelper(roleFirstPick);
+					roleFirstPick = roleSecondPick;
+					roleSecondPick = 'mid';
+				} else if (rolemid2 && numRoles == 5) {
+					$('#midEditer').css('background-color', '#EE6F59');
+					$('#' + roleFirstPick + 'Editer').css('background-color', '#606060');
+					filterRoleHelper(roleFirstPick);
+					roleFirstPick = 'mid';
+					numRoles = 1;
+				} else if (!rolemid2 && numRoles == 1) {
 					$('#midEditer').css('background-color', '#606060');
+					numRoles--;
+					roleFirstPick = '';
+				} else if (!rolemid2 && numRoles == 2) {
+					$('#midEditer').css('background-color', '#606060');
+					numRoles--;
+					if (roleFirstPick == 'mid') {
+						roleFirstPick = roleSecondPick;
+						roleSecondPick = '';
+					} else if (roleSecondPick == 'mid') {
+						roleSecondPick = '';
+					}
+				}
 				break;
 			}
 		case 'adc':
@@ -235,11 +357,41 @@ function filterRole(roleFilter, callFrom) {
 					$('#adcFilter').css('background-color', '#606060');
 				break;
 			} else if (callFrom == 0) {
-				roleAdc2 = !roleAdc2;
-				if (roleAdc2)
+				roleadc2 = !roleadc2;
+				if (roleadc2 && numRoles == 0) {
 					$('#adcEditer').css('background-color', '#EE6F59');
-				else
+					numRoles++;
+					roleFirstPick = 'adc';
+				} else if (roleadc2 && numRoles == 1) {
+					$('#adcEditer').css('background-color', '#EE6F59');
+					numRoles++;
+					roleSecondPick = 'adc';
+				} else if (roleadc2 && numRoles == 2) {
+					$('#adcEditer').css('background-color', '#EE6F59');
+					$('#' + roleFirstPick + 'Editer').css('background-color', '#606060');
+					filterRoleHelper(roleFirstPick);
+					roleFirstPick = roleSecondPick;
+					roleSecondPick = 'adc';
+				} else if (roleadc2 && numRoles == 5) {
+					$('#adcEditer').css('background-color', '#EE6F59');
+					$('#' + roleFirstPick + 'Editer').css('background-color', '#606060');
+					filterRoleHelper(roleFirstPick);
+					roleFirstPick = 'adc';
+					numRoles = 1;
+				} else if (!roleadc2 && numRoles == 1) {
 					$('#adcEditer').css('background-color', '#606060');
+					numRoles--;
+					roleFirstPick = '';
+				} else if (!roleadc2 && numRoles == 2) {
+					$('#adcEditer').css('background-color', '#606060');
+					numRoles--;
+					if (roleFirstPick == 'adc') {
+						roleFirstPick = roleSecondPick;
+						roleSecondPick = '';
+					} else if (roleSecondPick == 'adc') {
+						roleSecondPick = '';
+					}
+				}
 				break;
 			}
 		case 'supp':
@@ -251,13 +403,68 @@ function filterRole(roleFilter, callFrom) {
 					$('#suppFilter').css('background-color', '#606060');
 				break;
 			} else if (callFrom == 0) {
-				roleSupp2 = !roleSupp2;
-				if (roleSupp2)
+				rolesupp2 = !rolesupp2;
+				if (rolesupp2 && numRoles == 0) {
 					$('#suppEditer').css('background-color', '#EE6F59');
-				else
+					numRoles++;
+					roleFirstPick = 'supp';
+				} else if (rolesupp2 && numRoles == 1) {
+					$('#suppEditer').css('background-color', '#EE6F59');
+					numRoles++;
+					roleSecondPick = 'supp';
+				} else if (rolesupp2 && numRoles == 2) {
+					$('#suppEditer').css('background-color', '#EE6F59');
+					$('#' + roleFirstPick + 'Editer').css('background-color', '#606060');
+					filterRoleHelper(roleFirstPick);
+					roleFirstPick = roleSecondPick;
+					roleSecondPick = 'supp';
+				} else if (rolesupp2 && numRoles == 5) {
+					$('#suppEditer').css('background-color', '#EE6F59');
+					$('#' + roleFirstPick + 'Editer').css('background-color', '#606060');
+					filterRoleHelper(roleFirstPick);
+					roleFirstPick = 'supp';
+					numRoles = 1;
+				} else if (!rolesupp2 && numRoles == 1) {
 					$('#suppEditer').css('background-color', '#606060');
+					numRoles--;
+					roleFirstPick = '';
+				} else if (!rolesupp2 && numRoles == 2) {
+					$('#suppEditer').css('background-color', '#606060');
+					numRoles--;
+					if (roleFirstPick == 'supp') {
+						roleFirstPick = roleSecondPick;
+						roleSecondPick = '';
+					} else if (roleSecondPick == 'supp') {
+						roleSecondPick = '';
+					}
+				}
 				break;
 			}
+		default:
+			break;
+	}
+}
+
+function filterRoleHelper(role) {
+	switch (role) {
+		case 'fill':
+			fill2 = !fill2;
+			break;
+		case 'top':
+			roletop2 = !roletop2;
+			break;
+		case 'jg':
+			rolejg2 = !rolejg2;
+			break;
+		case 'mid':
+			rolemid2 = !rolemid2;
+			break;
+		case 'adc':
+			roleadc2 = !roleadc2;
+			break;
+		case 'supp':
+			rolesupp2 = !rolesupp2;
+			break;
 		default:
 			break;
 	}
@@ -770,19 +977,19 @@ function appendListHelper(list, id) {
 		row = row.concat("            <div class=\"col-10 offset-1 bg-dark \" style=\"border: 1px solid black; color: white; height: 7vw; padding: 0.7vw\">" + list[player].notes + "<\/div>");
 		row = row.concat("        <\/div>");
 		row = row.concat("        <br \/>");
-		row = row.concat("        <div class=\"user-preference-icons row justify-content-center\">");
-		row = row.concat("            <div class=\"col-10\">");
-		row = row.concat("                <div class=\"row justify-content-center\"> ");
+		row = row.concat("        <div class=\"user-preference-icons row \">"); //justify-content-center
+		row = row.concat("            <div style=\"margin: 0 auto; \" class=\"col-10\">");
+		row = row.concat("                <div class=\"row \"> "); //justify-content-center
 		row = row.concat("                    <!-- For loop for info, add margin spacing in between - 0.3vw -->");
 		row = row.concat("                    <div class=\"player-roles\">");
 		row = row.concat(appendCheckedRoles(list[player].roles));
 		row = row.concat("                    <\/div>");
 
 		if (list[player].micAvail == 1) {
-			row = row.concat("                <img src=\"pictures/mic/mic.png\" width=\"40px\" height=\"40px\" style=\"margin-right: 0.3vw\"/>");
+			row = row.concat("                <img src=\"pictures/mic/mic.png\" width=\"35px\" height=\"35px\" style=\"margin-right: 0.3vw\"/>");
 		}
 		else {
-			row = row.concat("                <img src=\"pictures/mic/no_mic.png\" width=\"40px\" height=\"40px\" style=\"margin-right: 0.3vw\"/>");
+			row = row.concat("                <img src=\"pictures/mic/no_mic.png\" width=\"35px\" height=\"35px\" style=\"margin-right: 0.3vw\"/>");
 		}
 
 		row = row.concat("                    <div class=\"game-type\" style=\"margin-right: 0.8vw\">");
@@ -822,22 +1029,22 @@ function appendCheckedRoles(datas) {
 		if (datas[data]) {
 			switch (data) {
 				case 'fill':
-					row = row.concat("<img src=\"pictures/role_icons/Fill_icon.png\" width=\"40px\" style=\"margin-right: 0.3vw\"/>");
+					row = row.concat("<img src=\"pictures/role_icons/Fill_icon.png\" width=\"35px\" style=\"margin-right: 0.3vw\"/>");
 					break;
 				case 'top':
-					row = row.concat("<img src=\"pictures/role_icons/Top_icon.png\" width=\"40px\" style=\"margin-right: 0.3vw\"/>");
+					row = row.concat("<img src=\"pictures/role_icons/Top_icon.png\" width=\"35px\" style=\"margin-right: 0.3vw\"/>");
 					break;
 				case 'jg':
-					row = row.concat("<img src=\"pictures/role_icons/Jungle_icon.png\" width=\"40px\" style=\"margin-right: 0.3vw\"/>");
+					row = row.concat("<img src=\"pictures/role_icons/Jungle_icon.png\" width=\"35px\" style=\"margin-right: 0.3vw\"/>");
 					break;
 				case 'mid':
-					row = row.concat("<img src=\"pictures/role_icons/Mid_icon.png\" width=\"40px\" style=\"margin-right: 0.3vw\"/>");
+					row = row.concat("<img src=\"pictures/role_icons/Mid_icon.png\" width=\"35px\" style=\"margin-right: 0.3vw\"/>");
 					break;
 				case 'adc':
-					row = row.concat("<img src=\"pictures/role_icons/Bot_icon.png\" width=\"40px\" style=\"margin-right: 0.3vw\"/>");
+					row = row.concat("<img src=\"pictures/role_icons/Bot_icon.png\" width=\"35px\" style=\"margin-right: 0.3vw\"/>");
 					break;
 				case 'supp':
-					row = row.concat("<img src=\"pictures/role_icons/Support_icon.png\" width=\"40px\" style=\"margin-right: 0.3vw\"/>");
+					row = row.concat("<img src=\"pictures/role_icons/Support_icon.png\" width=\"35px\" style=\"margin-right: 0.3vw\"/>");
 					break;
 			}
 		}
@@ -848,9 +1055,14 @@ function appendCheckedRoles(datas) {
 
 function appendChecked(datas) {
 	var row = "<td>";
+	var flag = 0;
 	for (var data in datas) {
-		if (datas[data])
-			row = row.concat(data + "/");
+		if (datas[data] && flag != 0) {
+			row = row.concat("/" + data);
+		} else if (datas[data]) {
+			row = row.concat(data);
+			flag = 1;
+		}	
 	}
 	row = row.concat("</td>");
 	return row;
@@ -949,19 +1161,19 @@ function sortGameType(summoner) {
 			row = row.concat("            <div class=\"col-10 offset-1 bg-dark \" style=\"border: 1px solid black; color: white; height: 7vw; padding: 0.7vw\">" + summoner.notes + "<\/div>");
 			row = row.concat("        <\/div>");
 			row = row.concat("        <br \/>");
-			row = row.concat("        <div class=\"user-preference-icons row justify-content-center\">");
-			row = row.concat("            <div class=\"col-10\">");
-			row = row.concat("                <div class=\"row justify-content-center\"> ");
+			row = row.concat("        <div class=\"user-preference-icons row \">"); //justify-content-center
+			row = row.concat("            <div style=\"margin: 0 auto; \" class=\"col-10\">");
+			row = row.concat("                <div class=\"row \"> "); //justify-content-center
 			row = row.concat("                    <!-- For loop for info, add margin spacing in between - 0.3vw -->");
 			row = row.concat("                    <div class=\"player-roles\">");
 			row = row.concat(appendCheckedRoles(summoner.roles));
 			row = row.concat("                    <\/div>");
 
 			if (summoner.micAvail == 1) {
-				row = row.concat("                <img src=\"pictures/mic/mic.png\" width=\"40px\" height=\"40px\" style=\"margin-right: 0.3vw\"/>");
+				row = row.concat("                <img src=\"pictures/mic/mic.png\" width=\"35px\" height=\"35px\" style=\"margin-right: 0.3vw\"/>");
 			}
 			else {
-				row = row.concat("                <img src=\"pictures/mic/no_mic.png\" width=\"40px\" height=\"40px\" style=\"margin-right: 0.3vw\"/>");
+				row = row.concat("                <img src=\"pictures/mic/no_mic.png\" width=\"35px\" height=\"35px\" style=\"margin-right: 0.3vw\"/>");
 			}
 
 			row = row.concat("                    <div class=\"game-type\" style=\"margin-right: 0.8vw\">");
@@ -1076,4 +1288,9 @@ function micFilterClicked(answer, callerId) {
 			micFilter2 = 1;
 		}
 	}
+}
+
+function editFilter() {
+	firebase.database().ref(region).child('/posts/' + newPostKey)
+        .update({ title: "New title", body: "This is the new body" });
 }

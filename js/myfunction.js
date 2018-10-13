@@ -97,7 +97,7 @@ var tierDict = {
 var https = 'https://'
 var summonerLink = 'api.riotgames.com/lol/summoner/v3/summoners/by-name/'
 var rankLink = 'api.riotgames.com/lol/league/v3/positions/by-summoner/';
-var API_KEY = '?api_key=RGAPI-6536ef7b-cbd7-4c4e-9851-16d80b439c43'; //copy and paste your API KEY\
+var API_KEY = '?api_key=RGAPI-c8b30c84-c396-4103-8ab4-e19b11c9adc6'; //copy and paste your API KEY\
 var region;
 var fullSummonerLink;
 var fullRankLink;
