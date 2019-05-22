@@ -61,6 +61,7 @@ var gofFilter2 = 0;
 var posted = false;
 
 $(document).ready(function () {
+
 	var queryString = decodeURIComponent(window.location.search);
 	queryString = queryString.substring(1);
 	var queries = queryString.split("&");
@@ -912,82 +913,113 @@ function appendListHelper(list, id) {
 	}
 
 	for (var player in list) {
-		row = row.concat("<div class=\"player-list-card \">");
+		row = row.concat("<div class=\"player-list-card row offset-2 \">");
 		row = row.concat("");
-		row = row.concat("<!-- Left Side 1-->");
-		row = row.concat("    <div class=\"player-info-section \" >");
-		row = row.concat("        <div class=\"player-image-name\" >");
-		row = row.concat("            <div class=\"user-icon \" >");
-		row = row.concat("            	<img src=\"http://ddragon.leagueoflegends.com/cdn/8.18.2/img/profileicon/" + list[player].profileIconId + ".png\" /> "); //visit this link to check for the latest patch https://ddragon.leagueoflegends.com/api/versions.json
+		row = row.concat("<!-- Left Side -->");
+		row = row.concat("    <div class=\"player-info-section col-5\" style=\"border: 1px solid black; background-color: rgba(255, 255, 255, 0.05);\">");
+		row = row.concat("        <div class=\"row\" style=\"margin: 1.2vw\">");
+		row = row.concat("            <div class=\"col-4\" style=\"margin-top: 2vw\">");
+		row = row.concat("                <div class=\"row\" align=\"center\">");
+		row = row.concat("                    <div class=\"user-icon col text-center\" >");
+		row = row.concat("                    <img src=\"http://ddragon.leagueoflegends.com/cdn/8.18.2/img/profileicon/" + list[player].profileIconId + ".png\" height=\"150vw\" \/> "); //visit this link to check for the latest patch https://ddragon.leagueoflegends.com/api/versions.json
+		row = row.concat("                    <\/div>");
+		row = row.concat("                    <div class=\"user-ign col text-center\">");
+		row = row.concat("                        <p style=\"font-family: fantasy; font-size: 28px;\">" + list[player].userIgn + "<\/p>");
+		row = row.concat("                    <\/div>");
+		row = row.concat("                <\/div>");
 		row = row.concat("            <\/div>");
-		row = row.concat("            <div class=\"user-ign \">");
-		row = row.concat("                <p >" + list[player].userIgn + "<\/p>");
-		row = row.concat("        	  <\/div>");
+		row = row.concat("            <div class=\"col\" style=\"margin-top: 1.2vw; \">");
+		row = row.concat("                <div class=\"row\" style=\"margin: 0vw 0vw 1vw 0vw;\">");
+		row = row.concat("                    <div class=\"user-stats col text-center\" style=\"border: 1px solid black; \">");
+		row = row.concat("                        <div class=\"row\">");
+		row = row.concat("                            <table class=\"player-info-text col outer\" style=\"margin: 0vw; background-color: #343a40;\">");
+		row = row.concat("                                <tr class=\"player-info-border\">");
+		row = row.concat("                                    <td class=\"player-rank-icon\" style=\"padding: 7px;\">");
+		row = row.concat("                                        <img src=\"./pictures/tier/" + tierDict[decodeTier(list[player].soloRank)] + ".png\" width=\"110px\"\/>");
+		row = row.concat("                                    <\/td>");
+		row = row.concat("                                    <td>");
+		row = row.concat("                                        <p style=\"margin-bottom: 0.5rem;\">" + tierDict[decodeTier(list[player].soloRank)] + "  " + decodeRank(list[player].soloRank) + "<\/p>");
+		row = row.concat("                                        <p style=\"margin-bottom: 0.5rem;\">" + list[player].soloLeaguePoints + "LP / " + list[player].soloRankWins + "W " + list[player].soloRankLosses + "L<\/p>");
+		row = row.concat("                                        <p style=\"margin-bottom: 0.5rem;\">Win Ratio " + Math.round(list[player].soloRankWins / (list[player].soloRankWins + list[player].soloRankLosses) * 100) + "%<\/p>");
+		row = row.concat("                                    <\/td>");
+		row = row.concat("                                <\/tr>");
+		row = row.concat("                            <\/table>");
+		row = row.concat("				      		  <table class=\"player-info-text col outer\" style=\"margin: 0vw; background-color: #343a40;\">");
+		row = row.concat("                    		      <tr>");
+		row = row.concat("                    		          <td class=\"player-rank-icon\">");
+		row = row.concat("                    		              <img src=\"./pictures/tier/" + tierDict[decodeTier(list[player].flexRank)] + ".png\" width=\"70px\"\/>");
+		row = row.concat("                    		          <\/td>");
+		row = row.concat("                    		          <td>");
+		row = row.concat("                    		              <p style=\"margin-bottom: 0.2rem;\">" + tierDict[decodeTier(list[player].flexRank)] + "  " + decodeRank(list[player].flexRank) + "<\/p>");
+		row = row.concat("                    		              <p style=\"margin-bottom: 0.2rem;\">" + list[player].flexLeaguePoints + "LP / " + list[player].flexRankWins + "W " + list[player].flexRankLosses + "L<\/p>");
+		row = row.concat("                    		              <p style=\"margin-bottom: 0.2rem;\">Win Ratio " + Math.round(list[player].flexRankWins / (list[player].flexRankWins + list[player].flexRankLosses) * 100) + "%<\/p>");
+		row = row.concat("                    		          <\/td>");
+		row = row.concat("                    		      <\/tr>");
+		row = row.concat("                    		  <\/table>");
+		row = row.concat("                        <\/div>");
+		row = row.concat("                    <\/div>");
+		row = row.concat("                <\/div> ");
+		row = row.concat("                <div class=\"row\">");
+
+		// row = row.concat("                    <div class=\"col\" align=\"center\" style=\"margin-bottom: 1vw\">");
+		// row = row.concat("                        <button>Flex Rank<\/button>");
+		// row = row.concat("                    <\/div>");
+		row = row.concat("                <\/div>");
+		row = row.concat("            <\/div>");
 		row = row.concat("        <\/div>");
-		row = row.concat("<!-- Left Side 2-->");
-		row = row.concat("          <div class=\"player-stats \" >");
-		row = row.concat("              <div class=\"player-info-text \" >");
-		row = row.concat("                  <div class=\"player-solo-icon\" >");
-		row = row.concat("                      <img src=\"./pictures/tier/" + tierDict[decodeTier(list[player].soloRank)] + ".png\"/>");
-		row = row.concat("                  <\/div>");
-		row = row.concat("                  <div class=\"player-solo-stats\">");
-		row = row.concat("                      <p>" + tierDict[decodeTier(list[player].soloRank)] + "  " + decodeRank(list[player].soloRank) + "<\/p>");
-		row = row.concat("                      <p>" + list[player].soloLeaguePoints + "LP / " + list[player].soloRankWins + "W " + list[player].soloRankLosses + "L<\/p>");
-		row = row.concat("                      <p>Win Ratio " + Math.round(list[player].soloRankWins / (list[player].soloRankWins + list[player].soloRankLosses) * 100) + "%<\/p>");
-		row = row.concat("                  <\/div>");
-		row = row.concat("               <\/div>");
-		row = row.concat("		         <div class=\"player-info-text \">");
-		row = row.concat("                   <div class=\"player-flex-icon\">");
-		row = row.concat("                       <img src=\"./pictures/tier/" + tierDict[decodeTier(list[player].flexRank)] + ".png\"/>");
-		row = row.concat("                   <\/div>");
-		row = row.concat("                   <div class=\"player-flex-stats\">");
-		row = row.concat("                       <p>" + tierDict[decodeTier(list[player].flexRank)] + "  " + decodeRank(list[player].flexRank) + "<\/p>");
-		row = row.concat("                       <p>" + list[player].flexLeaguePoints + "LP / " + list[player].flexRankWins + "W " + list[player].flexRankLosses + "L<\/p>");
-		row = row.concat("                       <p>Win Ratio " + Math.round(list[player].flexRankWins / (list[player].flexRankWins + list[player].flexRankLosses) * 100) + "%<\/p>");
-		row = row.concat("                   <\/div>");
-		row = row.concat("               <\/div>");
-		row = row.concat("          <\/div>");
-		row = row.concat("    <\/div> ");
-		row = row.concat("<!-- Right Side 1-->");
-		row = row.concat("    <div class=\"player-preference-section \" >");
-		row = row.concat("        <div class=\"posted-date\">Date Posted: " + list[player].postedTime + "<\/div>");
-		row = row.concat("        <div class=\"player-notes\">" + list[player].notes + "<\/div>");
-		row = row.concat("        <div class=\"player-preference-icons \">"); 
-		row = row.concat("            <!-- For loop for info, add margin spacing in between - 0.3vw -->");
-		row = row.concat("            <div class=\"player-roles\">");
+		row = row.concat("    <\/div>");
+		row = row.concat("");
+		row = row.concat("<!-- Right Side -->");
+		row = row.concat("    <div class=\"player-preference-section col-4\" style=\"background-color: rgba(255, 255, 255, 0.05); border-top: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black\">");
+		row = row.concat("        <div class=\"posted-date col\" style=\"margin: 0.3vw 0vw 0.3vw 1.3vw; text-align: right \">Date Posted: " + list[player].postedTime + "<\/div>");
+		row = row.concat("        <br \/>");
+		row = row.concat("        <div class=\"row align-items-end\">");
+		row = row.concat("            <div class=\"col-10 offset-1 bg-dark \" style=\"border: 1px solid black; color: white; height: 7vw; padding: 0.7vw\">" + list[player].notes + "<\/div>");
+		row = row.concat("        <\/div>");
+		row = row.concat("        <br \/>");
+		row = row.concat("        <div class=\"user-preference-icons row \">"); //justify-content-center
+		row = row.concat("            <div style=\"margin: 0 auto; \" class=\"col-10\">");
+		row = row.concat("                <div class=\"row \"> "); //justify-content-center
+		row = row.concat("                    <!-- For loop for info, add margin spacing in between - 0.3vw -->");
+		row = row.concat("                    <div class=\"player-roles\">");
 		row = row.concat(appendCheckedRoles(list[player].roles));
-		row = row.concat("            <\/div>");
-	
+		row = row.concat("                    <\/div>");
+
 		if (list[player].micAvail == 1) {
-			row = row.concat("        <img class=\"mic-availability\" src=\"pictures/mic/mic.png\" />");
+			row = row.concat("                <img src=\"pictures/mic/mic.png\" width=\"35px\" height=\"35px\" style=\"margin-right: 0.3vw\"/>");
 		}
 		else {
-			row = row.concat("        <img class=\"mic-availability\" src=\"pictures/mic/no_mic.png\" />");
+			row = row.concat("                <img src=\"pictures/mic/no_mic.png\" width=\"35px\" height=\"35px\" style=\"margin-right: 0.3vw\"/>");
 		}
-	
-		row = row.concat("            <div class=\"game-type\" >");
+
+		row = row.concat("                    <div class=\"game-type\" style=\"margin-right: 0.8vw\">");
 		row = row.concat(appendChecked(list[player].gameType));
-		row = row.concat("            <\/div>");
-	
+		row = row.concat("                    <\/div>");
+
 		if (list[player].grindorfun == 2) {
-			row = row.concat("        <div class=\"play-style\" >");
-			row = row.concat("            Grind/Fun");
-			row = row.concat("        <\/div>");
+			row = row.concat("                <div class=\"play-style\" style=\"margin-right: 0.8vw\">");
+			row = row.concat("                    Grind/Fun");
+			row = row.concat("                <\/div>");
 		}
 		else if (list[player].grindorfun == 1) {
-			row = row.concat("        <div class=\"play-style\" >");
-			row = row.concat("           Grind");
-			row = row.concat("        <\/div>");
+			row = row.concat("                <div class=\"play-style\" style=\"margin-right: 0.8vw\">");
+			row = row.concat("                    Grind");
+			row = row.concat("                <\/div>");
 		}
 		else {
-			row = row.concat("        <div class=\"play-style\" >");
-			row = row.concat("            Fun");
-			row = row.concat("        <\/div>");
+			row = row.concat("                <div class=\"play-style\" style=\"margin-right: 0.8vw\">");
+			row = row.concat("                    Fun");
+			row = row.concat("                <\/div>");
 		}
+
+		row = row.concat("                <\/div>");
+		row = row.concat("            <\/div>");
 		row = row.concat("        <\/div>");
 		row = row.concat("    <\/div>");
 		row = row.concat("<\/div>");
+		row = row.concat("<\/br \/>");
 	}
+
 	document.getElementById(id).innerHTML += row;
 }
 
@@ -997,22 +1029,22 @@ function appendCheckedRoles(datas) {
 		if (datas[data]) {
 			switch (data) {
 				case 'fill':
-					row = row.concat("<img src=\"pictures/role_icons/Fill_icon.png\" />");
+					row = row.concat("<img src=\"pictures/role_icons/Fill_icon.png\" width=\"35px\" style=\"margin-right: 0.3vw\"/>");
 					break;
 				case 'top':
-					row = row.concat("<img src=\"pictures/role_icons/Top_icon.png\" />");
+					row = row.concat("<img src=\"pictures/role_icons/Top_icon.png\" width=\"35px\" style=\"margin-right: 0.3vw\"/>");
 					break;
 				case 'jg':
-					row = row.concat("<img src=\"pictures/role_icons/Jungle_icon.png\" />");
+					row = row.concat("<img src=\"pictures/role_icons/Jungle_icon.png\" width=\"35px\" style=\"margin-right: 0.3vw\"/>");
 					break;
 				case 'mid':
-					row = row.concat("<img src=\"pictures/role_icons/Mid_icon.png\" />");
+					row = row.concat("<img src=\"pictures/role_icons/Mid_icon.png\" width=\"35px\" style=\"margin-right: 0.3vw\"/>");
 					break;
 				case 'adc':
-					row = row.concat("<img src=\"pictures/role_icons/Bot_icon.png\" />");
+					row = row.concat("<img src=\"pictures/role_icons/Bot_icon.png\" width=\"35px\" style=\"margin-right: 0.3vw\"/>");
 					break;
 				case 'supp':
-					row = row.concat("<img src=\"pictures/role_icons/Support_icon.png\" />");
+					row = row.concat("<img src=\"pictures/role_icons/Support_icon.png\" width=\"35px\" style=\"margin-right: 0.3vw\"/>");
 					break;
 			}
 		}
@@ -1138,10 +1170,10 @@ function sortGameType(summoner) {
 			row = row.concat("                    <\/div>");
 
 			if (summoner.micAvail == 1) {
-				row = row.concat("                <img src=\"pictures/mic/mic.png\"  height=\"35px\" />");
+				row = row.concat("                <img src=\"pictures/mic/mic.png\" width=\"35px\" height=\"35px\" style=\"margin-right: 0.3vw\"/>");
 			}
 			else {
-				row = row.concat("                <img src=\"pictures/mic/no_mic.png\"  height=\"35px\" />");
+				row = row.concat("                <img src=\"pictures/mic/no_mic.png\" width=\"35px\" height=\"35px\" style=\"margin-right: 0.3vw\"/>");
 			}
 
 			row = row.concat("                    <div class=\"game-type\" style=\"margin-right: 0.8vw\">");

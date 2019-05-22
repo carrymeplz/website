@@ -2,6 +2,8 @@ body {
     font-family: 'Fredoka One', cursive;
     background-color: #161B27;
     color: white;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 #banner {
@@ -13,6 +15,15 @@ body {
     text-align: center;
     font-size: 3em;
     line-height: 20vh;
+}
+
+#banner > a {
+    text-decoration: none;
+    color: white;
+}
+
+#banner > a:hover {
+    filter: brightness(70%);
 }
 
 .filterButton {
@@ -212,10 +223,6 @@ label {
 
 #applyFilterContainer {
     width: 11%;
-}
-
-.lists {
-    margin-left: 5%;
 }
 
 .player-info-border {

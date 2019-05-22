@@ -1,0 +1,142 @@
+.player-list-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    width: 65%;
+    border: 2px black solid;
+    margin: 2% auto;
+    overflow: hidden;
+    padding: 1%;
+}
+
+.player-info-section {
+    width: 50%;
+    float: left;
+}
+
+.player-image-name {
+    width: 40%;
+    float: left;
+}
+
+.user-icon {
+    width: 60%;
+    margin: 0 auto;
+    padding-top: 15%;
+}
+
+.user-icon img {
+    width: 100%;
+}
+
+.user-ign {
+    text-align: center;
+    padding-top: 5%;
+    font-size: 1.5vw;
+}
+
+.player-stats {
+    width: 60%;
+    margin: 3% auto;
+    float: left;
+}
+
+.player-info-text {
+	width: 100%;
+}
+
+.player-solo-icon {
+    width: 40%;
+}
+
+.player-flex-icon {
+    width: 25%;
+    margin: 0 7.5%;
+    float: left;
+    clear: both;
+}
+
+.player-solo-icon img {
+    width: 100%;
+    float: left;
+}
+
+.player-flex-icon img {
+    width: 100%;
+    float: left;
+}
+
+.player-solo-stats {
+    width: 60%;
+    float: left;
+    padding-left: 5%;
+    padding-top: 5%;
+    font-size: 1.1vw;
+}
+
+.player-solo-stats p {
+    margin-bottom: 0;
+}
+
+.player-flex-stats {
+    width: 60%;
+    float: left;
+    padding-left: 5%;
+    font-size: 1vw;
+}
+
+.player-flex-stats p {
+    margin-bottom: 0;
+}
+
+.player-preference-section {    
+    width: 50%;
+    float: left;
+    border-left: 2px black solid;
+}
+
+.posted-date {
+    text-align: left;
+    font-size: 0.9vw;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.player-notes {
+    background-color: #343a40;
+    width: 70%;
+    height: 100px;
+    margin: 5% auto;
+    border: 1px solid black;
+    padding: 2%;
+}
+
+.player-preference-icons {
+    margin: 0 auto;
+}
+
+.player-roles {
+    margin-left: 15%;
+    float: left;
+    width: 14%;
+}
+
+.player-roles img {
+    width: 50%;
+    float: left;
+}
+
+.game-type {
+    float: left;
+    padding-left: 3%;
+    font-size: 1.1vw;
+}
+
+.play-style {
+    float: left;
+    padding-left: 3%;
+    font-size: 1.1vw;
+}
+
+.mic-availability {
+    width: 6.5%;
+    float: left;
+}
